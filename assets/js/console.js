@@ -591,12 +591,32 @@
   }
 
   async function showConsole() {
+    // show the frame first: once the password is accepted the dashboard opens,
+    // even if the workspace call is slow or the network drops
     $('auth-screen').hidden = true;
     $('console-shell').hidden = false;
     spriteReady();
-    var ok = await loadWorkspace();
     renderSidebar();
-    if (ok) await openDashboard();
+
+    var body = $('panel-body');
+    if (body) body.innerHTML = '<p class="empty-note">Opening your workspace…</p>';
+
+    try {
+      var ok = await loadWorkspace();
+      if (ok) await openDashboard();
+    } catch (error) {
+      if (body) {
+        body.innerHTML = '';
+        var note = el('p', 'empty-note', 'Signed in, but your workspace could not be loaded: '
+          + explain(error.message));
+        body.appendChild(note);
+        var retry = el('button', 'chip', 'Try again');
+        retry.type = 'button';
+        retry.style.marginTop = '14px';
+        retry.addEventListener('click', function () { showConsole(); });
+        body.appendChild(retry);
+      }
+    }
   }
 
   function bindAuth() {
