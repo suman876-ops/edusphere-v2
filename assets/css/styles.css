@@ -1700,3 +1700,18 @@ h1 { line-height: 1.06; letter-spacing: -0.025em; }
   border: 1px solid rgba(165, 20, 44, 0.22);
   margin-bottom: 4px;
 }
+
+
+/* the college name in the footer: red, and the only thing there you can click */
+.college-link {
+  color: var(--maroon);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: border-color 160ms, color 160ms;
+}
+
+.college-link:hover {
+  color: var(--maroon-deep);
+  border-bottom-color: rgba(165, 20, 44, 0.45);
+}
