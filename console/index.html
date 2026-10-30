@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EduSphere Console</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/styles.css" />
+<link rel="stylesheet" href="../assets/css/console.css" />
+</head>
+<body class="console-body">
+
+<!-- ============================================================== sign in -->
+<section class="auth-screen" id="auth-screen">
+  <div class="auth-card glass-panel">
+    <div class="auth-brand">
+      <span class="brand-mark">E</span>
+      <div><b>EduSphere</b><small>Staff console</small></div>
+    </div>
+
+    <form id="signin-form" class="auth-form">
+      <h1>Sign in</h1>
+      <p class="auth-note">Staff accounts only. Ask your administrator for access.</p>
+      <div class="field">
+        <label for="auth-email">Email</label>
+        <input id="auth-email" type="email" autocomplete="email" required placeholder="you@college.edu" />
+      </div>
+      <div class="field">
+        <label for="auth-password">Password</label>
+        <input id="auth-password" type="password" autocomplete="current-password" required minlength="8" placeholder="••••••••" />
+      </div>
+      <button class="btn btn-solid" type="submit" id="signin-btn">Sign in</button>
+      <p class="form-status" id="auth-status" role="status" aria-live="polite"></p>
+      <p class="auth-switch">
+        New here? <button type="button" class="link-btn" id="to-signup">Create an account</button>
+      </p>
+    </form>
+
+    <form id="signup-form" class="auth-form" hidden>
+      <h1>Create account</h1>
+      <p class="auth-note">The first account on a fresh installation becomes the administrator of its campus.</p>
+      <div class="field">
+        <label for="su-name">Full name</label>
+        <input id="su-name" type="text" autocomplete="name" required minlength="2" placeholder="Your name" />
+      </div>
+      <div class="field">
+        <label for="su-email">Email</label>
+        <input id="su-email" type="email" autocomplete="email" required placeholder="you@college.edu" />
+      </div>
+      <div class="field">
+        <label for="su-password">Password</label>
+        <input id="su-password" type="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters" />
+      </div>
+      <button class="btn btn-solid" type="submit" id="signup-btn">Create account</button>
+      <p class="form-status" id="signup-status" role="status" aria-live="polite"></p>
+      <p class="auth-switch">
+        Already have an account? <button type="button" class="link-btn" id="to-signin">Sign in</button>
+      </p>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================ workspace -->
+<div class="console-shell" id="console-shell" hidden>
+  <aside class="sidebar">
+    <div class="side-brand">
+      <span class="brand-mark">E</span>
+      <div><b>EduSphere</b><small id="side-campus">—</small></div>
+    </div>
+    <nav class="side-nav" id="side-nav"></nav>
+    <div class="side-foot">
+      <a href="../index.html">← Public site</a>
+      <button type="button" class="link-btn" id="signout">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="panel">
+    <header class="panel-head">
+      <div>
+        <h1 id="panel-title">Dashboard</h1>
+        <p id="panel-sub">Your campus at a glance</p>
+      </div>
+      <div class="panel-actions">
+        <span class="who" id="who">—</span>
+        <button class="btn btn-solid" type="button" id="primary-action">New record</button>
+      </div>
+    </header>
+
+    <div class="panel-body" id="panel-body">
+      <div class="empty-note">Loading…</div>
+    </div>
+  </main>
+</div>
+
+<!-- ================================================================ setup -->
+<div class="modal" id="setup-modal" hidden>
+  <div class="modal-card glass-panel">
+    <h2>Set up your campus</h2>
+    <p>No campus is attached to this account yet. Create one to start — you will be its administrator.</p>
+    <form id="setup-form">
+      <div class="field">
+        <label for="setup-group">Trust / group name</label>
+        <input id="setup-group" required minlength="2" placeholder="Demo Education Trust" />
+      </div>
+      <div class="field">
+        <label for="setup-campus">Campus name</label>
+        <input id="setup-campus" required minlength="2" placeholder="Main Campus" />
+      </div>
+      <div class="field">
+        <label for="setup-slug">Campus slug</label>
+        <input id="setup-slug" required pattern="[a-z0-9][a-z0-9-]{1,30}" placeholder="main" />
+      </div>
+      <p class="form-status" id="setup-status" role="status" aria-live="polite"></p>
+      <button class="btn btn-solid" type="submit" id="setup-btn">Create campus</button>
+    </form>
+  </div>
+</div>
+
+<!-- ================================================================ modal -->
+<div class="modal" id="record-modal" hidden>
+  <div class="modal-card glass-panel wide">
+    <h2 id="record-title">New record</h2>
+    <form id="record-form">
+      <div class="record-fields" id="record-fields"></div>
+      <p class="form-status" id="record-status" role="status" aria-live="polite"></p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" type="button" id="record-cancel">Cancel</button>
+        <button class="btn btn-solid" type="submit" id="record-save">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs id="sprite-defs"></defs></svg>
+
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/resources.js"></script>
+<script src="../assets/js/console.js"></script>
+</body>
+</html>
