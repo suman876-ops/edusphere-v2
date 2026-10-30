@@ -600,6 +600,16 @@
       $('signin-form').hidden = false;
     });
 
+    Array.prototype.forEach.call(document.querySelectorAll('.demo-chip'), function (chip) {
+      chip.addEventListener('click', function () {
+        $('auth-email').value = chip.getAttribute('data-email');
+        $('auth-password').value = 'EduSphere@123';
+        $('signin-form').hidden = false;
+        $('signup-form').hidden = true;
+        $('auth-password').focus();
+      });
+    });
+
     $('signout').addEventListener('click', signOut);
 
     $('record-form').addEventListener('submit', saveRecord);
