@@ -16,8 +16,46 @@ content is read live from Supabase at page load.
 | Portals, roles, lifecycle counts | counted from the page itself |
 | Everything else | static copy |
 
-There is no sample data and no "demo mode". If the API is unreachable the module grid says so and
-offers a retry, rather than showing invented content.
+The public page carries no invented figures. If the API is unreachable the module grid says so and
+offers a retry rather than falling back to a snapshot.
+
+The **console** is different: it ships with a seeded demo campus so every screen has something to
+show. Those rows are real database records, listed below, and are deleted with two statements before
+a real college starts using the system.
+
+## Demo accounts
+
+The database is seeded with two campuses (Main, North) and ten accounts. Every password is
+`EduSphere@123`. The console's sign-in screen lists these; tap a role to fill the form.
+
+| Email | Role | Campus |
+| --- | --- | --- |
+| principal@edusphere.demo | admin | Main |
+| registrar@edusphere.demo | registrar | Main |
+| accounts@edusphere.demo | accountant | Main |
+| faculty@edusphere.demo | faculty | Main and North |
+| library@edusphere.demo | librarian | Main |
+| hostel@edusphere.demo | warden | Main |
+| transport@edusphere.demo | transport | Main |
+| north.admin@edusphere.demo | admin | North |
+| student@edusphere.demo | student | Main |
+| parent@edusphere.demo | parent | Main |
+
+What is seeded: 2 campuses, 4 departments, 3 programs, 3 batches, 4 sections, 11 students with
+guardians, 4 staff, 5 subjects, 6 timetable slots, 3 attendance sessions with 15 records,
+2 exams with 10 marks, 3 fee heads, 24 invoices, 12 payments, 5 books, 4 loans, 2 hostels,
+3 rooms, 3 allocations, 2 routes, 4 stops, 2 courses, 2 assignments, 3 submissions, 4 notices
+and 5 admission applications.
+
+To remove every seeded row before real use:
+
+```sql
+delete from erp_groups where id = 'a0000000-0000-4000-8000-000000000001';
+delete from auth.users where email like '%@edusphere.demo';
+```
+
+These accounts exist so the console can be demonstrated. They are not a security boundary — the
+passwords are published in this file — and they must be deleted before a real college uses it.
 
 ## Languages
 
