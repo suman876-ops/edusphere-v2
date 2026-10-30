@@ -288,29 +288,62 @@
           var card = el('div', 'card reveal');
           card.appendChild(icon('landmark'));
 
-          var title = el('h3', null, college.name);
-          card.appendChild(title);
+          card.appendChild(el('h3', null, college.name));
 
           var meta = [];
           if (college.established_year) meta.push('Est. ' + college.established_year);
           if (college.naac_grade) meta.push('NAAC ' + college.naac_grade);
-          if (college.city) meta.push(college.city);
-          card.appendChild(el('p', null, meta.join(' · ')));
+          if (college.college_kind) meta.push(college.college_kind);
+          if (meta.length) card.appendChild(el('p', null, meta.join(' · ')));
 
           card.appendChild(el('p', null,
             college.departments + ' departments · ' + college.ug_programmes + ' UG and '
             + college.pg_programmes + ' PG programmes'));
 
-          if (college.affiliation) card.appendChild(el('p', null, 'Affiliated to ' + college.affiliation));
-
-          if (college.website) {
-            var link = el('a', 'tag', 'Official site ↗');
-            link.href = college.website;
-            link.target = '_blank';
-            link.rel = 'noopener';
-            link.style.textDecoration = 'none';
-            card.appendChild(link);
+          if (college.address) {
+            card.appendChild(el('p', 'college-address',
+              college.address + (college.pincode ? ' — ' + college.pincode : '')));
           }
+
+          var facts = el('dl', 'college-facts');
+          function fact(label, value, href) {
+            if (!value) return;
+            var row = el('div');
+            row.appendChild(el('dt', null, label));
+            var dd = el('dd');
+            if (href) {
+              var link = el('a', null, value);
+              link.href = href;
+              link.target = href.indexOf('http') === 0 ? '_blank' : null;
+              if (link.target) link.rel = 'noopener';
+              dd.appendChild(link);
+            } else {
+              dd.textContent = value;
+            }
+            row.appendChild(dd);
+            facts.appendChild(row);
+          }
+          fact('Phone', college.phone, college.phone ? 'tel:' + college.phone.replace(/[^0-9+]/g, '') : null);
+          fact('Email', college.email, college.email ? 'mailto:' + college.email : null);
+          fact('Affiliation', college.affiliation, null);
+          card.appendChild(facts);
+
+          var actions = el('div', 'college-actions');
+          if (college.website) {
+            var site = el('a', 'tag', 'Official site ↗');
+            site.href = college.website;
+            site.target = '_blank';
+            site.rel = 'noopener';
+            actions.appendChild(site);
+          }
+          if (college.maps_url) {
+            var map = el('a', 'tag', 'Map ↗');
+            map.href = college.maps_url;
+            map.target = '_blank';
+            map.rel = 'noopener';
+            actions.appendChild(map);
+          }
+          card.appendChild(actions);
 
           card.classList.add('in');
           grid.appendChild(card);
