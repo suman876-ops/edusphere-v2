@@ -171,6 +171,42 @@ def check_accessibility() -> list[str]:
     return problems
 
 
+
+def check_links() -> list[str]:
+    """Every relative link and asset reference must resolve to a real file."""
+    problems = []
+    pages = [INDEX, ROOT / "console" / "index.html"]
+    for page in pages:
+        if not page.exists():
+            problems.append(f"missing page: {page.relative_to(ROOT)}")
+            continue
+        text = read(page)
+        refs = re.findall(r'(?:href|src)="([^"]+)"', text)
+        for ref in refs:
+            if ref.startswith(("http://", "https://", "#", "mailto:", "data:", "tel:")):
+                continue
+            target = (page.parent / ref.split("#")[0].split("?")[0]).resolve()
+            if not target.exists():
+                problems.append(f"{page.relative_to(ROOT)} links to a missing file: {ref}")
+    return problems
+
+
+def check_console() -> list[str]:
+    page = ROOT / "console" / "index.html"
+    if not page.exists():
+        return ["console/index.html is missing"]
+    text = read(page)
+    problems = []
+    for script in ("config.js", "resources.js", "console.js"):
+        if script not in text:
+            problems.append(f"console does not load {script}")
+    if 'id="signin-form"' not in text:
+        problems.append("console has no sign-in form")
+    if 'id="record-form"' not in text:
+        problems.append("console has no record form")
+    return problems
+
+
 CHECKS = [
     ("assets", "every referenced asset exists", check_assets),
     ("icons", "every icon reference resolves to the sprite", check_icons),
@@ -180,6 +216,8 @@ CHECKS = [
     ("config", "publishable key only, valid URL", check_config),
     ("secrets", "no secrets committed", check_no_secrets),
     ("a11y", "labels, lang and live regions", check_accessibility),
+    ("links", "every internal link resolves", check_links),
+    ("console", "console shell is wired to its scripts", check_console),
 ]
 
 
