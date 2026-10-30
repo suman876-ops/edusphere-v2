@@ -193,13 +193,3 @@
   max-width: 240px;
 }
 .campus-switch:focus { outline: none; border-color: rgba(165, 20, 44, 0.4); }
-
-
-/* ============================================================ top strip */
-.topbar-links { display: flex; gap: 16px; align-items: center; }
-.topbar-links a {
-  color: rgba(248, 242, 231, 0.78);
-  text-decoration: none;
-  letter-spacing: 0.1em;
-}
-.topbar-links a:hover { color: #f6e7c8; }
