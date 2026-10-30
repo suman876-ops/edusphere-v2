@@ -1579,3 +1579,29 @@ h1 { line-height: 1.06; letter-spacing: -0.025em; }
 @media (prefers-reduced-motion: reduce) {
   .arch-link { animation: none; }
 }
+
+
+/* ==================================================== pending counters */
+.stat-pending::after {
+  content: "";
+  display: inline-block;
+  width: 42px;
+  height: 1.05em;
+  vertical-align: -0.12em;
+  border-radius: 6px;
+  background: linear-gradient(90deg,
+    rgba(120, 74, 42, 0.10) 25%,
+    rgba(120, 74, 42, 0.20) 37%,
+    rgba(120, 74, 42, 0.10) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 100% 0; }
+  to   { background-position: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat-pending::after { animation: none; }
+}
