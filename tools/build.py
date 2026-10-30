@@ -201,7 +201,7 @@ def check_console() -> list[str]:
     for marker, label in (
         ('id="signin-form"', "sign-in form"),
         ('id="record-form"', "record form"),
-        ('id="console-view"', "console view"),
+        ('id="console"', "console view"),
         ('id="campus-switch"', "campus switcher"),
     ):
         if marker not in text:
@@ -245,6 +245,18 @@ def check_sprite_id() -> list[str]:
     return []
 
 
+
+def check_anchors() -> list[str]:
+    """Every in-page link must point at an element that exists — otherwise it is a dead click."""
+    text = read(INDEX)
+    ids = set(re.findall(r'id="([^"]+)"', text))
+    problems = []
+    for target in sorted(set(re.findall(r'href="#([^"]+)"', text))):
+        if target and target not in ids:
+            problems.append(f'index.html links to #{target}, but nothing on the page has that id')
+    return problems
+
+
 CHECKS = [
     ("assets", "every referenced asset exists", check_assets),
     ("icons", "every icon reference resolves to the sprite", check_icons),
@@ -255,6 +267,7 @@ CHECKS = [
     ("secrets", "no secrets committed", check_no_secrets),
     ("a11y", "labels, lang and live regions", check_accessibility),
     ("links", "every internal link resolves", check_links),
+    ("anchors", "every in-page link has a target", check_anchors),
     ("console", "console shell is wired to its scripts", check_console),
     ("emoji", "no emoji left in markup", check_no_emoji),
     ("sprite", "sprite is reusable by the console", check_sprite_id),
