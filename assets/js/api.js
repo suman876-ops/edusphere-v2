@@ -61,6 +61,9 @@
     campuses: function () {
       return get(tables.campuses + '?select=slug,name&is_published=eq.true&order=name.asc');
     },
+    colleges: function () {
+      return get('site_public_colleges?select=*&order=established_year.asc');
+    },
     latestNotice: async function () {
       var rows = await get(tables.notices + '?select=title,body,published_at&order=published_at.desc&limit=1');
       return rows && rows.length ? rows[0] : null;
