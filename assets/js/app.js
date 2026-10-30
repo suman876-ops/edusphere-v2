@@ -322,9 +322,36 @@
       });
   }
 
+  /* ----------------------------------------------------------- one website */
+  function showView(name) {
+    var site = document.querySelector('.view[data-view="site"]');
+    var consoleView = document.getElementById('console-view');
+    if (!site || !consoleView) return;
+
+    var onConsole = name === 'console';
+    site.hidden = onConsole;
+    consoleView.hidden = !onConsole;
+    document.body.classList.toggle('in-console', onConsole);
+
+    if (onConsole && window.EduSphereConsole) window.EduSphereConsole.open();
+    window.scrollTo({ top: 0, behavior: 'instant' in document.documentElement.style ? 'instant' : 'auto' });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-view-link], #nav-console, #cta-console'), function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      showView(link.getAttribute('data-view-link') || 'console');
+      history.replaceState(null, '', '#' + (link.getAttribute('data-view-link') || 'console'));
+    });
+  });
+
+  window.EduSphereShowView = showView;
+
   structuralStats();
   loadColleges();
   load();
+
+  if (location.hash === '#console') showView('console');
   loadNotice();
   loadCampuses();
 })();
