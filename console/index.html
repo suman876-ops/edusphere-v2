@@ -2,169 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>EduSphere Console</title>
 <meta name="robots" content="noindex" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="../assets/css/styles.css" />
-<link rel="stylesheet" href="../assets/css/console.css" />
+<link rel="canonical" href="../index.html#console" />
+<meta http-equiv="refresh" content="0; url=../index.html#console" />
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center;
+         font-family: ui-sans-serif, system-ui, sans-serif; background: #f8f2e7; color: #33201a; }
+  a { color: #a5142c; }
+</style>
 </head>
-<body class="console-body">
-
-<!-- ============================================================== sign in -->
-<section class="auth-screen" id="auth-screen">
-  <div class="auth-card glass-panel">
-    <div class="auth-brand">
-      <span class="brand-mark">E</span>
-      <div><b>EduSphere</b><small>Staff console</small></div>
-    </div>
-
-    <form id="signin-form" class="auth-form">
-      <h1>Sign in</h1>
-      <p class="auth-note">Staff accounts only. Ask your administrator for access.</p>
-      <div class="field">
-        <label for="auth-email">Email</label>
-        <input id="auth-email" type="email" autocomplete="email" required placeholder="you@college.edu" />
-      </div>
-      <div class="field">
-        <label for="auth-password">Password</label>
-        <input id="auth-password" type="password" autocomplete="current-password" required minlength="8" placeholder="••••••••" />
-      </div>
-      <button class="btn btn-solid" type="submit" id="signin-btn">Sign in</button>
-      <p class="form-status" id="auth-status" role="status" aria-live="polite"></p>
-      <p class="auth-switch">
-        New here? <button type="button" class="link-btn" id="to-signup">Create an account</button>
-      </p>
-    </form>
-
-    <form id="signup-form" class="auth-form" hidden>
-      <h1>Create account</h1>
-      <p class="auth-note">The first account on a fresh installation becomes the administrator of its campus.</p>
-      <div class="field">
-        <label for="su-name">Full name</label>
-        <input id="su-name" type="text" autocomplete="name" required minlength="2" placeholder="Your name" />
-      </div>
-      <div class="field">
-        <label for="su-email">Email</label>
-        <input id="su-email" type="email" autocomplete="email" required placeholder="you@college.edu" />
-      </div>
-      <div class="field">
-        <label for="su-password">Password</label>
-        <input id="su-password" type="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters" />
-      </div>
-      <button class="btn btn-solid" type="submit" id="signup-btn">Create account</button>
-      <p class="form-status" id="signup-status" role="status" aria-live="polite"></p>
-      <p class="auth-switch">
-        Already have an account? <button type="button" class="link-btn" id="to-signin">Sign in</button>
-      </p>
-    </form>
-    <div class="demo-panel" id="demo-panel">
-      <p class="demo-title">Demo accounts — password <code>EduSphere@123</code></p>
-      <div class="demo-list">
-        <button type="button" class="demo-chip" data-email="admin@edusphere.demo">Cluster admin · all four</button>
-        <button type="button" class="demo-chip" data-email="midnapore@edusphere.demo">Midnapore College · registrar</button>
-        <button type="button" class="demo-chip" data-email="rnlk@edusphere.demo">RNLK Women's College · admin</button>
-        <button type="button" class="demo-chip" data-email="mcc@edusphere.demo">Midnapore City College · accountant</button>
-        <button type="button" class="demo-chip" data-email="kd@edusphere.demo">K.D. College · registrar</button>
-        <button type="button" class="demo-chip" data-email="faculty@edusphere.demo">Faculty · two colleges</button>
-      </div>
-      <p class="demo-note">Tap a role to fill the form. Every account sees only its own campus.</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- ============================================================ workspace -->
-<div class="topbar">
-  <div class="wrap">
-    <div><b>EduSphere</b><span class="dotsep">·</span>Multi-Campus College ERP</div>
-    <div class="hide-sm topbar-links">
-      <a href="../index.html">Public site</a>
-      <a href="../index.html#institutions">Colleges</a>
-      <a href="../index.html#modules">Modules</a>
-      <a href="../index.html#enquire">Admissions enquiry</a>
-    </div>
-  </div>
-</div>
-
-<div class="console-shell" id="console-shell" hidden>
-  <aside class="sidebar">
-    <div class="side-brand">
-      <span class="brand-mark">E</span>
-      <div><b>EduSphere</b><small id="side-campus">—</small></div>
-    </div>
-    <nav class="side-nav" id="side-nav"></nav>
-    <div class="side-foot">
-      <a href="../index.html">← Public site</a>
-      <a href="https://github.com/suman876-ops/edusphere-v2/blob/main/README.md" target="_blank" rel="noopener">Documentation ↗</a>
-      <button type="button" class="link-btn" id="signout">Sign out</button>
-    </div>
-  </aside>
-
-  <main class="panel">
-    <header class="panel-head">
-      <div>
-        <h1 id="panel-title">Dashboard</h1>
-        <p id="panel-sub">Your campus at a glance</p>
-      </div>
-      <div class="panel-actions">
-        <select class="campus-switch" id="campus-switch" aria-label="Campus" hidden></select>
-        <span class="who" id="who">—</span>
-        <button class="btn btn-solid" type="button" id="primary-action">New record</button>
-      </div>
-    </header>
-
-    <div class="panel-body" id="panel-body">
-      <div class="empty-note">Loading…</div>
-    </div>
-  </main>
-</div>
-
-<!-- ================================================================ setup -->
-<div class="modal" id="setup-modal" hidden>
-  <div class="modal-card glass-panel">
-    <h2>Set up your campus</h2>
-    <p>No campus is attached to this account yet. Create one to start — you will be its administrator.</p>
-    <form id="setup-form">
-      <div class="field">
-        <label for="setup-group">Trust / group name</label>
-        <input id="setup-group" required minlength="2" placeholder="Demo Education Trust" />
-      </div>
-      <div class="field">
-        <label for="setup-campus">Campus name</label>
-        <input id="setup-campus" required minlength="2" placeholder="Main Campus" />
-      </div>
-      <div class="field">
-        <label for="setup-slug">Campus slug</label>
-        <input id="setup-slug" required pattern="[a-z0-9][a-z0-9-]{1,30}" placeholder="main" />
-      </div>
-      <p class="form-status" id="setup-status" role="status" aria-live="polite"></p>
-      <button class="btn btn-solid" type="submit" id="setup-btn">Create campus</button>
-    </form>
-  </div>
-</div>
-
-<!-- ================================================================ modal -->
-<div class="modal" id="record-modal" hidden>
-  <div class="modal-card glass-panel wide">
-    <h2 id="record-title">New record</h2>
-    <form id="record-form">
-      <div class="record-fields" id="record-fields"></div>
-      <p class="form-status" id="record-status" role="status" aria-live="polite"></p>
-      <div class="modal-actions">
-        <button class="btn btn-outline" type="button" id="record-cancel">Cancel</button>
-        <button class="btn btn-solid" type="submit" id="record-save">Save</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs id="sprite-defs"></defs></svg>
-
-<script src="../assets/js/config.js"></script>
-<script src="../assets/js/resources.js"></script>
-<script src="../assets/js/console.js"></script>
+<body>
+  <p>The console is part of the main site now. <a href="../index.html#console">Continue to EduSphere →</a></p>
+  <script>location.replace('../index.html#console');</script>
 </body>
 </html>
