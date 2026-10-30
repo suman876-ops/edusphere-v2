@@ -119,8 +119,11 @@
 
   async function signOut() {
     try {
-      await authRequest('/auth/v1/logout', { method: 'POST', token: KEY });
-    } catch (e) { /* token may already be gone */ }
+      await fetch(BASE + '/auth/v1/logout', {
+        method: 'POST',
+        headers: { apikey: KEY, Authorization: 'Bearer ' + state.session.access_token }
+      });
+    } catch (e) { /* the token may already be gone; the local session is what matters */ }
     saveSession(null);
     showAuth();
   }
@@ -154,7 +157,10 @@
     fetch('../index.html').then(function (r) { return r.text(); }).then(function (html) {
       var doc = new DOMParser().parseFromString(html, 'text/html');
       var src = doc.getElementById('sprite-defs') || doc.querySelector('.sprite defs');
-      if (src) defs.innerHTML = src.innerHTML;
+      if (src) {
+        defs.innerHTML = src.innerHTML;
+        renderSidebar();
+      }
     }).catch(function () { /* icons are cosmetic */ });
   }
 
@@ -244,7 +250,7 @@
     renderSidebar();
     $('panel-title').textContent = resource.label;
     $('panel-sub').textContent = 'Campus-scoped records from ' + resource.table;
-    $('primary-action').hidden = !!resource.readOnly;
+    $('primary-action').hidden = !!resource.readOnly || !!resource.noCreate;
     $('primary-action').onclick = function () { openRecord(resource, null); };
     await renderTable(resource);
   }
@@ -412,6 +418,13 @@
           opt.value = option;
           input.appendChild(opt);
         });
+      } else if (column.type === 'boolean') {
+        input = el('select');
+        [['true', 'Yes'], ['false', 'No']].forEach(function (pair) {
+          var opt = el('option', null, pair[1]);
+          opt.value = pair[0];
+          input.appendChild(opt);
+        });
       } else if (column.type === 'ref') {
         input = el('select');
         var blank = el('option', null, '— none —');
@@ -461,14 +474,19 @@
     if (first) first.focus();
   }
 
-  function readForm(resource) {
+  function readForm(resource, isEdit) {
     var fields = $('record-fields');
     var data = {};
     resource.columns.forEach(function (column) {
       var input = document.getElementById('fld-' + column.name);
       if (!input) return;
       var value = input.value;
-      if (value === '') return;
+      if (value === '') {
+        // On an edit, an emptied field means "clear it", not "leave it alone".
+        // On a create, an empty optional field is simply absent.
+        if (isEdit && !column.required) data[column.name] = null;
+        return;
+      }
       if (column.type === 'number') value = Number(value);
       else if (column.type === 'datetime') value = new Date(value).toISOString();
       else if (column.type === 'boolean') value = value === 'true';
@@ -484,7 +502,7 @@
     var id = fields.dataset.id;
     if (!resource) return;
 
-    var payload = readForm(resource);
+    var payload = readForm(resource, !!id);
     if (!id) payload.campus_id = state.campusId;
 
     var save = $('record-save');
@@ -501,6 +519,7 @@
           method: 'POST', body: payload, headers: { Prefer: 'return=minimal' }
         });
       }
+      state.refCache = {};
       $('record-modal').hidden = true;
       await renderTable(resource);
     } catch (error) {
