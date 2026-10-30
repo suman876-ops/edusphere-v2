@@ -1,61 +1,73 @@
 # EduSphere — site
 
-The public page for EduSphere, a multi-campus college ERP. Static, no framework, no build
-dependencies beyond Python 3 for the generator.
+The public page for EduSphere, a multi-campus college ERP. Static HTML, no framework, and the
+content is read live from Supabase at page load.
 
 **Live:** https://suman876-ops.github.io/edusphere-v2/
 
-## Languages in this project
+## What is live data and what is not
+
+| On the page | Source |
+| --- | --- |
+| Module cards (18) | `site_modules` in Supabase |
+| The notice card | latest row in `site_notices` |
+| Campus dropdown | `site_campuses` |
+| Enquiry form | inserts into `site_enquiries` |
+| Portals, roles, lifecycle counts | counted from the page itself |
+| Everything else | static copy |
+
+There is no sample data and no "demo mode". If the API is unreachable the module grid says so and
+offers a retry, rather than showing invented content.
+
+## Languages
 
 | Language | Where | What it does |
 | --- | --- | --- |
-| HTML | `index.html` | The page: hero, notice, roles, portals, modules, data layer, lifecycle, mapping table |
-| CSS | `assets/css/styles.css` | Design tokens, warm paper palette, glass cards, responsive layout |
-| JavaScript | `assets/js/app.js` | Scroll reveal, module filters, live search, progress bar, back-to-top |
-| TypeScript | `src/search.ts` → `assets/js/search.js` | Typed search core, compiled to plain JS |
-| JSON | `data/modules.json` | The eighteen-module catalogue — the single source for the module grid |
-| Python | `tools/build.py` | Renders the grid from JSON and verifies the whole site |
-| Bash | `tools/serve.sh` | Local preview server |
-| YAML | `.github/workflows/ci.yml` | CI: rebuild, verify, refuse a stale commit |
-| Make | `Makefile` | `make build`, `make check`, `make serve`, `make zip`, `make deploy` |
-| Markdown | `README.md` | This file |
+| HTML | `index.html` | markup and the inline SVG icon sprite |
+| CSS | `assets/css/styles.css` | design tokens, warm palette, glass cards, form |
+| JavaScript | `assets/js/app.js` | renders modules, notice, campuses; filters; search; form submit |
+| JavaScript | `assets/js/api.js` | fetch client for Supabase REST |
+| JavaScript | `assets/js/config.js` | public URL and publishable key |
+| TypeScript | `src/search.ts` → `assets/js/search.js` | typed search core |
+| Python | `tools/build.py` | eight checks: assets, icons, secrets, config, a11y, more |
+| Bash | `tools/serve.sh` | local preview |
+| YAML | `.github/workflows/ci.yml` | runs the checks on every push |
+| Make | `Makefile` | shortcuts |
+| Markdown | `README.md`, `SECURITY.md` | docs |
 
 ## Layout
 
 ```
 .
-├── index.html                  the page
+├── index.html
 ├── assets/
 │   ├── css/styles.css
-│   └── js/{app.js, search.js}
-├── data/modules.json           module catalogue
-├── src/search.ts               TypeScript source for search.js
-├── tools/
-│   ├── build.py                generate + verify
-│   └── serve.sh                local preview
+│   └── js/{config.js, api.js, app.js, search.js}
+├── src/search.ts
+├── tools/{build.py, serve.sh}
 ├── .github/workflows/ci.yml
+├── SECURITY.md
 └── Makefile
 ```
 
 ## Working on it
 
 ```bash
-make            # regenerate the module grid and verify everything
+make            # run the checks
 make serve      # http://localhost:8080
 make zip        # dist/edusphere-site.zip
 ```
 
-To add or change a module, edit `data/modules.json` and run `make build`. Never edit the cards
-between the `modules:start` and `modules:end` markers in `index.html` — the next build overwrites
-them. CI fails the build if `index.html` and the JSON disagree.
+Content lives in the database, not in the repository. To change a module or a notice, edit the row
+in Supabase; the page picks it up on the next load.
 
-## Notes
+## Before real traffic
 
-- The page works offline: no framework, no fetch calls, no runtime dependency on a CDN. The only
-  network request is the Google Fonts stylesheet, and the font stack falls back to Georgia.
-- Module filters and search are client-side; both work together, and the filter chips stay
-  consistent with the search box.
-- Colours, spacing and type live as CSS custom properties at the top of `styles.css`.
+- add a CAPTCHA to the enquiry form
+- rate limit per IP as well as per email
+- wire enquiries to an email or a dashboard, so nobody has to read the table by hand
+
+See [SECURITY.md](SECURITY.md) for what the policies allow and what was tested.
 
 ## Licence
 
