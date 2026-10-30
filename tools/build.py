@@ -224,6 +224,8 @@ CHECKS = [
 def main() -> int:
     parser = argparse.ArgumentParser(description="Check the EduSphere site")
     parser.add_argument("--list", action="store_true", help="list the checks and exit")
+    parser.add_argument("--check", action="store_true",
+                        help="run the checks (this is the default and only mode)")
     args = parser.parse_args()
 
     if args.list:
