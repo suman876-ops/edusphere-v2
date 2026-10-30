@@ -259,6 +259,18 @@
     reveals.forEach(function (node) { node.classList.add('in'); });
   }
 
+  /*
+   * Safety net: if the observer never fires — an older browser, a restored
+   * scroll position, a script that failed earlier — the page must still be
+   * readable. Anything still hidden after a second and a half is shown.
+   */
+  setTimeout(function () {
+    Array.prototype.forEach.call(document.querySelectorAll('.reveal:not(.in)'), function (node) {
+      var box = node.getBoundingClientRect();
+      if (box.top < window.innerHeight) node.classList.add('in');
+    });
+  }, 1500);
+
   /* ----------------------------------------------- progress + back to top */
   var bar = document.getElementById('bar');
   var toTop = document.getElementById('to-top');
