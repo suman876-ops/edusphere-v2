@@ -989,3 +989,175 @@
 .portal-back { margin-top: 26px; text-align: center; font-size: 13px; }
 .portal-back a { color: var(--ink-soft); text-decoration: none; }
 .portal-back a:hover { color: var(--maroon); }
+
+
+/* ============================================================== glass depth */
+/*
+ * The page keeps its paper palette; the glass is what changes. Panels are more
+ * translucent, the blur is stronger, and a thin light edge catches the top of
+ * every card so it reads as a sheet of glass rather than a flat box.
+ */
+.nav {
+  position: sticky;
+  top: 12px;
+  margin: 0 auto 8px;
+  width: min(1180px, calc(100% - 24px));
+  border-radius: 999px;
+  border: 1px solid rgba(120, 74, 42, 0.18);
+  background: rgba(248, 242, 231, 0.62);
+  backdrop-filter: blur(26px) saturate(165%);
+  -webkit-backdrop-filter: blur(26px) saturate(165%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 18px 40px -30px rgba(86, 45, 16, 0.65);
+  padding: 0 8px;
+}
+
+.nav-inner { padding: 9px 6px; }
+
+.card,
+.glass-panel,
+.table-shell,
+.timeline,
+.notice {
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+}
+
+/* a moving sheen across a card on hover */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: -60% -20%;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.55) 50%, transparent 62%);
+  transform: translateX(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card:hover::after {
+  animation: sheen 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  opacity: 1;
+}
+
+@keyframes sheen {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(120%); }
+}
+
+/* ============================================================== background */
+.wash::before,
+.wash::after {
+  content: "";
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: -2;
+}
+
+.wash::before {
+  width: 46vw;
+  height: 46vw;
+  top: -12vw;
+  left: -8vw;
+  background: radial-gradient(circle, rgba(217, 185, 120, 0.5), transparent 68%);
+  animation: drift 26s ease-in-out infinite alternate;
+}
+
+.wash::after {
+  width: 40vw;
+  height: 40vw;
+  bottom: -14vw;
+  right: -10vw;
+  background: radial-gradient(circle, rgba(165, 20, 44, 0.16), transparent 68%);
+  animation: drift 32s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(4vw, 3vh, 0) scale(1.12); }
+}
+
+/* ================================================================ motion */
+@keyframes draw-line {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+.sec-head.in .divider::before,
+.sec-head.in .divider::after {
+  transform-origin: center;
+  animation: draw-line 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.sec-head.in h2 { animation: none; }
+
+/* buttons get a soft glow on hover */
+.btn-solid {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-solid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+
+.btn-solid:hover::after { animation: sheen 800ms ease; }
+
+/* the stat numbers count up; the class is added by app.js */
+.stat b { font-variant-numeric: tabular-nums; }
+
+/* nav link underline grows from the centre */
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 0;
+  height: 1.5px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--maroon), var(--gold));
+  transform: translateX(-50%);
+  transition: width 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.nav-links a:hover::after { width: 55%; }
+
+/* floating ornaments behind the hero */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 18% 22%, rgba(184, 137, 47, 0.55), transparent 60%),
+    radial-gradient(2px 2px at 76% 14%, rgba(165, 20, 44, 0.35), transparent 60%),
+    radial-gradient(1.5px 1.5px at 62% 68%, rgba(184, 137, 47, 0.4), transparent 60%),
+    radial-gradient(1.5px 1.5px at 30% 78%, rgba(165, 20, 44, 0.28), transparent 60%);
+  animation: twinkle 9s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.35; transform: translateY(0); }
+  to   { opacity: 0.9; transform: translateY(-8px); }
+}
+
+/* ======================================================= reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .wash::before,
+  .wash::after,
+  .hero::before,
+  .card:hover::after,
+  .btn-solid:hover::after,
+  .sec-head.in .divider::before,
+  .sec-head.in .divider::after {
+    animation: none !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
