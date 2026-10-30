@@ -8,6 +8,56 @@
   var SESSION_KEY = 'edusphere.session';
   var RESOURCES = window.ERP_RESOURCES || [];
 
+
+  /* ------------------------------------------------------- role dashboards */
+  /*
+   * The workflow diagram gives each role its own door. A librarian has no
+   * business in the fee ledger, and a warden does not need the timetable, so
+   * the sidebar and the KPI tiles follow the role the account holds.
+   */
+  var ROLE_MODULES = {
+    admin: null, // null means every module
+    registrar: ['students', 'applications', 'departments', 'programs', 'batches',
+                'sections', 'subjects', 'timetable', 'notices', 'memberships', 'audit'],
+    accountant: ['fee_heads', 'invoices', 'payments', 'students', 'notices'],
+    faculty: ['students', 'attendance', 'attendance_records', 'exams', 'marks',
+              'subjects', 'timetable', 'courses', 'assignments', 'submissions', 'notices'],
+    librarian: ['books', 'loans', 'students', 'notices'],
+    warden: ['hostels', 'rooms', 'allocations', 'students', 'notices'],
+    transport: ['routes', 'stops', 'students', 'notices']
+  };
+
+  var ROLE_KPIS = {
+    admin: ['students', 'staff', 'applications', 'invoices', 'books', 'notices'],
+    registrar: ['students', 'applications', 'sections', 'programs'],
+    accountant: ['invoices', 'payments', 'fee_heads', 'students'],
+    faculty: ['students', 'attendance', 'marks', 'assignments'],
+    librarian: ['books', 'loans', 'students'],
+    warden: ['hostels', 'rooms', 'allocations'],
+    transport: ['routes', 'stops', 'students']
+  };
+
+  function primaryRole() {
+    var order = ['admin', 'registrar', 'accountant', 'faculty', 'librarian', 'warden', 'transport'];
+    for (var i = 0; i < order.length; i += 1) {
+      if (state.roles.indexOf(order[i]) !== -1) return order[i];
+    }
+    return state.roles[0] || 'admin';
+  }
+
+  function allowedResources() {
+    var allowed = ROLE_MODULES[primaryRole()];
+    if (!allowed) return RESOURCES;
+    return RESOURCES.filter(function (r) { return allowed.indexOf(r.key) !== -1; });
+  }
+
+  function roleKpis() {
+    var keys = ROLE_KPIS[primaryRole()] || ROLE_KPIS.admin;
+    return keys.map(function (key) {
+      return RESOURCES.filter(function (r) { return r.key === key; })[0];
+    }).filter(Boolean);
+  }
+
   var state = {
     session: null,
     campuses: [],
@@ -143,7 +193,7 @@
     state.roles = active.roles || [];
     localStorage.setItem('edusphere.campus', state.campusId);
     $('side-campus').textContent = active.campus_name;
-    $('who').textContent = state.session.email + ' · ' + state.roles.join(', ');
+    $('who').textContent = state.session.email + ' · ' + primaryRole();
     renderCampusSwitch(active.campus_id);
 
     var staffRoles = state.roles.filter(function (r) {
@@ -230,7 +280,7 @@
     dash.setAttribute('aria-current', String(state.current === null));
     nav.appendChild(dash);
 
-    RESOURCES.forEach(function (resource) {
+    allowedResources().forEach(function (resource) {
       var button = el('button');
       button.appendChild(icon(resource.icon));
       button.appendChild(el('span', null, resource.label));
@@ -273,10 +323,7 @@
     var grid = el('div', 'kpi-grid');
     body.appendChild(grid);
 
-    var wanted = ['students', 'staff', 'applications', 'invoices', 'books', 'notices'];
-    var cards = wanted.map(function (key) {
-      return RESOURCES.filter(function (r) { return r.key === key; })[0];
-    }).filter(Boolean);
+    var cards = roleKpis();
 
     var results = await Promise.all(cards.map(countOf));
     cards.forEach(function (resource, index) {
