@@ -71,13 +71,13 @@
     </a>
     <nav class="nav-links">
       <a href="#notice">Notice</a>
+      <a href="#institutions">Colleges</a>
       <a href="#users">Users</a>
       <a href="#access">Access</a>
       <a href="#flow">Flow</a>
       <a href="#modules">Modules</a>
       <a href="#data">Data</a>
       <a href="#lifecycle">Lifecycle</a>
-      <a href="#mapping">Mapping</a>
       <a href="#enquire">Enquire</a>
       <a href="console/index.html">Console</a>
     </nav>
@@ -151,6 +151,23 @@
         <div class="stat"><b id="stat-portals">—</b><span>Portals &amp; apps</span></div>
         <div class="stat"><b id="stat-roles">—</b><span>User roles</span></div>
         <div class="stat"><b id="stat-stages">—</b><span>Lifecycle stages</span></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================== institutions -->
+  <section id="institutions">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-label"><span class="ico-gold">✦</span>The colleges</span>
+        <h2>Four campuses, <em>one system</em></h2>
+        <div class="divider"><i></i></div>
+        <p>Each college keeps its own departments, programmes, students and staff. The structure below
+          is read live from the database.</p>
+      </div>
+      <div class="grid g-2" id="college-grid" aria-live="polite">
+        <p class="empty-note" id="college-state">Loading institutions…</p>
       </div>
     </div>
   </section>
@@ -328,64 +345,10 @@
   </section>
 
   <!-- ========================================================= mapping -->
-  <section id="mapping">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>Module by module</span>
-        <h2>Technology &amp; <em>function mapping</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Which piece runs on what — the same table the team builds against.</p>
-      </div>
-      <div class="table-shell reveal">
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Module</th><th>Main functions</th><th>Frontend</th><th>Backend</th><th>Database / storage</th><th>Other services</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Auth &amp; IAM</td><td>Login, roles, permissions, SSO, OTP</td><td>Next.js + TypeScript</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">JWT · Redis · OAuth2/OIDC</td></tr>
-              <tr><td>Tenancy</td><td>Campus, departments, isolation</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL (RLS)</td><td class="mono">Subdomain mapping (NGINX)</td></tr>
-              <tr><td>Admissions</td><td>Application, documents, tests, merit</td><td>Next.js + TypeScript</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Razorpay/UPI · Email/SMS · PDF</td></tr>
-              <tr><td>Students</td><td>Profile, guardians, transfer, ID card</td><td>Next.js + Expo</td><td>NestJS</td><td>PostgreSQL + S3</td><td class="mono">ID card PDF · Meilisearch</td></tr>
-              <tr><td>Faculty / HR</td><td>Staff records, workload, leave</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Email/SMS · Reports</td></tr>
-              <tr><td>Academics</td><td>Programs, batches, sections, seats</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Seat accounting rules</td></tr>
-              <tr><td>Timetable</td><td>Schedule generation and management</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Constraint solver</td></tr>
-              <tr><td>Attendance</td><td>Manual, QR, geofence, reports</td><td>Expo + Next.js</td><td>NestJS</td><td>PostgreSQL + Redis</td><td class="mono">QR tokens · GPS · Device binding</td></tr>
-              <tr><td>Exams &amp; results</td><td>Assessment, grades, mark sheets</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">PDF generation · Email/SMS</td></tr>
-              <tr><td>Fees &amp; payments</td><td>Billing, instalments, fines, receipts</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Razorpay/Stripe · UPI · GST API</td></tr>
-              <tr><td>Library</td><td>Books, issue/return, fines</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Barcode/QR · Meilisearch</td></tr>
-              <tr><td>Hostel</td><td>Rooms, allocation, mess, complaints</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Notifications · Reports</td></tr>
-              <tr><td>Transport</td><td>Routes, GPS tracking, stops</td><td>Expo + Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Maps API · Live tracking</td></tr>
-              <tr><td>LMS-lite</td><td>Courses, materials, assignments, quizzes</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL + S3</td><td class="mono">Video (HLS) · File download</td></tr>
-              <tr><td>Communication</td><td>Notices, chat, announcements</td><td>Next.js / Expo</td><td>NestJS + Socket.IO</td><td>PostgreSQL + Redis</td><td class="mono">Socket.IO · Email · SMS · Push</td></tr>
-              <tr><td>Reports &amp; BI</td><td>Dashboards, exports (Excel/PDF)</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Chart.js · PDF · Meilisearch</td></tr>
-              <tr><td>Files</td><td>Upload, store, access</td><td>Next.js / Expo</td><td>NestJS</td><td>S3 / MinIO</td><td class="mono">Presigned URL · File permissions</td></tr>
-              <tr><td>Audit</td><td>Logs, activity, compliance reports</td><td>Next.js (admin)</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Log management · Alerts</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
+  
 
   <!-- =========================================================== stack -->
-  <section id="stack">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>Summary</span>
-        <h2>The <em>core stack</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Five layers, a short list. Anything not here is a dependency we did not need.</p>
-      </div>
-      <div class="grid g-2">
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-monitor"></use></svg></span><h3>Frontend — web</h3><p>Next.js 15 with React and TypeScript. Public site server-rendered, portals installable as a PWA, admin console client-side.</p><span class="tag">Next.js 15 · React · TypeScript</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-phone"></use></svg></span><h3>Frontend — mobile</h3><p>One React Native app for students, parents and faculty, with QR scanning and GPS built in.</p><span class="tag">React Native · Expo</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-layers"></use></svg></span><h3>Backend</h3><p>NestJS modular monolith in TypeScript. REST for everything, WebSocket for what must be live.</p><span class="tag">NestJS · REST · Socket.IO</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-database"></use></svg></span><h3>Data &amp; storage</h3><p>PostgreSQL 16 with replicas, Redis 7 for cache and queues, Meilisearch for search, S3 or MinIO for files.</p><span class="tag">Postgres · Redis · BullMQ · S3</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-box"></use></svg></span><h3>Infrastructure</h3><p>Docker images on Kubernetes, NGINX as the gateway, Cloudflare for CDN and WAF, GitHub Actions for CI/CD.</p><span class="tag">Docker · K8s · NGINX · Cloudflare</span></div>
-      </div>
-    </div>
-  </section>
+  
 
 
   <!-- ========================================================== enquire -->
