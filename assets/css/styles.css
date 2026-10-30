@@ -1715,3 +1715,13 @@ h1 { line-height: 1.06; letter-spacing: -0.025em; }
   color: var(--maroon-deep);
   border-bottom-color: rgba(165, 20, 44, 0.45);
 }
+
+
+/* ================================================================= hidden */
+/*
+ * The dashboard, the modals and the alternate views all start with the hidden
+ * attribute. A rule like `.console-shell { display: grid }` beats the browser's
+ * own [hidden] rule, which is why the dashboard was appearing behind the
+ * sign-in card. This makes hidden mean hidden, whatever the display value.
+ */
+[hidden] { display: none !important; }
