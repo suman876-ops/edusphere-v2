@@ -23,9 +23,33 @@ The **console** is different: it ships with a seeded demo campus so every screen
 show. Those rows are real database records, listed below, and are deleted with two statements before
 a real college starts using the system.
 
+## Institutions in the database
+
+Four colleges, each modelled as a campus under one trust. Departments, programmes and intake
+figures come from the colleges' own admission pages and prospectuses; contact details and grades are
+as published by them.
+
+| Campus | Established | NAAC | Departments | Programmes | Source |
+| --- | --- | --- | --- | --- | --- |
+| Midnapore College (Autonomous) | 1873 | A (3.58) | 24 | 39 | midnaporecollege.ac.in |
+| Raja Narendra Lal Khan Women's College (Autonomous) | 1957 | A+ (3.39) | 23 | 36 | rnlkwc.ac.in |
+| Midnapore City College | 2017 | — | 17 | 25 | mcconline.org.in |
+| K.D. College of Commerce & General Studies | 1961 | B+ | 8 | 7 | kdcollege.ac.in |
+
+Programme intake is recorded where the college publishes it — for example Physics 50, Chemistry 50,
+Mathematics 60 and English 70 at Midnapore College; B.Sc. Computer Science 110 and BCA 198 at
+Midnapore City College. Where a college does not publish a figure the column is left empty rather
+than guessed.
+
+**What is real and what is sample.** Institution records — campuses, departments, programmes, intake,
+contacts — are transcribed from the official websites. Student, staff and notice rows are marked
+`SAMPLE-` and exist so the screens have something to show. No real student data was collected from
+any college.
+
 ## Demo accounts
 
-The database is seeded with two campuses (Main, North) and ten accounts. Every password is
+The console signs in against the seeded database. Accounts are created per role; the table below
+describes the demo accounts that were used during development and are recreated by the seed script. Every password is
 `EduSphere@123`. The console's sign-in screen lists these; tap a role to fill the form.
 
 | Email | Role | Campus |
