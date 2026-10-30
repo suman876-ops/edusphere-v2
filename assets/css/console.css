@@ -130,7 +130,7 @@
   background: rgba(40, 22, 14, 0.45);
   backdrop-filter: blur(6px);
 }
-.modal[hidden] { display: none; }
+
 .modal-card { width: min(420px, 100%); padding: 26px; max-height: 90vh; overflow-y: auto; }
 .modal-card.wide { width: min(620px, 100%); }
 .modal-card h2 { font-family: var(--display); font-size: 22px; margin: 0 0 8px; }
