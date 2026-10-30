@@ -140,7 +140,9 @@
   /* -------------------------------------------------------------- stats */
   function setStat(id, value) {
     var node = document.getElementById(id);
-    if (node) node.textContent = value == null ? '—' : String(value);
+    if (!node) return;
+    node.classList.remove('stat-pending');
+    node.textContent = value == null ? '—' : String(value);
   }
 
   function structuralStats() {
@@ -394,8 +396,8 @@
   /* ----------------------------------------------------------- one website */
   function showView(name) {
     var site = document.querySelector('.view[data-view="site"]');
-    var consoleView = document.getElementById('console-view');
-    var portalView = document.getElementById('portal-view');
+    var consoleView = document.getElementById('console');
+    var portalView = document.getElementById('portal');
     if (!site || !consoleView) return;
 
     var onConsole = name === 'console';
