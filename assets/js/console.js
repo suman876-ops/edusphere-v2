@@ -145,6 +145,14 @@
     $('side-campus').textContent = active.campus_name;
     $('who').textContent = state.session.email + ' · ' + state.roles.join(', ');
     renderCampusSwitch(active.campus_id);
+
+    var staffRoles = state.roles.filter(function (r) {
+      return r !== 'student' && r !== 'parent';
+    });
+    if (!staffRoles.length && window.EduSphereShowView) {
+      window.EduSphereShowView('portal');
+      return false;
+    }
     return true;
   }
 
