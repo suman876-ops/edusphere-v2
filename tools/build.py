@@ -195,7 +195,7 @@ def check_console() -> list[str]:
     """The console is a view inside index.html, not a page of its own."""
     text = read(INDEX)
     problems = []
-    for script in ("config.js", "resources.js", "console.js"):
+    for script in ("config.js", "resources.js", "console.js", "portal.js"):
         if script not in text:
             problems.append(f"the page does not load {script}")
     for marker, label in (
@@ -206,6 +206,10 @@ def check_console() -> list[str]:
     ):
         if marker not in text:
             problems.append(f"the page has no {label}")
+
+    for asset in ("manifest.webmanifest", "sw.js"):
+        if not (ROOT / asset).exists():
+            problems.append(f"{asset} is missing — the site is not installable")
 
     stub = ROOT / "console" / "index.html"
     if stub.exists() and "index.html#console" not in read(stub):
