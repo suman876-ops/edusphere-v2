@@ -144,7 +144,42 @@
     localStorage.setItem('edusphere.campus', state.campusId);
     $('side-campus').textContent = active.campus_name;
     $('who').textContent = state.session.email + ' · ' + state.roles.join(', ');
+    renderCampusSwitch(active.campus_id);
     return true;
+  }
+
+  function renderCampusSwitch(selected) {
+    var select = $('campus-switch');
+    if (!select) return;
+    if (state.campuses.length < 2) {
+      select.hidden = true;
+      return;
+    }
+    select.innerHTML = '';
+    state.campuses.forEach(function (campus) {
+      var option = document.createElement('option');
+      option.value = campus.campus_id;
+      option.textContent = campus.campus_name;
+      if (campus.campus_id === selected) option.selected = true;
+      select.appendChild(option);
+    });
+    select.hidden = false;
+    select.onchange = function () {
+      var chosen = state.campuses.filter(function (c) { return c.campus_id === select.value; })[0];
+      if (!chosen) return;
+      state.campusId = chosen.campus_id;
+      state.roles = chosen.roles || [];
+      state.refCache = {};
+      localStorage.setItem('edusphere.campus', state.campusId);
+      $('side-campus').textContent = chosen.campus_name;
+      $('who').textContent = state.session.email + ' · ' + state.roles.join(', ');
+      if (state.current) {
+        var resource = RESOURCES.filter(function (r) { return r.key === state.current; })[0];
+        if (resource) renderTable(resource);
+      } else {
+        openDashboard();
+      }
+    };
   }
 
   /* -------------------------------------------------------------- sprite */
