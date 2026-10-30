@@ -359,18 +359,23 @@
   function showView(name) {
     var site = document.querySelector('.view[data-view="site"]');
     var consoleView = document.getElementById('console-view');
+    var portalView = document.getElementById('portal-view');
     if (!site || !consoleView) return;
 
     var onConsole = name === 'console';
-    site.hidden = onConsole;
+    var onPortal = name === 'portal';
+
+    site.hidden = onConsole || onPortal;
     consoleView.hidden = !onConsole;
-    document.body.classList.toggle('in-console', onConsole);
+    if (portalView) portalView.hidden = !onPortal;
+    document.body.classList.toggle('in-console', onConsole || onPortal);
 
     if (onConsole && window.EduSphereConsole) window.EduSphereConsole.open();
+    if (onPortal && window.EduSpherePortal) window.EduSpherePortal.open();
     window.scrollTo({ top: 0, behavior: 'instant' in document.documentElement.style ? 'instant' : 'auto' });
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll('[data-view-link], #nav-console, #cta-console'), function (link) {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-view-link], #nav-console, #cta-console, #nav-portal'), function (link) {
     link.addEventListener('click', function (event) {
       event.preventDefault();
       showView(link.getAttribute('data-view-link') || 'console');
@@ -385,6 +390,14 @@
   load();
 
   if (location.hash === '#console') showView('console');
+  if (location.hash === '#portal') showView('portal');
+
+  /* ------------------------------------------------------- installable app */
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () { /* offline support is optional */ });
+    });
+  }
   loadNotice();
   loadCampuses();
 })();
