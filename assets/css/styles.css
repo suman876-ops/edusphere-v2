@@ -1605,3 +1605,98 @@ h1 { line-height: 1.06; letter-spacing: -0.025em; }
 @media (prefers-reduced-motion: reduce) {
   .stat-pending::after { animation: none; }
 }
+
+
+/* ==================================================== admission page bits */
+.toolbar-row {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+#programme-search {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 74, 42, 0.22);
+  background: rgba(255, 253, 249, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-family: var(--sans);
+  font-size: 13.5px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 170ms, box-shadow 170ms;
+}
+
+#programme-search:focus {
+  border-color: rgba(165, 20, 44, 0.4);
+  box-shadow: 0 0 0 4px rgba(165, 20, 44, 0.07);
+}
+
+.programme-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+
+.programme-table thead th {
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(184, 137, 47, 0.05);
+  white-space: nowrap;
+}
+
+.programme-table tbody td {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--ink-soft);
+  vertical-align: top;
+}
+
+.programme-table tbody tr:last-child td { border-bottom: 0; }
+.programme-table tbody tr:hover td { background: rgba(165, 20, 44, 0.035); }
+.programme-table .programme-name { color: var(--ink); font-weight: 600; }
+
+/* three-step explainer */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.step {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border-radius: var(--r);
+  border: 1px solid rgba(120, 74, 42, 0.16);
+  background: rgba(255, 253, 249, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.step b { font-size: 14px; color: var(--ink); }
+.step span:last-child { font-size: 12.5px; color: var(--ink-soft); }
+
+.step-n {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--maroon);
+  background: rgba(165, 20, 44, 0.07);
+  border: 1px solid rgba(165, 20, 44, 0.22);
+  margin-bottom: 4px;
+}
