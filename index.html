@@ -67,428 +67,163 @@
       <span><b>EduSphere</b><small>College ERP</small></span>
     </a>
     <nav class="nav-links" aria-label="Sections">
-      <a href="#institutions">Colleges</a>
-      <a href="#modules">Modules</a>
-      <a href="#users">Users</a>
-      <a href="#access">Portals</a>
-      <a href="#flow">How it works</a>
-      <a href="#lifecycle">Lifecycle</a>
-      <a href="#enquire">Admissions</a>
+      <a href="#colleges">Colleges</a>
+      <a href="#programmes">Programmes</a>
+      <a href="#apply">Admission</a>
+      <a href="#notices">Notices</a>
     </nav>
+    <button class="nav-cta" type="button" data-view-link="console">Sign in</button>
   </div>
 </header>
 
 <main id="top" class="view" data-view="site">
 
-  <!-- ============================================================ hero -->
+  <!-- ============================================================== hero -->
   <section class="hero">
     <div class="lotus lotus-a" aria-hidden="true">
-      <svg viewBox="0 0 220 140" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round">
-        <path d="M110 128 C 86 104 86 62 110 30 C 134 62 134 104 110 128 Z"/>
-        <path d="M110 128 C 76 114 54 88 48 54 C 84 62 104 92 110 128 Z"/>
-        <path d="M110 128 C 144 114 166 88 172 54 C 136 62 116 92 110 128 Z"/>
-        <path d="M110 128 C 70 126 40 112 22 88 C 62 82 96 100 110 128 Z"/>
-        <path d="M110 128 C 150 126 180 112 198 88 C 158 82 124 100 110 128 Z"/>
-        <path d="M64 132 Q110 112 156 132"/>
-      </svg>
-    </div>
-    <div class="lotus lotus-b" aria-hidden="true">
       <svg viewBox="0 0 220 140" fill="none" stroke="currentColor" stroke-width="0.9">
         <path d="M110 128 C 86 104 86 62 110 30 C 134 62 134 104 110 128 Z"/>
         <path d="M110 128 C 76 114 54 88 48 54 C 84 62 104 92 110 128 Z"/>
         <path d="M110 128 C 144 114 166 88 172 54 C 136 62 116 92 110 128 Z"/>
       </svg>
     </div>
-
     <div class="wrap">
-      <div class="eyebrow">Built for Indian colleges</div>
-      <h1>One platform. Every campus. <em>Every student.</em></h1>
+      <div class="eyebrow">Admissions open · session 2026-27</div>
+      <h1>Four colleges. <em>One place</em> to join them.</h1>
       <p class="lede">
-        EduSphere runs the whole academic and administrative life of a college group — enquiry,
-        admission, timetable, attendance, fees, results, library, hostel, transport — in one place,
-        with each campus kept strictly apart from the others.
+        Look up every college in the group in one place — what it teaches, how many seats each
+        programme has, what it costs and how to apply. Apply once here, then track your admission
+        and your studies from the same account.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-solid" href="#modules">Explore the modules →</a>
-        <a class="btn btn-outline" href="#institutions">Meet the colleges</a>
-      </div>
-      <div class="chips" role="group" aria-label="Filter modules">
-        <button class="chip" data-filter="all" aria-pressed="true">All modules</button>
-        <button class="chip" data-filter="core" aria-pressed="false">Core academic</button>
-        <button class="chip" data-filter="operations" aria-pressed="false">Operations</button>
-        <button class="chip" data-filter="platform" aria-pressed="false">Platform</button>
+        <a class="btn btn-solid" href="#apply">Apply for admission →</a>
+        <a class="btn btn-outline" href="#programmes">Browse programmes</a>
       </div>
     </div>
   </section>
 
-  <!-- ========================================================== notice -->
-  <section id="notice" style="padding-top: 0;">
-    <div class="wrap">
-      <div class="notice reveal" id="notice-card" hidden>
-        <div class="notice-bar">
-          <span class="notice-pill">Latest</span>
-          <div class="marquee"><span id="notice-ticker"></span></div>
-        </div>
-        <div class="notice-body">
-          <span class="notice-bullet" aria-hidden="true"></span>
-          <div>
-            <p id="notice-body"></p>
-            <p class="notice-date" id="notice-date"></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="stats reveal">
-        <div class="stat"><b id="stat-modules" class="stat-pending"></b><span>Modules</span></div>
-        <div class="stat"><b id="stat-portals">—</b><span>Portals &amp; apps</span></div>
-        <div class="stat"><b id="stat-roles">—</b><span>User roles</span></div>
-        <div class="stat"><b id="stat-stages">—</b><span>Lifecycle stages</span></div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ====================================================== institutions -->
-  <section id="institutions">
+  <!-- ========================================================== colleges -->
+  <section id="colleges">
     <div class="wrap">
       <div class="sec-head reveal">
         <span class="sec-label"><span class="ico-gold">✦</span>The colleges</span>
-        <h2>Four campuses, <em>one system</em></h2>
+        <h2>Choose a <em>college</em></h2>
         <div class="divider"><i></i></div>
-        <p>Each college keeps its own departments, programmes, students and staff. The structure below
-          is read live from the database.</p>
+        <p>Four institutions in Paschim Medinipur, each with its own departments, programmes and
+          admission office.</p>
       </div>
       <div class="grid g-2" id="college-grid" aria-live="polite">
-        <p class="empty-note" id="college-state">Loading institutions…</p>
+        <p class="empty-note">Loading colleges…</p>
       </div>
     </div>
   </section>
 
-  <!-- =========================================================== users -->
-  <section id="users">
+  <!-- ======================================================== programmes -->
+  <section id="programmes">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>Who uses it</span>
-        <h2>Eleven roles, <em>one identity</em></h2>
+        <span class="sec-label"><span class="ico-gold">✦</span>What you can study</span>
+        <h2>Programmes <em>on offer</em></h2>
         <div class="divider"><i></i></div>
-        <p>One login per person. What they can see is decided by their role in that campus — not by which link they opened.</p>
-      </div>
-      <div class="users reveal">
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-file"></use></svg></span><b>Applicant</b><small>Admission enquiry</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-cap"></use></svg></span><b>Student</b><small>Portal &amp; app</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-users"></use></svg></span><b>Parent</b><small>Fees, attendance</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-users"></use></svg></span><b>Faculty</b><small>Teaching</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-clipboard"></use></svg></span><b>HoD</b><small>Department</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg></span><b>Registrar</b><small>Admin staff</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-rupee"></use></svg></span><b>Accountant</b><small>Fees &amp; receipts</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></span><b>Librarian</b><small>Issue &amp; return</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-bed"></use></svg></span><b>Hostel warden</b><small>Rooms &amp; mess</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-bus"></use></svg></span><b>Transport</b><small>Routes &amp; GPS</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-landmark"></use></svg></span><b>Principal</b><small>Management</small></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================== access -->
-  <section id="access">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>How they reach it</span>
-        <h2>Six ways <em>in</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Same data, different surfaces: a public site for people who are not yet students, portals for people who are, and a console for the people who run the campus.</p>
-      </div>
-      <div class="grid g-3">
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-globe"></use></svg></span><h3>Public website</h3><p>Course pages, fee structure and the admission wizard — server-rendered for search and speed.</p><span class="tag">Next.js · SSR</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-cap"></use></svg></span><h3>Student portal</h3><p>Timetable, attendance, results, fee status, materials and assignments.</p><span class="tag">Web · Mobile</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-users"></use></svg></span><h3>Parent portal</h3><p>Attendance, marks, dues and notices for their child — read-only by design.</p><span class="tag">Web · Mobile</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-users"></use></svg></span><h3>Faculty portal</h3><p>Class roster, mark entry, material upload, leave and workload.</p><span class="tag">Web · Mobile</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-monitor"></use></svg></span><h3>Admin console</h3><p>The operational cockpit: structure, admissions, fees, exams, reports, audit.</p><span class="tag">Next.js</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-phone"></use></svg></span><h3>Mobile app</h3><p>QR scanning for attendance and bus boarding, with GPS for live tracking.</p><span class="tag">Expo · QR + GPS</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================ flow -->
-  <section id="flow">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>How it works</span>
-        <h2>The path a request <em>takes</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Ten people walk in through six doors. Everything meets at the edge, is checked at the
-          gateway, is handled by one of eighteen modules, and lands in a database that only shows
-          a campus its own rows.</p>
+        <p>Every programme in the group, with the seats the college publishes. Filter by college or
+          by level.</p>
       </div>
 
-      <div class="arch reveal">
-        <div class="arch-band arch-people">
-          <span class="arch-label">Users</span>
-          <div class="arch-items">
-            <span class="arch-chip">Applicant</span>
-            <span class="arch-chip">Student</span>
-            <span class="arch-chip">Parent</span>
-            <span class="arch-chip">Faculty</span>
-            <span class="arch-chip">HoD</span>
-            <span class="arch-chip">Registrar</span>
-            <span class="arch-chip">Accountant</span>
-            <span class="arch-chip">Librarian</span>
-            <span class="arch-chip">Hostel warden</span>
-            <span class="arch-chip">Transport manager</span>
-            <span class="arch-chip">Principal</span>
-          </div>
+      <div class="toolbar-row">
+        <input id="programme-search" type="search" placeholder="Search a programme — physics, commerce, BCA…" aria-label="Search programmes" autocomplete="off" />
+        <div class="chips" role="group" aria-label="Filter by level">
+          <button class="chip" data-level="all" aria-pressed="true">All</button>
+          <button class="chip" data-level="UG" aria-pressed="false">Undergraduate</button>
+          <button class="chip" data-level="PG" aria-pressed="false">Postgraduate</button>
         </div>
+      </div>
 
-        <div class="arch-link"><span>↓</span></div>
-
-        <div class="arch-band arch-access">
-          <span class="arch-label">Access via</span>
-          <div class="arch-items">
-            <span class="arch-chip strong">Public website + admission portal</span>
-            <span class="arch-chip strong">Student portal</span>
-            <span class="arch-chip strong">Parent portal</span>
-            <span class="arch-chip strong">Faculty portal</span>
-            <span class="arch-chip strong">Admin console</span>
-            <span class="arch-chip strong">Mobile app</span>
-          </div>
-        </div>
-
-        <div class="arch-link"><span>↓</span></div>
-
-        <div class="arch-band arch-edge">
-          <span class="arch-label">Edge</span>
-          <div class="arch-items">
-            <span class="arch-chip">Internet</span>
-            <span class="arch-chip">CDN + WAF</span>
-            <span class="arch-chip">API gateway</span>
-            <span class="arch-chip">Tenant resolver</span>
-            <span class="arch-chip">JWT pre-check</span>
-          </div>
-        </div>
-
-        <div class="arch-link"><span>↓</span></div>
-
-        <div class="arch-band arch-app">
-          <span class="arch-label">Application</span>
-          <div class="arch-items">
-            <span class="arch-chip">Auth / IAM</span>
-            <span class="arch-chip">Tenancy</span>
-            <span class="arch-chip">Admissions</span>
-            <span class="arch-chip">Students</span>
-            <span class="arch-chip">Faculty / HR</span>
-            <span class="arch-chip">Academics</span>
-            <span class="arch-chip">Timetable</span>
-            <span class="arch-chip">Attendance</span>
-            <span class="arch-chip">Exams &amp; results</span>
-            <span class="arch-chip">Fees &amp; payments</span>
-            <span class="arch-chip">Library</span>
-            <span class="arch-chip">Hostel</span>
-            <span class="arch-chip">Transport</span>
-            <span class="arch-chip">LMS-lite</span>
-            <span class="arch-chip">Communication</span>
-            <span class="arch-chip">Reports &amp; BI</span>
-            <span class="arch-chip">Files</span>
-            <span class="arch-chip">Audit</span>
-          </div>
-        </div>
-
-        <div class="arch-link"><span>↓</span></div>
-
-        <div class="arch-band arch-data">
-          <span class="arch-label">Data</span>
-          <div class="arch-items">
-            <span class="arch-chip">PostgreSQL · row-level security</span>
-            <span class="arch-chip">Cache and QR tokens</span>
-            <span class="arch-chip">Background jobs</span>
-            <span class="arch-chip">Search index</span>
-            <span class="arch-chip">Object storage</span>
-          </div>
-        </div>
-
-        <div class="arch-link"><span>↔</span></div>
-
-        <div class="arch-row">
-          <div class="arch-band arch-external">
-            <span class="arch-label">External systems</span>
-            <div class="arch-items">
-              <span class="arch-chip">UPI / Razorpay</span>
-              <span class="arch-chip">DigiLocker</span>
-              <span class="arch-chip">Aadhaar eKYC</span>
-              <span class="arch-chip">SMS &amp; email</span>
-              <span class="arch-chip">GST invoicing</span>
-              <span class="arch-chip">University exam system</span>
-            </div>
-          </div>
-          <div class="arch-band arch-output">
-            <span class="arch-label">Outputs</span>
-            <div class="arch-items">
-              <span class="arch-chip">ID cards</span>
-              <span class="arch-chip">Hall tickets</span>
-              <span class="arch-chip">Mark sheets</span>
-              <span class="arch-chip">Fee receipts</span>
-              <span class="arch-chip">Reports</span>
-              <span class="arch-chip">Live bus tracking</span>
-            </div>
-          </div>
+      <div class="table-shell reveal">
+        <div class="table-scroll">
+          <table class="programme-table">
+            <thead>
+              <tr><th>Programme</th><th>College</th><th>Level</th><th>Duration</th><th>Seats</th></tr>
+            </thead>
+            <tbody id="programme-body">
+              <tr><td colspan="5"><p class="empty-note">Loading programmes…</p></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========================================================= modules -->
-  <section id="modules">
+  <!-- ============================================================ apply -->
+  <section id="apply">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>Application layer</span>
-        <h2>Eighteen modules, <em>one monolith</em></h2>
+        <span class="sec-label"><span class="ico-gold">✦</span>Admission</span>
+        <h2>Apply in <em>three steps</em></h2>
         <div class="divider"><i></i></div>
-        <p>Each module owns its tables and exposes a service. Modules talk through those services, never by reaching into each other's data.</p>
-      </div>
-      <div class="search-row">
-        <input id="module-search" type="search" placeholder="Search modules — attendance, fees, hostel…" aria-label="Search modules" autocomplete="off" />
-      </div>
-      <div class="grid g-4" id="module-grid" aria-live="polite">
-        <p class="empty-note" id="module-state">Loading modules…</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================ data -->
-  <section id="data">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>Data &amp; infrastructure</span>
-        <h2>What sits <em>underneath</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Postgres is the source of truth. Everything else exists to make reading it fast, doing work later, or storing what does not belong in a row.</p>
-      </div>
-      <div class="grid g-3">
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-database"></use></svg></span><h3>PostgreSQL 16</h3><p>Primary plus read replicas. Row-level security scopes every tenant table to one campus.</p><span class="tag">SQL · RLS</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-bolt"></use></svg></span><h3>Redis 7</h3><p>Cache, rotating QR tokens, rate limiting and pub/sub for live updates.</p><span class="tag">Cache · Pub/Sub</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-gear"></use></svg></span><h3>BullMQ</h3><p>Background queues for PDFs, notifications, imports and reports.</p><span class="tag">Jobs</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg></span><h3>Meilisearch</h3><p>Instant search across students, books and staff, scoped per campus.</p><span class="tag">Search</span></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-box"></use></svg></span><h3>S3 / MinIO</h3><p>Documents, photos and PDFs, served through short-lived presigned URLs.</p><span class="tag">Object store</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================================================== integrations -->
-  <section id="integrations">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>India-specific</span>
-        <h2>Integrations that <em>matter here</em></h2>
-        <div class="divider"><i></i></div>
-        <p>The parts a generic ERP leaves out: identity, payments, tax and the university's own exam system.</p>
-      </div>
-      <div class="grid g-4">
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-idcard"></use></svg></span><h3>DigiLocker</h3><p>Verified identity and academic documents.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-lock"></use></svg></span><h3>Aadhaar eKYC</h3><p>Optional verification at admission.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-card"></use></svg></span><h3>UPI &amp; Razorpay</h3><p>Fee collection with webhook reconciliation.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-mail"></use></svg></span><h3>SMS &amp; email</h3><p>Transactional alerts, OTP and notices.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-receipt"></use></svg></span><h3>GST invoicing</h3><p>Compliant receipts for every payment.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-landmark"></use></svg></span><h3>University exams</h3><p>Marks and registration exchange, where required.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-globe"></use></svg></span><h3>Regional language</h3><p>Bengali, Hindi and English across portals.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-bell"></use></svg></span><h3>Real-time services</h3><p>Socket.IO, pub/sub, push and background jobs.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================= outputs -->
-  <section id="outputs">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>What comes out</span>
-        <h2>Deliverables, <em>generated</em></h2>
-        <div class="divider"><i></i></div>
-        <p>The artefacts a college actually hands over — produced by the system, not typed by hand.</p>
-      </div>
-      <div class="grid g-4">
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-idcard"></use></svg></span><h3>ID cards</h3><p>PDF, batch generated.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-ticket"></use></svg></span><h3>Hall tickets</h3><p>Per exam, per student.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-file"></use></svg></span><h3>Mark sheets</h3><p>Grades, GPA, backlogs.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-receipt"></use></svg></span><h3>Fee receipts</h3><p>GST-compliant, downloadable.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-chart"></use></svg></span><h3>Reports</h3><p>Dashboards, Excel and PDF exports.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-bell"></use></svg></span><h3>Notifications</h3><p>Email, SMS and in-app.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-pin"></use></svg></span><h3>Bus tracking</h3><p>Route and ETA on the map.</p></div>
-        <div class="card reveal"><span class="ico"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg></span><h3>Search</h3><p>Students, books, staff.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ======================================================= lifecycle -->
-  <section id="lifecycle">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>End to end</span>
-        <h2>The student <em>lifecycle</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Nine stages, one record. Nothing is re-entered between them.</p>
-      </div>
-      <div class="timeline reveal">
-        <div class="tl"><span class="tl-num">1</span><div><b>Enquiry &amp; application</b><span>Public form, documents, application fee.</span></div></div>
-        <div class="tl"><span class="tl-num">2</span><div><b>Admission &amp; fee payment</b><span>Merit list, offer, enrolment number, first instalment.</span></div></div>
-        <div class="tl"><span class="tl-num">3</span><div><b>Academic setup</b><span>Program, batch, section, timetable.</span></div></div>
-        <div class="tl"><span class="tl-num">4</span><div><b>Teaching &amp; attendance</b><span>QR or geofenced check-in, roster, shortage alerts.</span></div></div>
-        <div class="tl"><span class="tl-num">5</span><div><b>Exams &amp; results</b><span>Marks entry, grades, CGPA, publication.</span></div></div>
-        <div class="tl"><span class="tl-num">6</span><div><b>Ongoing operations</b><span>Library, hostel, transport, fees.</span></div></div>
-        <div class="tl"><span class="tl-num">7</span><div><b>Communication</b><span>Notices to students, parents and staff.</span></div></div>
-        <div class="tl"><span class="tl-num">8</span><div><b>Reports &amp; compliance</b><span>Dashboards, audits, statutory returns.</span></div></div>
-        <div class="tl"><span class="tl-num">9</span><div><b>Alumni</b><span>After graduation: record, documents, network.</span></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================= mapping -->
-  
-
-  <!-- =========================================================== stack -->
-  
-
-
-  <!-- ========================================================== enquire -->
-  <section id="enquire">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>Admission enquiry</span>
-        <h2>Start an <em>application</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Leave your details and the admissions office will call you. This form writes straight to the database.</p>
+        <p>Send this form, and the admission office of the college you picked gets your application
+          with a reference number you can quote on the phone.</p>
       </div>
 
-      <form class="enquiry glass-panel reveal" id="enquiry-form" novalidate>
+      <div class="steps reveal">
+        <div class="step"><span class="step-n">1</span><b>Choose</b><span>Pick the college and the programme from the list above.</span></div>
+        <div class="step"><span class="step-n">2</span><b>Apply</b><span>Fill in your details. No application fee at this stage.</span></div>
+        <div class="step"><span class="step-n">3</span><b>Track</b><span>The office reviews it and contacts you on the phone number you give.</span></div>
+      </div>
+
+      <form class="enquiry glass-panel reveal" id="apply-form" novalidate>
         <div class="field">
-          <label for="f-name">Full name</label>
-          <input id="f-name" name="full_name" type="text" required minlength="2" maxlength="120" autocomplete="name" placeholder="Your name" />
-        </div>
-        <div class="field">
-          <label for="f-email">Email</label>
-          <input id="f-email" name="email" type="email" required maxlength="160" autocomplete="email" placeholder="you@example.com" />
-        </div>
-        <div class="field">
-          <label for="f-phone">Phone</label>
-          <input id="f-phone" name="phone" type="tel" required pattern="[0-9+()\- ]{7,18}" autocomplete="tel" placeholder="+91 90000 00000" />
-        </div>
-        <div class="field">
-          <label for="f-campus">Campus <span class="opt">(optional)</span></label>
-          <select id="f-campus" name="campus_slug">
-            <option value="">Any campus</option>
+          <label for="a-college">College</label>
+          <select id="a-college" name="college_slug" required>
+            <option value="">Select a college</option>
           </select>
         </div>
+        <div class="field">
+          <label for="a-programme">Programme</label>
+          <select id="a-programme" name="programme" required>
+            <option value="">Select a college first</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="a-name">Full name</label>
+          <input id="a-name" name="full_name" type="text" required minlength="2" maxlength="120" autocomplete="name" placeholder="Your name" />
+        </div>
+        <div class="field">
+          <label for="a-email">Email</label>
+          <input id="a-email" name="email" type="email" required maxlength="160" autocomplete="email" placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <label for="a-phone">Phone</label>
+          <input id="a-phone" name="phone" type="tel" required pattern="[0-9+()\- ]{7,18}" autocomplete="tel" placeholder="+91 90000 00000" />
+        </div>
+        <div class="field">
+          <label for="a-marks">Class XII marks <span class="opt">(%)</span></label>
+          <input id="a-marks" name="marks_percent" type="number" min="0" max="100" step="0.01" placeholder="e.g. 78.5" />
+        </div>
         <div class="field field-wide">
-          <label for="f-message">Message <span class="opt">(optional)</span></label>
-          <textarea id="f-message" name="message" rows="3" maxlength="2000" placeholder="Programme you are interested in, questions…"></textarea>
+          <label for="a-message">Anything we should know <span class="opt">(optional)</span></label>
+          <textarea id="a-message" name="message" rows="3" maxlength="1000" placeholder="Subject combination, hostel requirement, questions…"></textarea>
         </div>
         <div class="form-foot field-wide">
-          <button class="btn btn-solid" type="submit" id="enquiry-submit">Send enquiry</button>
-          <p class="form-status" id="enquiry-status" role="status" aria-live="polite"></p>
+          <button class="btn btn-solid" type="submit" id="apply-submit">Send application</button>
+          <p class="form-status" id="apply-status" role="status" aria-live="polite"></p>
         </div>
       </form>
     </div>
   </section>
 
-
-
+  <!-- ========================================================== notices -->
+  <section id="notices">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-label"><span class="ico-gold">✦</span>Notice board</span>
+        <h2>Latest <em>notices</em></h2>
+        <div class="divider"><i></i></div>
+      </div>
+      <div class="grid g-2" id="notice-grid" aria-live="polite">
+        <p class="empty-note">Loading notices…</p>
+      </div>
+    </div>
+  </section>
 
 </main>
 
@@ -686,7 +421,7 @@
     <p class="credit">Designed &amp; Deployed by <a href="https://github.com/suman876-ops/edusphere-v2">Project 2.0</a> <span class="sep">·</span> 5th Sem</p>
 
     <nav class="foot-links" aria-label="Site links">
-      <a href="#console" data-view-link="console">Staff sign-in</a>
+      <a href="#console" data-view-link="console">Student &amp; staff sign-in</a>
       <a href="https://github.com/suman876-ops/edusphere-v2" target="_blank" rel="noopener">Source code</a>
       <a href="https://github.com/suman876-ops/edusphere-v2/blob/main/README.md" target="_blank" rel="noopener">Read me</a>
       <a href="https://github.com/suman876-ops/edusphere-v2/blob/main/SECURITY.md" target="_blank" rel="noopener">Security</a>
