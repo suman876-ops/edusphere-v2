@@ -925,3 +925,26 @@
 .form-status.bad { color: var(--maroon); }
 
 .retry { margin-top: 6px; }
+
+
+/* =========================================================== footer links */
+.foot-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 22px;
+  margin-top: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+.foot-links a {
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color 160ms, border-color 160ms;
+}
+
+.foot-links a:hover { color: var(--maroon); border-bottom-color: rgba(165, 20, 44, 0.4); }
