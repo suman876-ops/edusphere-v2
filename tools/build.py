@@ -192,18 +192,24 @@ def check_links() -> list[str]:
 
 
 def check_console() -> list[str]:
-    page = ROOT / "console" / "index.html"
-    if not page.exists():
-        return ["console/index.html is missing"]
-    text = read(page)
+    """The console is a view inside index.html, not a page of its own."""
+    text = read(INDEX)
     problems = []
     for script in ("config.js", "resources.js", "console.js"):
         if script not in text:
-            problems.append(f"console does not load {script}")
-    if 'id="signin-form"' not in text:
-        problems.append("console has no sign-in form")
-    if 'id="record-form"' not in text:
-        problems.append("console has no record form")
+            problems.append(f"the page does not load {script}")
+    for marker, label in (
+        ('id="signin-form"', "sign-in form"),
+        ('id="record-form"', "record form"),
+        ('id="console-view"', "console view"),
+        ('id="campus-switch"', "campus switcher"),
+    ):
+        if marker not in text:
+            problems.append(f"the page has no {label}")
+
+    stub = ROOT / "console" / "index.html"
+    if stub.exists() and "index.html#console" not in read(stub):
+        problems.append("console/index.html should redirect to the merged page")
     return problems
 
 
