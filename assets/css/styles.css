@@ -1156,7 +1156,12 @@
   .card:hover::after,
   .btn-solid:hover::after,
   .sec-head.in .divider::before,
-  .sec-head.in .divider::after {
+  .sec-head.in .divider::after,
+  .grid.in > .card,
+  .timeline.in .tl,
+  .timeline.in::before,
+  .flow-arrow,
+  .marquee span {
     animation: none !important;
   }
   .reveal { opacity: 1 !important; transform: none !important; }
@@ -1243,3 +1248,133 @@
 @media (prefers-reduced-motion: reduce) {
   .nav::before { animation: none; opacity: 0.3; }
 }
+
+
+/* ===================================================== motion, part two */
+/*
+ * Everything below animates on transform and opacity only. Each block is
+ * switched off wholesale by the reduced-motion rule at the end of the file.
+ */
+
+/* ---------- staggered entrance inside a grid ---------- */
+.grid > .card { transition-delay: 0ms; }
+
+.reveal.in .card,
+.grid.in > .card {
+  animation: card-in 620ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.grid.in > .card:nth-child(1) { animation-delay: 0ms; }
+.grid.in > .card:nth-child(2) { animation-delay: 55ms; }
+.grid.in > .card:nth-child(3) { animation-delay: 110ms; }
+.grid.in > .card:nth-child(4) { animation-delay: 165ms; }
+.grid.in > .card:nth-child(5) { animation-delay: 220ms; }
+.grid.in > .card:nth-child(6) { animation-delay: 275ms; }
+.grid.in > .card:nth-child(7) { animation-delay: 330ms; }
+.grid.in > .card:nth-child(8) { animation-delay: 385ms; }
+.grid.in > .card:nth-child(n+9) { animation-delay: 430ms; }
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- the lifecycle timeline draws itself ---------- */
+.timeline { position: relative; overflow: hidden; }
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 40px;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--gold), rgba(165, 20, 44, 0.55));
+  transform-origin: top center;
+  transform: scaleY(0);
+  opacity: 0.45;
+}
+
+.timeline.in::before { animation: grow-line 1.5s cubic-bezier(0.2, 0.7, 0.2, 1) 120ms forwards; }
+
+@keyframes grow-line { to { transform: scaleY(1); } }
+
+.tl { transition: background 220ms, transform 220ms; }
+.tl:hover { background: rgba(165, 20, 44, 0.04); transform: translateX(4px); }
+
+.tl-num {
+  position: relative;
+  transition: transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1), background 260ms, color 260ms;
+}
+
+.tl:hover .tl-num {
+  transform: scale(1.12);
+  background: var(--maroon);
+  color: #fff6e6;
+  border-color: transparent;
+}
+
+.timeline.in .tl { animation: tl-in 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.timeline.in .tl:nth-child(1) { animation-delay: 120ms; }
+.timeline.in .tl:nth-child(2) { animation-delay: 180ms; }
+.timeline.in .tl:nth-child(3) { animation-delay: 240ms; }
+.timeline.in .tl:nth-child(4) { animation-delay: 300ms; }
+.timeline.in .tl:nth-child(5) { animation-delay: 360ms; }
+.timeline.in .tl:nth-child(6) { animation-delay: 420ms; }
+.timeline.in .tl:nth-child(7) { animation-delay: 480ms; }
+.timeline.in .tl:nth-child(8) { animation-delay: 540ms; }
+.timeline.in .tl:nth-child(9) { animation-delay: 600ms; }
+
+@keyframes tl-in {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- request path: a line that runs between the steps ---------- */
+.flow { position: relative; }
+
+.flow-arrow {
+  position: relative;
+  color: var(--gold);
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+.flow-arrow:nth-of-type(odd) { animation-delay: 200ms; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50%      { transform: translateY(3px); opacity: 1; }
+}
+
+.flow-step {
+  transition: transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1), border-color 240ms, background 240ms;
+}
+
+.flow-step:hover {
+  transform: translateX(5px);
+  border-color: rgba(165, 20, 44, 0.3);
+  background: rgba(255, 253, 249, 0.85);
+}
+
+.flow-step .n { transition: transform 240ms, background 240ms, color 240ms; }
+
+.flow-step:hover .n {
+  transform: scale(1.1) rotate(-4deg);
+  background: var(--maroon);
+  color: #fff6e6;
+  border-color: transparent;
+}
+
+/* ---------- chips, tags and buttons ---------- */
+.chip { transition: transform 180ms, background 180ms, color 180ms, border-color 180ms, box-shadow 180ms; }
+.chip:active { transform: scale(0.96); }
+.tag { transition: transform 180ms, border-color 180ms, color 180ms; }
+.card:hover .tag { transform: translateY(-1px); }
+
+.btn { will-change: transform; }
+.btn:active { transform: translateY(0) scale(0.985); }
+
+/* ---------- notice bar keeps its text moving ---------- */
+.marquee span { animation-play-state: running; }
+.notice:hover .marquee span { animation-play-state: paused; }
