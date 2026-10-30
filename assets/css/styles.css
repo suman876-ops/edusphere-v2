@@ -948,3 +948,28 @@
 }
 
 .foot-links a:hover { color: var(--maroon); border-bottom-color: rgba(165, 20, 44, 0.4); }
+
+
+/* ============================================================ institutions */
+.college-address { font-size: 12.5px; color: var(--ink-faint); margin-top: 4px; }
+
+.college-facts {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(120, 74, 42, 0.18);
+  font-size: 12.5px;
+}
+.college-facts div { display: grid; grid-template-columns: 86px 1fr; gap: 8px; }
+.college-facts dt {
+  font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600;
+}
+.college-facts dd { margin: 0; color: var(--ink-soft); word-break: break-word; }
+.college-facts dd a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px dotted rgba(120,74,42,0.35); }
+.college-facts dd a:hover { color: var(--maroon); }
+
+.college-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.college-actions .tag { text-decoration: none; }
+.college-actions .tag:hover { border-color: rgba(165, 20, 44, 0.45); color: var(--maroon); }
