@@ -193,3 +193,9 @@
   max-width: 240px;
 }
 .campus-switch:focus { outline: none; border-color: rgba(165, 20, 44, 0.4); }
+
+
+/* ========================================================= connection line */
+.conn-status { margin: 12px 0 0; font-size: 11.5px; letter-spacing: 0.04em; color: var(--ink-faint); }
+.conn-status.ok { color: #2f7a52; }
+.conn-status.bad { color: var(--maroon); }
