@@ -1,69 +1,128 @@
-/* EduSphere site behaviour: reveal, module filters, search, scroll progress. */
+/* EduSphere site behaviour: live data, filters, search, form, scroll. */
 (function () {
   'use strict';
 
-  var cards = Array.prototype.slice.call(document.querySelectorAll('#module-grid .card'));
-  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
-  var searchInput = document.getElementById('module-search');
+  var api = window.EduSphereApi;
+  var search = window.EduSphereSearch;
   var grid = document.getElementById('module-grid');
-  var state = { category: 'all', query: '' };
+  var state = { category: 'all', query: '', modules: [] };
 
-  /* ---------------------------------------------------------- reveal */
-  var reveals = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
-
-    reveals.forEach(function (el, i) {
-      el.style.transitionDelay = Math.min(i % 6, 5) * 40 + 'ms';
-      io.observe(el);
-    });
-  } else {
-    reveals.forEach(function (el) { el.classList.add('in'); });
+  /* ------------------------------------------------------------ helpers */
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
   }
 
-  /* ------------------------------------------------------ module filter */
+  function hasSymbol(name) {
+    return !!document.getElementById('i-' + name);
+  }
+
+  function icon(name) {
+    var span = el('span', 'ico');
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'ic');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    var use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', '#i-' + (hasSymbol(name) ? name : 'layers'));
+    svg.appendChild(use);
+    span.appendChild(svg);
+    return span;
+  }
+
+  /* ------------------------------------------------------------ modules */
+  function moduleCard(item) {
+    var card = el('div', 'card reveal');
+    card.setAttribute('data-cat', item.category || 'core');
+    card.appendChild(icon(item.icon));
+    card.appendChild(el('h3', null, item.title));
+    card.appendChild(el('p', null, item.description));
+    return card;
+  }
+
+  function renderModules(items) {
+    if (!grid) return;
+    grid.innerHTML = '';
+    if (!items.length) {
+      grid.appendChild(el('p', 'empty-note', 'No modules are published yet.'));
+      return;
+    }
+    items.forEach(function (item) {
+      var card = moduleCard(item);
+      card.classList.add('in');
+      grid.appendChild(card);
+    });
+    applyFilters();
+  }
+
+  function showState(message, retry) {
+    if (!grid) return;
+    grid.innerHTML = '';
+    var note = el('p', 'empty-note', message);
+    grid.appendChild(note);
+    if (retry) {
+      var button = el('button', 'chip retry', 'Try again');
+      button.type = 'button';
+      button.style.marginTop = '14px';
+      button.addEventListener('click', load);
+      note.appendChild(document.createElement('br'));
+      note.appendChild(button);
+    }
+  }
+
+  function load() {
+    showState('Loading modules…');
+    api.modules()
+      .then(function (items) {
+        state.modules = items;
+        renderModules(items);
+        setStat('stat-modules', items.length);
+      })
+      .catch(function (error) {
+        showState('Modules could not be loaded: ' + error.message, true);
+        setStat('stat-modules', null);
+      });
+  }
+
+  /* ---------------------------------------------------------- filtering */
   function applyFilters() {
-    if (!cards.length) return;
-    var engine = window.EduSphereSearch;
+    if (!grid) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
     var shown = 0;
 
     cards.forEach(function (card) {
       var inCategory = state.category === 'all' || card.getAttribute('data-cat') === state.category;
       var text = card.textContent || '';
-      var inQuery = !state.query || !engine || engine.matches(state.query, text);
+      var inQuery = !state.query || !search || search.matches(state.query, text);
       var visible = inCategory && inQuery;
       card.style.display = visible ? '' : 'none';
       if (visible) shown += 1;
     });
 
-    if (grid) {
-      var note = grid.querySelector('.empty-note');
-      if (!shown && !note) {
-        note = document.createElement('p');
-        note.className = 'empty-note';
-        note.textContent = 'No module matches that search.';
+    var note = grid.querySelector('.empty-note');
+    if (!shown && cards.length) {
+      if (!note) {
+        note = el('p', 'empty-note', 'No module matches that filter.');
         grid.appendChild(note);
-      } else if (shown && note) {
-        note.remove();
       }
+    } else if (note && cards.length) {
+      note.remove();
     }
   }
 
-  chips.forEach(function (chip) {
+  Array.prototype.forEach.call(document.querySelectorAll('.chip[data-filter]'), function (chip) {
     chip.addEventListener('click', function () {
-      chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
+      Array.prototype.forEach.call(document.querySelectorAll('.chip[data-filter]'), function (c) {
+        c.setAttribute('aria-pressed', String(c === chip));
+      });
       state.category = chip.getAttribute('data-filter') || 'all';
       applyFilters();
     });
   });
 
+  var searchInput = document.getElementById('module-search');
   if (searchInput) {
     searchInput.addEventListener('input', function () {
       state.query = searchInput.value || '';
@@ -78,7 +137,120 @@
     });
   }
 
-  /* ------------------------------------------- progress + back to top */
+  /* -------------------------------------------------------------- stats */
+  function setStat(id, value) {
+    var node = document.getElementById(id);
+    if (node) node.textContent = value == null ? '—' : String(value);
+  }
+
+  function structuralStats() {
+    setStat('stat-portals', document.querySelectorAll('#access .card').length);
+    setStat('stat-roles', document.querySelectorAll('#users .user').length);
+    setStat('stat-stages', document.querySelectorAll('#lifecycle .tl').length);
+  }
+
+  /* ------------------------------------------------------------- notice */
+  function loadNotice() {
+    var card = document.getElementById('notice-card');
+    if (!card) return;
+    api.latestNotice()
+      .then(function (notice) {
+        if (!notice) return;
+        document.getElementById('notice-ticker').textContent = notice.title;
+        document.getElementById('notice-body').textContent = notice.body;
+        var when = new Date(notice.published_at);
+        document.getElementById('notice-date').textContent = when.toLocaleDateString('en-IN', {
+          day: 'numeric', month: 'long', year: 'numeric'
+        });
+        card.hidden = false;
+      })
+      .catch(function () {
+        card.hidden = true;
+      });
+  }
+
+  /* ------------------------------------------------------------ campuses */
+  function loadCampuses() {
+    var select = document.getElementById('f-campus');
+    if (!select) return;
+    api.campuses()
+      .then(function (rows) {
+        rows.forEach(function (row) {
+          var option = document.createElement('option');
+          option.value = row.slug;
+          option.textContent = row.name;
+          select.appendChild(option);
+        });
+      })
+      .catch(function () { /* the field is optional; keep "Any campus" */ });
+  }
+
+  /* ------------------------------------------------------------- enquiry */
+  var form = document.getElementById('enquiry-form');
+  if (form) {
+    var status = document.getElementById('enquiry-status');
+    var submit = document.getElementById('enquiry-submit');
+
+    function say(message, tone) {
+      status.textContent = message;
+      status.className = 'form-status' + (tone ? ' ' + tone : '');
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      var data = {
+        full_name: form.full_name.value.trim(),
+        email: form.email.value.trim().toLowerCase(),
+        phone: form.phone.value.trim(),
+        message: form.message.value.trim() || null
+      };
+      if (form.campus_slug.value) data.campus_slug = form.campus_slug.value;
+
+      submit.disabled = true;
+      say('Sending…');
+
+      api.submitEnquiry(data)
+        .then(function () {
+          form.reset();
+          say('Thank you — your enquiry has reached the admissions office.', 'ok');
+        })
+        .catch(function (error) {
+          var text = String(error.message || '');
+          if (text.indexOf('Too many enquiries') !== -1) {
+            say('You have already sent several enquiries. Please wait an hour or call the office.', 'warn');
+          } else {
+            say('Could not send: ' + text, 'bad');
+          }
+        })
+        .finally(function () {
+          submit.disabled = false;
+        });
+    });
+  }
+
+  /* ------------------------------------------------------------- reveal */
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+
+    reveals.forEach(function (node, index) {
+      node.style.transitionDelay = Math.min(index % 6, 5) * 40 + 'ms';
+      io.observe(node);
+    });
+  } else {
+    reveals.forEach(function (node) { node.classList.add('in'); });
+  }
+
+  /* ----------------------------------------------- progress + back to top */
   var bar = document.getElementById('bar');
   var toTop = document.getElementById('to-top');
 
@@ -99,7 +271,9 @@
     });
   }
 
-  /* ------------------------------------------------------ year in footer */
-  var year = document.getElementById('year');
-  if (year) year.textContent = String(new Date().getFullYear());
+  /* ---------------------------------------------------------------- boot */
+  structuralStats();
+  load();
+  loadNotice();
+  loadCampuses();
 })();
