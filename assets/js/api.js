@@ -39,19 +39,17 @@
     return payload || [];
   }
 
-  async function post(path, body) {
+  async function post(path, body, prefer) {
     var response = await fetch(base(path), {
       method: 'POST',
-      headers: headers({ Prefer: 'return=minimal' }),
+      headers: headers({ Prefer: prefer || 'return=minimal' }),
       body: JSON.stringify(body)
     });
-    if (!response.ok) {
-      var text = await response.text();
-      var payload = null;
-      try { payload = text ? JSON.parse(text) : null; } catch (e) { payload = null; }
-      throw new Error(describe(response.status, payload));
-    }
-    return true;
+    var text = await response.text();
+    var payload = null;
+    try { payload = text ? JSON.parse(text) : null; } catch (e) { payload = null; }
+    if (!response.ok) throw new Error(describe(response.status, payload));
+    return payload == null ? true : payload;
   }
 
   var api = {
@@ -62,7 +60,8 @@
       return get(tables.campuses + '?select=slug,name&is_published=eq.true&order=name.asc');
     },
     colleges: function () {
-      return get('site_public_colleges?select=*&order=established_year.asc');
+      // a guarded function, not a view: it returns only published institution fields
+      return post('rpc/site_public_colleges', {}, 'return=representation');
     },
     latestNotice: async function () {
       var rows = await get(tables.notices + '?select=title,body,published_at&order=published_at.desc&limit=1');
