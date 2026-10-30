@@ -272,7 +272,58 @@
   }
 
   /* ---------------------------------------------------------------- boot */
+  /* -------------------------------------------------------- institutions */
+  function loadColleges() {
+    var grid = document.getElementById('college-grid');
+    if (!grid) return;
+
+    api.colleges()
+      .then(function (rows) {
+        grid.innerHTML = '';
+        if (!rows.length) {
+          grid.appendChild(el('p', 'empty-note', 'No institutions are published yet.'));
+          return;
+        }
+        rows.forEach(function (college) {
+          var card = el('div', 'card reveal');
+          card.appendChild(icon('landmark'));
+
+          var title = el('h3', null, college.name);
+          card.appendChild(title);
+
+          var meta = [];
+          if (college.established_year) meta.push('Est. ' + college.established_year);
+          if (college.naac_grade) meta.push('NAAC ' + college.naac_grade);
+          if (college.city) meta.push(college.city);
+          card.appendChild(el('p', null, meta.join(' · ')));
+
+          card.appendChild(el('p', null,
+            college.departments + ' departments · ' + college.ug_programmes + ' UG and '
+            + college.pg_programmes + ' PG programmes'));
+
+          if (college.affiliation) card.appendChild(el('p', null, 'Affiliated to ' + college.affiliation));
+
+          if (college.website) {
+            var link = el('a', 'tag', 'Official site ↗');
+            link.href = college.website;
+            link.target = '_blank';
+            link.rel = 'noopener';
+            link.style.textDecoration = 'none';
+            card.appendChild(link);
+          }
+
+          card.classList.add('in');
+          grid.appendChild(card);
+        });
+      })
+      .catch(function (error) {
+        grid.innerHTML = '';
+        grid.appendChild(el('p', 'empty-note', 'Institutions could not be loaded: ' + error.message));
+      });
+  }
+
   structuralStats();
+  loadColleges();
   load();
   loadNotice();
   loadCampuses();
