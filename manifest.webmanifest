@@ -1,5 +1,5 @@
 {
-  "name": "EduSphere — Multi-Campus College ERP",
+  "name": "EduSphere \u2014 Multi-Campus College ERP",
   "short_name": "EduSphere",
   "description": "Admissions, students, attendance, fees and results for a college group.",
   "start_url": "./index.html",
@@ -9,10 +9,10 @@
   "theme_color": "#a5142c",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23a5142c'/%3E%3Ctext x='256' y='352' font-size='280' text-anchor='middle' fill='%23f8f2e7' font-family='Georgia'%3EE%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%23b0162f'/><path d='M256 76 120 124v104c0 78 55 145 136 175 81-30 136-97 136-175V124L256 76Z' fill='%23fff6e6'/><path d='M186 176h140M186 232h140M186 288h88' stroke='%23b0162f' stroke-width='22' stroke-linecap='round'/><circle cx='332' cy='300' r='26' fill='%23d9b978'/></svg>",
       "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }
