@@ -609,7 +609,7 @@
         status.textContent = '';
         await showConsole();
       } catch (error) {
-        status.textContent = error.message;
+        status.textContent = explain(error.message);
       }
     });
 
@@ -631,7 +631,7 @@
           status.textContent = 'Account created — check your email to confirm, then sign in.';
         }
       } catch (error) {
-        status.textContent = error.message;
+        status.textContent = explain(error.message);
       }
     });
 
@@ -676,7 +676,7 @@
         renderSidebar();
         await openDashboard();
       } catch (error) {
-        status.textContent = error.message;
+        status.textContent = explain(error.message);
       }
     });
   }
@@ -689,6 +689,36 @@
     booted = true;
     loadSession();
     bindAuth();
+    probe();
+  }
+
+  /* Prove the connection before anyone types a password. */
+  async function probe() {
+    var line = document.getElementById('conn-status');
+    if (!line) return;
+    try {
+      var response = await fetch(BASE + '/rest/v1/site_modules?select=id&limit=100', {
+        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY },
+        cache: 'no-store'
+      });
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      var rows = await response.json();
+      line.className = 'conn-status ok';
+      line.textContent = 'Connected to the database · ' + rows.length + ' modules available';
+    } catch (error) {
+      line.className = 'conn-status bad';
+      line.textContent = 'Cannot reach the database — ' + error.message;
+    }
+  }
+
+  /* Turn Supabase's error codes into something a person can act on. */
+  function explain(message) {
+    var text = String(message || '');
+    if (/invalid login credentials/i.test(text)) return 'That email and password do not match an account.';
+    if (/email not confirmed/i.test(text)) return 'This account has not confirmed its email yet.';
+    if (/failed to fetch|network/i.test(text)) return 'The network is unreachable. Check the connection and try again.';
+    if (/rate limit|too many/i.test(text)) return 'Too many attempts. Wait a minute and try again.';
+    return text;
   }
 
   function open() {
