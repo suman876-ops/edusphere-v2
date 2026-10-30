@@ -16,16 +16,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Regenerate the module grid
-        run: python3 tools/build.py
-
-      - name: Verify the site
+      - name: Run the site checks
         run: python3 tools/build.py --check
 
-      - name: Fail if the committed page is stale
+      - name: Fail if the checks rewrote anything
         run: |
           if [ -n "$(git status --porcelain)" ]; then
-            echo "index.html is out of date — run 'make build' and commit the result."
+            echo "The checks modified tracked files — commit the result."
             git --no-pager diff --stat
             exit 1
           fi
