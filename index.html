@@ -3,158 +3,963 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Welcome to my website</title>
-<meta name="description" content="Welcome to my website — a simple page, live on GitHub Pages." />
+<title>EduSphere — Multi-Campus College ERP · Complete Workflow</title>
+<meta name="description" content="EduSphere — a multi-tenant, multi-campus college ERP. The complete workflow: users, access channels, application modules, data layer, integrations and deliverables." />
+<meta name="theme-color" content="#05070d" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%93%3C/text%3E%3C/svg%3E" />
 <style>
+  /* ============================================================ tokens */
   :root {
-    --bg: #07090d;
-    --raised: #0d1117;
-    --border: #1e2634;
-    --text: #e8edf5;
-    --muted: #93a1b5;
-    --brand: #4f7cff;
-    --brand-soft: #7a9bff;
+    --bg: #05070d;
+    --ink: #eaf0fa;
+    --ink-soft: #a8b6cc;
+    --ink-faint: #6b7a91;
+
+    --glass: rgba(255, 255, 255, 0.055);
+    --glass-strong: rgba(255, 255, 255, 0.085);
+    --glass-line: rgba(255, 255, 255, 0.13);
+    --glass-line-soft: rgba(255, 255, 255, 0.075);
+
+    --blue: #5b8cff;
+    --violet: #a07cff;
+    --cyan: #45d6f5;
+    --green: #38d39f;
+    --amber: #f5b544;
+    --rose: #ff6f9c;
+    --teal: #2fd6c6;
+
+    --r-sm: 12px;
+    --r: 18px;
+    --r-lg: 26px;
+
+    --pad: clamp(16px, 3.2vw, 30px);
+    --shell: 1180px;
+
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   }
 
   * { box-sizing: border-box; }
 
-  html, body { height: 100%; margin: 0; }
+  html { scroll-behavior: smooth; }
 
   body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* aurora backdrop */
+  .aurora {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
     background:
-      radial-gradient(1100px 600px at 50% -12%, rgba(79, 124, 255, 0.20), transparent 60%),
-      radial-gradient(800px 500px at 100% 100%, rgba(56, 189, 248, 0.10), transparent 55%),
+      radial-gradient(820px 620px at 12% -6%, rgba(91, 140, 255, 0.34), transparent 62%),
+      radial-gradient(760px 560px at 88% 4%, rgba(160, 124, 255, 0.26), transparent 60%),
+      radial-gradient(900px 700px at 50% 108%, rgba(47, 214, 198, 0.16), transparent 62%),
       var(--bg);
-    color: var(--text);
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Bengali", sans-serif;
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 78%);
+    -webkit-mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 78%);
+  }
+
+  /* ============================================================== glass */
+  .glass {
+    background: linear-gradient(155deg, var(--glass-strong), var(--glass));
+    border: 1px solid var(--glass-line);
+    border-radius: var(--r);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.10),
+      0 24px 60px -42px rgba(0, 0, 0, 0.95);
+  }
+
+  /* ============================================================ layout */
+  .wrap {
+    width: 100%;
+    max-width: var(--shell);
+    margin: 0 auto;
+    padding: 0 var(--pad);
+  }
+
+  section { padding: clamp(44px, 7vw, 86px) 0; }
+
+  /* =============================================================== nav */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 12px 0;
+    background: rgba(5, 7, 13, 0.55);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .brand-mark {
+    width: 30px;
+    height: 30px;
     display: grid;
     place-items: center;
-    padding: 24px;
-    -webkit-font-smoothing: antialiased;
+    border-radius: 9px;
+    background: linear-gradient(140deg, var(--blue), var(--violet));
+    box-shadow: 0 8px 22px -10px var(--blue);
+    font-size: 15px;
   }
 
-  main {
-    width: 100%;
-    max-width: 720px;
-    text-align: center;
+  .brand small {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
   }
 
-  .badge {
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-links::-webkit-scrollbar { display: none; }
+
+  .nav-links a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: color 160ms, background 160ms;
+  }
+
+  .nav-links a:hover { color: var(--ink); background: rgba(255, 255, 255, 0.07); }
+
+  .nav-cta {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border: 1px solid var(--border);
+    gap: 7px;
+    padding: 8px 15px;
     border-radius: 999px;
-    background: rgba(13, 17, 23, 0.75);
-    color: var(--muted);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    border: 1px solid var(--glass-line);
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 160ms, background 160ms;
   }
 
-  .dot {
+  .nav-cta:hover { transform: translateY(-1px); background: rgba(255, 255, 255, 0.13); }
+
+  /* ============================================================== hero */
+  .hero { padding-top: clamp(56px, 9vw, 108px); }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 14px 6px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--glass-line);
+    background: rgba(255, 255, 255, 0.06);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .pill i {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #34d399;
-    box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.15);
+    background: var(--green);
+    box-shadow: 0 0 0 4px rgba(56, 211, 159, 0.16);
+    margin-left: 6px;
   }
 
   h1 {
-    margin: 28px 0 0;
-    font-size: clamp(2.1rem, 7vw, 3.9rem);
-    line-height: 1.08;
-    letter-spacing: -0.03em;
-    font-weight: 700;
+    margin: 22px 0 0;
+    font-size: clamp(2.2rem, 6.4vw, 4.1rem);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    max-width: 20ch;
   }
 
-  h1 span {
-    background: linear-gradient(100deg, var(--brand-soft), #b7c8ff 45%, #ffffff);
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(96deg, var(--blue), var(--violet) 46%, var(--cyan));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  .bn {
-    margin: 16px 0 0;
-    font-size: clamp(1rem, 2.6vw, 1.25rem);
-    color: var(--brand-soft);
+  .lede {
+    margin: 20px 0 0;
+    max-width: 62ch;
+    color: var(--ink-soft);
+    font-size: clamp(1rem, 1.5vw, 1.08rem);
   }
 
-  p.lead {
-    margin: 18px auto 0;
-    max-width: 52ch;
-    color: var(--muted);
-    font-size: 1rem;
-    line-height: 1.7;
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--glass-line);
+    transition: transform 160ms, box-shadow 160ms, background 160ms;
   }
+
+  .btn-primary {
+    color: #06080f;
+    background: linear-gradient(120deg, #cfe0ff, #ffffff);
+    border-color: transparent;
+    box-shadow: 0 18px 40px -22px rgba(180, 205, 255, 0.85);
+  }
+
+  .btn-ghost { color: var(--ink); background: rgba(255, 255, 255, 0.06); }
+
+  .btn:hover { transform: translateY(-2px); }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 40px;
+    padding: 16px;
+  }
+
+  .stat { padding: 10px 12px; }
+
+  .stat b {
+    display: block;
+    font-size: clamp(1.5rem, 3.2vw, 2rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .stat span { font-size: 12px; color: var(--ink-faint); letter-spacing: 0.04em; }
+
+  /* ============================================================ section */
+  .sec-head { display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap; margin-bottom: 26px; }
+
+  .sec-head .kicker {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sec-head .kicker::before {
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--blue), transparent);
+  }
+
+  h2 {
+    margin: 8px 0 0;
+    font-size: clamp(1.45rem, 3.1vw, 2.05rem);
+    letter-spacing: -0.028em;
+    line-height: 1.15;
+    font-weight: 750;
+    width: 100%;
+  }
+
+  .sec-head p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    max-width: 66ch;
+  }
+
+  /* ============================================================== grid */
+  .grid { display: grid; gap: 12px; }
+  .g-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .g-3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .g-4 { grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); }
+  .g-6 { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 
   .card {
-    margin-top: 40px;
-    padding: 22px 24px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: linear-gradient(180deg, rgba(18, 24, 38, 0.9), rgba(13, 17, 23, 0.9));
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 24px 48px -36px #000;
+    padding: 16px 16px 15px;
+    border-radius: var(--r);
+    transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1), border-color 200ms, background 200ms;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(420px 160px at 50% -40%, var(--tint, transparent), transparent 70%);
+    opacity: 0;
+    transition: opacity 240ms;
+    pointer-events: none;
+  }
+
+  .card:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.24); }
+  .card:hover::after { opacity: 0.5; }
+
+  .ico {
+    width: 36px;
+    height: 36px;
     display: grid;
-    gap: 6px;
+    place-items: center;
+    border-radius: 11px;
+    font-size: 17px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--glass-line-soft);
+    margin-bottom: 11px;
   }
 
-  .card .label {
+  .card h3 {
+    margin: 0;
+    font-size: 14.5px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+
+  .card p {
+    margin: 5px 0 0;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    line-height: 1.5;
+  }
+
+  .tag {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid var(--glass-line-soft);
+    padding: 2px 7px;
+    border-radius: 6px;
+  }
+
+  /* users row */
+  .users-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+
+  .user-chip {
+    padding: 13px 10px;
+    text-align: center;
+    border-radius: var(--r-sm);
+  }
+
+  .user-chip .em { font-size: 20px; display: block; line-height: 1; margin-bottom: 7px; }
+  .user-chip b { font-size: 12.5px; font-weight: 600; display: block; }
+  .user-chip small { font-size: 10.5px; color: var(--ink-faint); display: block; margin-top: 2px; }
+
+  /* ============================================================== flow */
+  .flow { display: grid; gap: 10px; }
+
+  .flow-step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 18px;
+  }
+
+  .flow-step .n {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    font-family: var(--mono);
     font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #5d6b80;
+    font-weight: 700;
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-line);
   }
 
-  .card .value {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 0.95rem;
-    color: var(--text);
-    word-break: break-all;
+  .flow-step b { display: block; font-size: 14.5px; }
+  .flow-step span { font-size: 12.5px; color: var(--ink-faint); }
+
+  .flow-arrow {
+    justify-self: center;
+    color: var(--ink-faint);
+    font-size: 13px;
+    line-height: 1;
+    opacity: 0.75;
   }
 
-  footer {
-    margin-top: 36px;
-    color: #5d6b80;
+  /* ============================================================ table */
+  .table-shell {
+    padding: 6px;
+    overflow: hidden;
+    border-radius: var(--r-lg);
+  }
+
+  .table-scroll { overflow-x: auto; border-radius: 20px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 880px;
     font-size: 13px;
   }
 
-  footer a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border); }
-  footer a:hover { color: var(--text); }
+  thead th {
+    text-align: left;
+    font-size: 10.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--glass-line);
+    white-space: nowrap;
+  }
 
+  tbody td {
+    padding: 13px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover td { background: rgba(255, 255, 255, 0.035); color: var(--ink); }
+
+  td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
+
+  .mono { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); }
+
+  /* ========================================================== timeline */
+  .timeline { display: grid; gap: 0; padding: 6px 0; }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 14px;
+    padding: 13px 18px;
+    position: relative;
+  }
+
+  .tl-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 39px;
+    top: 40px;
+    bottom: -13px;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04));
+  }
+
+  .tl-num {
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--mono);
+    background: rgba(91, 140, 255, 0.16);
+    border: 1px solid rgba(91, 140, 255, 0.4);
+    color: #bcd0ff;
+  }
+
+  .tl-item b { font-size: 14px; display: block; }
+  .tl-item span { font-size: 12.5px; color: var(--ink-faint); }
+
+  /* ============================================================ footer */
+  footer {
+    padding: 40px 0 56px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    color: var(--ink-faint);
+    font-size: 13px;
+  }
+
+  .foot-inner { display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; align-items: center; }
+  footer a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.16); }
+  footer a:hover { color: var(--ink); }
+
+  /* ============================================================ reveal */
   @media (prefers-reduced-motion: no-preference) {
-    main { animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(14px); }
-      to { opacity: 1; transform: none; }
-    }
+    .reveal { opacity: 0; transform: translateY(16px); }
+    .reveal.in { opacity: 1; transform: none; transition: opacity 620ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 620ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .hero > * { animation: rise 720ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .hero > *:nth-child(2) { animation-delay: 60ms; }
+    .hero > *:nth-child(3) { animation-delay: 120ms; }
+    .hero > *:nth-child(4) { animation-delay: 180ms; }
+    .hero > *:nth-child(5) { animation-delay: 240ms; }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  }
+
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .nav-cta { margin-left: auto; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
 <body>
-  <main>
-    <div class="badge"><span class="dot"></span> Live on GitHub Pages</div>
+<div class="aurora"></div>
+<div class="grain"></div>
 
-    <h1>Welcome to <span>my website</span></h1>
-    <p class="bn">আমার ওয়েবসাইটে স্বাগতম</p>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark">🎓</span>
+      <span>EduSphere<small>College ERP</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#users">Users</a>
+      <a href="#access">Access</a>
+      <a href="#flow">Flow</a>
+      <a href="#modules">Modules</a>
+      <a href="#data">Data</a>
+      <a href="#integrations">Integrations</a>
+      <a href="#outputs">Outputs</a>
+      <a href="#lifecycle">Lifecycle</a>
+      <a href="#mapping">Mapping</a>
+      <a href="#stack">Stack</a>
+    </nav>
+    <a class="nav-cta" href="https://github.com/suman876-ops/edusphere-v2" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</header>
 
-    <p class="lead">
-      A small page, built to prove the pipeline works: one HTML file, committed to GitHub,
-      published by GitHub Pages, served over HTTPS.
-    </p>
+<main id="top">
 
-    <section class="card">
-      <div class="label">Repository</div>
-      <div class="value">suman876-ops/edusphere-v2</div>
-      <div class="label" style="margin-top: 14px;">Built with</div>
-      <div class="value">HTML · CSS · GitHub Pages</div>
-    </section>
+  <!-- ============================================================ hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="pill"><i></i>Multi-tenant · Multi-campus · One platform</div>
+      <h1>EduSphere — <em>Multi-Campus College ERP</em></h1>
+      <p class="lede">
+        The complete workflow of a college group on a single platform: from an applicant's first
+        enquiry to a graduate's alumni record. Every role, every portal, every module, and the
+        infrastructure underneath — mapped end to end.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#modules">Explore the modules →</a>
+        <a class="btn btn-ghost" href="#mapping">Technology mapping</a>
+      </div>
+      <div class="hero-stats glass reveal">
+        <div class="stat"><b>18</b><span>Application modules</span></div>
+        <div class="stat"><b>6</b><span>Portals &amp; apps</span></div>
+        <div class="stat"><b>11</b><span>User roles</span></div>
+        <div class="stat"><b>9</b><span>Lifecycle stages</span></div>
+      </div>
+    </div>
+  </section>
 
-    <footer>
-      Suman Mahata · <a href="https://github.com/suman876-ops">github.com/suman876-ops</a>
-    </footer>
-  </main>
+  <!-- =========================================================== users -->
+  <section id="users">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">01 · Who uses it</span>
+        <h2>Users and roles</h2>
+        <p>One identity, one login, many campuses. What a person can see and do is decided by their
+          role in that campus — not by which link they opened.</p>
+      </div>
+      <div class="users-row reveal">
+        <div class="user-chip glass"><span class="em">📝</span><b>Applicant</b><small>Admission enquiry</small></div>
+        <div class="user-chip glass"><span class="em">🎓</span><b>Student</b><small>Portal &amp; app</small></div>
+        <div class="user-chip glass"><span class="em">👨‍👩‍👧</span><b>Parent</b><small>Fees, attendance</small></div>
+        <div class="user-chip glass"><span class="em">🧑‍🏫</span><b>Faculty</b><small>Teaching</small></div>
+        <div class="user-chip glass"><span class="em">📋</span><b>HoD</b><small>Department</small></div>
+        <div class="user-chip glass"><span class="em">🗂️</span><b>Registrar</b><small>Admin staff</small></div>
+        <div class="user-chip glass"><span class="em">💰</span><b>Accountant</b><small>Fees &amp; receipts</small></div>
+        <div class="user-chip glass"><span class="em">📚</span><b>Librarian</b><small>Issue &amp; return</small></div>
+        <div class="user-chip glass"><span class="em">🛏️</span><b>Hostel warden</b><small>Rooms &amp; mess</small></div>
+        <div class="user-chip glass"><span class="em">🚌</span><b>Transport manager</b><small>Routes &amp; GPS</small></div>
+        <div class="user-chip glass"><span class="em">🏛️</span><b>Principal</b><small>Management</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== access -->
+  <section id="access">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">02 · How they reach it</span>
+        <h2>Access channels</h2>
+        <p>Same data, different surfaces. A public site for people who are not yet students, portals
+          for people who are, and a console for the people who run the campus.</p>
+      </div>
+      <div class="grid g-3">
+        <div class="card glass reveal" style="--tint: rgba(91,140,255,0.30)">
+          <div class="ico">🌐</div>
+          <h3>Public website + admission portal</h3>
+          <p>Course pages, fee structure, the application wizard. Server-rendered for search and speed.</p>
+          <span class="tag">Next.js · SSR</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(69,214,245,0.28)">
+          <div class="ico">🎒</div>
+          <h3>Student portal</h3>
+          <p>Timetable, attendance, results, fee status, materials and assignments.</p>
+          <span class="tag">Web · Mobile app</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(160,124,255,0.28)">
+          <div class="ico">👨‍👩‍👧</div>
+          <h3>Parent portal</h3>
+          <p>Attendance, marks, fee dues and notices for their child — read-only by design.</p>
+          <span class="tag">Web · Mobile app</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(56,211,159,0.26)">
+          <div class="ico">🧑‍🏫</div>
+          <h3>Faculty portal</h3>
+          <p>Class roster, mark entry, material upload, leave and workload.</p>
+          <span class="tag">Web · Mobile app</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(245,181,68,0.26)">
+          <div class="ico">🖥️</div>
+          <h3>Admin &amp; staff console</h3>
+          <p>The operational cockpit: structure, admissions, fees, exams, reports, audit.</p>
+          <span class="tag">Next.js</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(255,111,156,0.26)">
+          <div class="ico">📱</div>
+          <h3>Mobile app</h3>
+          <p>QR scanning for attendance and bus boarding, plus GPS for live tracking.</p>
+          <span class="tag">Expo · QR + GPS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ flow -->
+  <section id="flow">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">03 · The request path</span>
+        <h2>From browser to database</h2>
+        <p>Every request takes the same road. Campus identity is resolved at the edge, verified at the
+          gateway, and enforced again in the database.</p>
+      </div>
+      <div class="flow reveal">
+        <div class="flow-step glass">
+          <span class="n">1</span>
+          <div><b>Internet</b><span>Applicant, student, parent, faculty, staff or transport manager.</span></div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step glass">
+          <span class="n">2</span>
+          <div><b>CDN + WAF — Cloudflare</b><span>Static assets cached at the edge; tenant subdomains resolved (campus.college.edu → tenant); bots and floods filtered.</span></div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step glass">
+          <span class="n">3</span>
+          <div><b>API gateway / ingress — NGINX</b><span>TLS termination, rate limiting, request ID, JWT pre-check, routing to the app.</span></div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step glass">
+          <span class="n">4</span>
+          <div><b>NestJS modular monolith</b><span>Auth and tenancy guards, then the module that owns the request. Every mutation is audited.</span></div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step glass">
+          <span class="n">5</span>
+          <div><b>Data and infrastructure layer</b><span>PostgreSQL with row-level security, Redis for cache and QR tokens, BullMQ for jobs, Meilisearch for search, S3 for files.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= modules -->
+  <section id="modules">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">04 · Application layer</span>
+        <h2>Eighteen modules, one monolith</h2>
+        <p>Each module owns its tables and exposes a service. Modules talk to each other through those
+          services, never by reaching into each other's data.</p>
+      </div>
+      <div class="grid g-4">
+        <div class="card glass reveal" style="--tint: rgba(91,140,255,0.30)"><div class="ico">🔐</div><h3>Auth / IAM</h3><p>Login, roles, permissions, OTP, SSO.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(91,140,255,0.30)"><div class="ico">🏫</div><h3>Tenancy</h3><p>Group → campus → department, isolated by policy.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(69,214,245,0.28)"><div class="ico">📄</div><h3>Admissions</h3><p>Enquiry → application → merit → admission.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(69,214,245,0.28)"><div class="ico">🎓</div><h3>Students</h3><p>Profile, guardians, documents, transfer.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(56,211,159,0.26)"><div class="ico">🧑‍🏫</div><h3>Faculty / HR</h3><p>Staff records, workload, leave.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(56,211,159,0.26)"><div class="ico">🏛️</div><h3>Academics</h3><p>Programs, batches, sections, seat counts.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(160,124,255,0.28)"><div class="ico">🗓️</div><h3>Timetable</h3><p>Constraint-solved schedule, clash-free.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(160,124,255,0.28)"><div class="ico">📷</div><h3>Attendance</h3><p>QR token, geofence, device binding, shortage.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(245,181,68,0.26)"><div class="ico">📝</div><h3>Exams &amp; results</h3><p>Marks, grades, CGPA, ranks, publication lock.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(245,181,68,0.26)"><div class="ico">💰</div><h3>Fees &amp; payments</h3><p>Ledger in paise, instalments, receipts.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(255,111,156,0.26)"><div class="ico">📚</div><h3>Library</h3><p>Catalogue, issue and return, fines.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(255,111,156,0.26)"><div class="ico">🛏️</div><h3>Hostel</h3><p>Rooms, allocation, mess, complaints.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(47,214,198,0.26)"><div class="ico">🚌</div><h3>Transport</h3><p>Routes, stops, live GPS.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(47,214,198,0.26)"><div class="ico">🎬</div><h3>LMS-lite</h3><p>Course spaces, materials, assignments.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(91,140,255,0.30)"><div class="ico">💬</div><h3>Communication</h3><p>Targeted notices, chat, announcements.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(91,140,255,0.30)"><div class="ico">📊</div><h3>Reports &amp; BI</h3><p>Dashboards, exports, compliance reports.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(160,124,255,0.28)"><div class="ico">🗃️</div><h3>Files</h3><p>Images and PDFs over presigned URLs.</p></div>
+        <div class="card glass reveal" style="--tint: rgba(160,124,255,0.28)"><div class="ico">🛡️</div><h3>Audit</h3><p>Every mutation logged: who, where, when.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ data -->
+  <section id="data">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">05 · Data &amp; infrastructure</span>
+        <h2>What sits underneath</h2>
+        <p>Postgres is the source of truth. Everything else exists to make reading it fast, doing work
+          later, or storing what does not belong in a row.</p>
+      </div>
+      <div class="grid g-3">
+        <div class="card glass reveal" style="--tint: rgba(56,211,159,0.26)">
+          <div class="ico">🐘</div><h3>PostgreSQL 16</h3>
+          <p>Primary plus read replicas. Row-level security scopes every tenant table to one campus.</p>
+          <span class="tag">SQL · RLS</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(255,111,156,0.26)">
+          <div class="ico">⚡</div><h3>Redis 7</h3>
+          <p>Cache, rotating QR tokens, rate limiting and pub/sub for live updates.</p>
+          <span class="tag">Cache · Pub/Sub</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(245,181,68,0.26)">
+          <div class="ico">⚙️</div><h3>BullMQ</h3>
+          <p>Background queues: PDFs, notifications, imports, report generation.</p>
+          <span class="tag">Jobs</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(91,140,255,0.30)">
+          <div class="ico">🔎</div><h3>Meilisearch</h3>
+          <p>Instant search across students, books and staff, scoped per campus.</p>
+          <span class="tag">Search</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(160,124,255,0.28)">
+          <div class="ico">🪣</div><h3>S3 / MinIO</h3>
+          <p>Documents, photos and PDFs, served through short-lived presigned URLs.</p>
+          <span class="tag">Object store</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== integrations -->
+  <section id="integrations">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">06 · India-specific</span>
+        <h2>Integrations that matter here</h2>
+        <p>The parts a generic ERP leaves out: identity, payments, tax and the university's own exam
+          system.</p>
+      </div>
+      <div class="grid g-3">
+        <div class="card glass reveal"><div class="ico">🪪</div><h3>DigiLocker</h3><p>Pull verified identity and academic documents.</p></div>
+        <div class="card glass reveal"><div class="ico">🔐</div><h3>Aadhaar eKYC</h3><p>Optional identity verification at admission.</p></div>
+        <div class="card glass reveal"><div class="ico">💳</div><h3>UPI &amp; Razorpay</h3><p>Fee collection with webhook reconciliation.</p></div>
+        <div class="card glass reveal"><div class="ico">✉️</div><h3>SMS &amp; email</h3><p>Transactional alerts, OTP, notices.</p></div>
+        <div class="card glass reveal"><div class="ico">🧾</div><h3>GST invoicing</h3><p>Compliant receipts for every payment.</p></div>
+        <div class="card glass reveal"><div class="ico">🏛️</div><h3>University exam system</h3><p>Marks and registration exchange, where required.</p></div>
+        <div class="card glass reveal"><div class="ico">🗣️</div><h3>Regional language</h3><p>Bengali, Hindi and English across portals.</p></div>
+        <div class="card glass reveal"><div class="ico">🔔</div><h3>Real-time services</h3><p>Socket.IO, Redis pub/sub, push notifications, background jobs.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= outputs -->
+  <section id="outputs">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">07 · What comes out</span>
+        <h2>Deliverables</h2>
+        <p>The artefacts a college actually hands over — generated, not typed.</p>
+      </div>
+      <div class="grid g-4">
+        <div class="card glass reveal"><div class="ico">🪪</div><h3>ID cards</h3><p>PDF, batch generated.</p></div>
+        <div class="card glass reveal"><div class="ico">🎫</div><h3>Hall tickets</h3><p>Per exam, per student.</p></div>
+        <div class="card glass reveal"><div class="ico">📜</div><h3>Mark sheets</h3><p>Grades, GPA, backlogs.</p></div>
+        <div class="card glass reveal"><div class="ico">🧾</div><h3>Fee receipts</h3><p>GST-compliant, downloadable.</p></div>
+        <div class="card glass reveal"><div class="ico">📊</div><h3>Reports</h3><p>Dashboards, Excel and PDF exports.</p></div>
+        <div class="card glass reveal"><div class="ico">🔔</div><h3>Notifications</h3><p>Email, SMS and in-app.</p></div>
+        <div class="card glass reveal"><div class="ico">📍</div><h3>Live bus tracking</h3><p>Route and ETA on the map.</p></div>
+        <div class="card glass reveal"><div class="ico">🔍</div><h3>Search</h3><p>Students, books, staff.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= lifecycle -->
+  <section id="lifecycle">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">08 · End to end</span>
+        <h2>The student lifecycle</h2>
+        <p>Nine stages, one record. Nothing is re-entered between them.</p>
+      </div>
+      <div class="timeline glass reveal">
+        <div class="tl-item"><span class="tl-num">1</span><div><b>Enquiry &amp; application</b><span>Public form, documents, application fee.</span></div></div>
+        <div class="tl-item"><span class="tl-num">2</span><div><b>Admission &amp; fee payment</b><span>Merit list, offer, enrolment number, first instalment.</span></div></div>
+        <div class="tl-item"><span class="tl-num">3</span><div><b>Academic setup</b><span>Program, batch, section, timetable.</span></div></div>
+        <div class="tl-item"><span class="tl-num">4</span><div><b>Teaching &amp; attendance</b><span>QR or geofenced check-in, roster, shortage alerts.</span></div></div>
+        <div class="tl-item"><span class="tl-num">5</span><div><b>Exams &amp; results</b><span>Marks entry, grades, CGPA, publication.</span></div></div>
+        <div class="tl-item"><span class="tl-num">6</span><div><b>Ongoing operations</b><span>Library, hostel, transport, fees.</span></div></div>
+        <div class="tl-item"><span class="tl-num">7</span><div><b>Communication</b><span>Notices to students, parents and staff.</span></div></div>
+        <div class="tl-item"><span class="tl-num">8</span><div><b>Reports &amp; compliance</b><span>Dashboards, audits, statutory returns.</span></div></div>
+        <div class="tl-item"><span class="tl-num">9</span><div><b>Alumni</b><span>After graduation: record, documents, network.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= mapping -->
+  <section id="mapping">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">09 · Module by module</span>
+        <h2>Technology &amp; function mapping</h2>
+        <p>Which piece runs on what. The same table the team builds against.</p>
+      </div>
+      <div class="table-shell glass reveal">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Module</th><th>Main functions</th><th>Frontend</th><th>Backend</th><th>Database / storage</th><th>Other services</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Auth &amp; IAM</td><td>Login, roles, permissions, SSO, OTP</td><td>Next.js + TypeScript</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">JWT · Redis · OAuth2/OIDC</td></tr>
+              <tr><td>Tenancy</td><td>Campus, departments, isolation</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL (RLS)</td><td class="mono">Subdomain mapping (NGINX)</td></tr>
+              <tr><td>Admissions</td><td>Application, documents, tests, merit</td><td>Next.js + TypeScript</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Razorpay/UPI · Email/SMS · PDF</td></tr>
+              <tr><td>Students</td><td>Profile, guardians, transfer, ID card</td><td>Next.js + Expo</td><td>NestJS</td><td>PostgreSQL + S3</td><td class="mono">ID card PDF · Meilisearch</td></tr>
+              <tr><td>Faculty / HR</td><td>Staff records, workload, leave</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Email/SMS · Reports</td></tr>
+              <tr><td>Academics</td><td>Programs, batches, sections, seats</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Seat accounting rules</td></tr>
+              <tr><td>Timetable</td><td>Schedule generation and management</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Constraint solver</td></tr>
+              <tr><td>Attendance</td><td>Manual, QR, geofence, reports</td><td>Expo + Next.js</td><td>NestJS</td><td>PostgreSQL + Redis</td><td class="mono">QR tokens · GPS · Device binding</td></tr>
+              <tr><td>Exams &amp; results</td><td>Assessment, grades, mark sheets</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">PDF generation · Email/SMS</td></tr>
+              <tr><td>Fees &amp; payments</td><td>Billing, instalments, fines, receipts</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Razorpay/Stripe · UPI · GST API</td></tr>
+              <tr><td>Library</td><td>Books, issue/return, fines</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Barcode/QR · Meilisearch</td></tr>
+              <tr><td>Hostel</td><td>Rooms, allocation, mess, complaints</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Notifications · Reports</td></tr>
+              <tr><td>Transport</td><td>Routes, GPS tracking, stops</td><td>Expo + Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Maps API · Live tracking</td></tr>
+              <tr><td>LMS-lite</td><td>Courses, materials, assignments, quizzes</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL + S3</td><td class="mono">Video (HLS) · File download</td></tr>
+              <tr><td>Communication</td><td>Notices, chat, announcements</td><td>Next.js / Expo</td><td>NestJS + Socket.IO</td><td>PostgreSQL + Redis</td><td class="mono">Socket.IO · Email · SMS · Push</td></tr>
+              <tr><td>Reports &amp; BI</td><td>Dashboards, exports (Excel/PDF)</td><td>Next.js</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Chart.js · PDF · Meilisearch</td></tr>
+              <tr><td>Files</td><td>Upload, store, access</td><td>Next.js / Expo</td><td>NestJS</td><td>S3 / MinIO</td><td class="mono">Presigned URL · File permissions</td></tr>
+              <tr><td>Audit</td><td>Logs, activity, compliance reports</td><td>Next.js (admin)</td><td>NestJS</td><td>PostgreSQL</td><td class="mono">Log management · Alerts</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== stack -->
+  <section id="stack">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">10 · Summary</span>
+        <h2>Core technology stack</h2>
+        <p>Five layers, a short list. Anything not here is a dependency we did not need.</p>
+      </div>
+      <div class="grid g-2">
+        <div class="card glass reveal" style="--tint: rgba(91,140,255,0.30)">
+          <div class="ico">🖥️</div><h3>Frontend — web</h3>
+          <p>Next.js 15 with React and TypeScript. Public site server-rendered, portals installable as a PWA, admin console client-side.</p>
+          <span class="tag">Next.js 15 · React · TypeScript</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(69,214,245,0.28)">
+          <div class="ico">📱</div><h3>Frontend — mobile</h3>
+          <p>One React Native app for students, parents and faculty, with QR scanning and GPS built in.</p>
+          <span class="tag">React Native · Expo</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(56,211,159,0.26)">
+          <div class="ico">🟢</div><h3>Backend</h3>
+          <p>NestJS modular monolith in TypeScript. REST for everything, WebSocket for what must be live.</p>
+          <span class="tag">NestJS · REST · Socket.IO</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(245,181,68,0.26)">
+          <div class="ico">🗄️</div><h3>Data &amp; storage</h3>
+          <p>PostgreSQL 16 with replicas, Redis 7 for cache and queues, Meilisearch for search, S3 or MinIO for files.</p>
+          <span class="tag">Postgres · Redis · BullMQ · S3</span>
+        </div>
+        <div class="card glass reveal" style="--tint: rgba(160,124,255,0.28)">
+          <div class="ico">🐳</div><h3>Infrastructure</h3>
+          <p>Docker images on Kubernetes, NGINX as the gateway, Cloudflare for CDN and WAF, GitHub Actions for CI/CD.</p>
+          <span class="tag">Docker · K8s · NGINX · Cloudflare</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>EduSphere — Multi-Campus College ERP · 2026</div>
+    <div>Designed &amp; deployed by <a href="https://github.com/suman876-ops">Suman Mahata</a></div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+    items.forEach(function (el, i) {
+      el.style.transitionDelay = Math.min(i % 6, 5) * 45 + 'ms';
+      io.observe(el);
+    });
+  })();
+</script>
 </body>
 </html>
