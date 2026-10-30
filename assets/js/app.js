@@ -385,9 +385,44 @@
 
   window.EduSphereShowView = showView;
 
+  /* --------------------------------------------------------- number count-up */
+  function countUp(node) {
+    var target = Number(node.textContent);
+    if (!isFinite(target) || target <= 0) return;
+    var start = performance.now();
+    var duration = 900;
+
+    function frame(now) {
+      var t = Math.min((now - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - t, 3);
+      node.textContent = String(Math.round(target * eased));
+      if (t < 1) requestAnimationFrame(frame);
+    }
+    node.textContent = '0';
+    requestAnimationFrame(frame);
+  }
+
+  function watchNumbers() {
+    var nodes = document.querySelectorAll('.stat b, .kpi b');
+    if (!('IntersectionObserver' in window) ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          countUp(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    Array.prototype.forEach.call(nodes, function (node) { io.observe(node); });
+  }
+
   structuralStats();
   loadColleges();
   load();
+  watchNumbers();
 
   if (location.hash === '#console') showView('console');
   if (location.hash === '#portal') showView('portal');
