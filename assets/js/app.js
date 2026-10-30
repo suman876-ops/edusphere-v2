@@ -262,6 +262,13 @@
     if (toTop) toTop.classList.toggle('show', top > 500);
   }
 
+  var nav = document.querySelector('.nav');
+  function navState() {
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 24);
+  }
+  window.addEventListener('scroll', navState, { passive: true });
+  navState();
+
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
