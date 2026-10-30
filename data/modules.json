@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "modules": [
+    {
+      "id": "auth-iam",
+      "category": "platform",
+      "icon": "🔐",
+      "title": "Auth / IAM",
+      "description": "Login, roles, permissions, OTP, SSO."
+    },
+    {
+      "id": "tenancy",
+      "category": "platform",
+      "icon": "🏫",
+      "title": "Tenancy",
+      "description": "Group → campus → department, isolated by policy."
+    },
+    {
+      "id": "admissions",
+      "category": "core",
+      "icon": "📄",
+      "title": "Admissions",
+      "description": "Enquiry → application → merit → admission."
+    },
+    {
+      "id": "students",
+      "category": "core",
+      "icon": "🎓",
+      "title": "Students",
+      "description": "Profile, guardians, documents, transfer."
+    },
+    {
+      "id": "faculty-hr",
+      "category": "core",
+      "icon": "🧑‍🏫",
+      "title": "Faculty / HR",
+      "description": "Staff records, workload, leave."
+    },
+    {
+      "id": "academics",
+      "category": "core",
+      "icon": "🏛️",
+      "title": "Academics",
+      "description": "Programs, batches, sections, seat counts."
+    },
+    {
+      "id": "timetable",
+      "category": "core",
+      "icon": "🗓️",
+      "title": "Timetable",
+      "description": "Constraint-solved schedule, clash-free."
+    },
+    {
+      "id": "attendance",
+      "category": "core",
+      "icon": "📷",
+      "title": "Attendance",
+      "description": "QR token, geofence, device binding."
+    },
+    {
+      "id": "exams-and-results",
+      "category": "core",
+      "icon": "📝",
+      "title": "Exams &amp; results",
+      "description": "Marks, grades, CGPA, ranks, publication lock."
+    },
+    {
+      "id": "fees-and-payments",
+      "category": "operations",
+      "icon": "💰",
+      "title": "Fees &amp; payments",
+      "description": "Ledger in paise, instalments, receipts."
+    },
+    {
+      "id": "library",
+      "category": "operations",
+      "icon": "📚",
+      "title": "Library",
+      "description": "Catalogue, issue and return, fines."
+    },
+    {
+      "id": "hostel",
+      "category": "operations",
+      "icon": "🛏️",
+      "title": "Hostel",
+      "description": "Rooms, allocation, mess, complaints."
+    },
+    {
+      "id": "transport",
+      "category": "operations",
+      "icon": "🚌",
+      "title": "Transport",
+      "description": "Routes, stops, live GPS."
+    },
+    {
+      "id": "lms-lite",
+      "category": "core",
+      "icon": "🎬",
+      "title": "LMS-lite",
+      "description": "Course spaces, materials, assignments."
+    },
+    {
+      "id": "communication",
+      "category": "platform",
+      "icon": "💬",
+      "title": "Communication",
+      "description": "Targeted notices, chat, announcements."
+    },
+    {
+      "id": "reports-and-bi",
+      "category": "platform",
+      "icon": "📊",
+      "title": "Reports &amp; BI",
+      "description": "Dashboards, exports, compliance reports."
+    },
+    {
+      "id": "files",
+      "category": "platform",
+      "icon": "🗃️",
+      "title": "Files",
+      "description": "Images and PDFs over presigned URLs."
+    },
+    {
+      "id": "audit",
+      "category": "platform",
+      "icon": "🛡️",
+      "title": "Audit",
+      "description": "Every mutation logged: who, where, when."
+    }
+  ]
+}
