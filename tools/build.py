@@ -77,10 +77,14 @@ def check_structure() -> list[str]:
     for script in ("assets/js/config.js", "assets/js/api.js", "assets/js/search.js", "assets/js/app.js"):
         if script not in text:
             problems.append(f"index.html does not load {script}")
-    if 'id="module-grid"' not in text:
-        problems.append("index.html has no #module-grid container")
-    if 'id="enquiry-form"' not in text:
-        problems.append("index.html has no #enquiry-form")
+    for marker, label in (
+        ('id="college-grid"', "college directory"),
+        ('id="programme-body"', "programme table"),
+        ('id="apply-form"', "admission form"),
+        ('id="notice-grid"', "notice board"),
+    ):
+        if marker not in text:
+            problems.append(f"index.html has no {label}")
     return problems
 
 
