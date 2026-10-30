@@ -63,6 +63,15 @@
       // a guarded function, not a view: it returns only published institution fields
       return post('rpc/site_public_colleges', {}, 'return=representation');
     },
+    programmes: function () {
+      return post('rpc/site_public_programmes', {}, 'return=representation');
+    },
+    apply: function (application) {
+      return post(tables.applications || 'site_applications', application);
+    },
+    notices: function (limit) {
+      return get(tables.notices + '?select=title,body,published_at&order=published_at.desc&limit=' + (limit || 4));
+    },
     latestNotice: async function () {
       var rows = await get(tables.notices + '?select=title,body,published_at&order=published_at.desc&limit=1');
       return rows && rows.length ? rows[0] : null;
