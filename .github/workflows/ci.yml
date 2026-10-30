@@ -1,0 +1,31 @@
+name: Verify site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Regenerate the module grid
+        run: python3 tools/build.py
+
+      - name: Verify the site
+        run: python3 tools/build.py --check
+
+      - name: Fail if the committed page is stale
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "index.html is out of date — run 'make build' and commit the result."
+            git --no-pager diff --stat
+            exit 1
+          fi
