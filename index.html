@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/console.css" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23a5142c'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%23f8f2e7' font-family='Georgia'%3EE%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
@@ -79,14 +80,14 @@
       <a href="#data">Data</a>
       <a href="#lifecycle">Lifecycle</a>
       <a href="#enquire">Enquire</a>
-      <a href="console/index.html">Console</a>
+      <a href="#console" id="nav-console">Console</a>
     </nav>
-    <a class="nav-cta" href="console/index.html">Open console →</a>
+    <a class="nav-cta" href="#console" id="cta-console">Open console →</a>
     <a class="nav-cta" href="https://github.com/suman876-ops/edusphere-v2" target="_blank" rel="noopener">GitHub ↗</a>
   </div>
 </header>
 
-<main id="top">
+<main id="top" class="view" data-view="site">
 
   <!-- ============================================================ hero -->
   <section class="hero">
@@ -394,6 +395,164 @@
 
 </main>
 
+<!-- ========================================================== console view -->
+<div class="view" id="console-view" hidden>
+<!-- ============================================================== sign in -->
+<section class="auth-screen" id="auth-screen">
+  <div class="auth-card glass-panel">
+    <div class="auth-brand">
+      <span class="brand-mark">E</span>
+      <div><b>EduSphere</b><small>Staff console</small></div>
+    </div>
+
+    <form id="signin-form" class="auth-form">
+      <h1>Sign in</h1>
+      <p class="auth-note">Staff accounts only. Ask your administrator for access.</p>
+      <div class="field">
+        <label for="auth-email">Email</label>
+        <input id="auth-email" type="email" autocomplete="email" required placeholder="you@college.edu" />
+      </div>
+      <div class="field">
+        <label for="auth-password">Password</label>
+        <input id="auth-password" type="password" autocomplete="current-password" required minlength="8" placeholder="••••••••" />
+      </div>
+      <button class="btn btn-solid" type="submit" id="signin-btn">Sign in</button>
+      <p class="form-status" id="auth-status" role="status" aria-live="polite"></p>
+      <p class="auth-switch">
+        New here? <button type="button" class="link-btn" id="to-signup">Create an account</button>
+      </p>
+    </form>
+
+    <form id="signup-form" class="auth-form" hidden>
+      <h1>Create account</h1>
+      <p class="auth-note">The first account on a fresh installation becomes the administrator of its campus.</p>
+      <div class="field">
+        <label for="su-name">Full name</label>
+        <input id="su-name" type="text" autocomplete="name" required minlength="2" placeholder="Your name" />
+      </div>
+      <div class="field">
+        <label for="su-email">Email</label>
+        <input id="su-email" type="email" autocomplete="email" required placeholder="you@college.edu" />
+      </div>
+      <div class="field">
+        <label for="su-password">Password</label>
+        <input id="su-password" type="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters" />
+      </div>
+      <button class="btn btn-solid" type="submit" id="signup-btn">Create account</button>
+      <p class="form-status" id="signup-status" role="status" aria-live="polite"></p>
+      <p class="auth-switch">
+        Already have an account? <button type="button" class="link-btn" id="to-signin">Sign in</button>
+      </p>
+    </form>
+    <div class="demo-panel" id="demo-panel">
+      <p class="demo-title">Demo accounts — password <code>EduSphere@123</code></p>
+      <div class="demo-list">
+        <button type="button" class="demo-chip" data-email="admin@edusphere.demo">Cluster admin · all four</button>
+        <button type="button" class="demo-chip" data-email="midnapore@edusphere.demo">Midnapore College · registrar</button>
+        <button type="button" class="demo-chip" data-email="rnlk@edusphere.demo">RNLK Women's College · admin</button>
+        <button type="button" class="demo-chip" data-email="mcc@edusphere.demo">Midnapore City College · accountant</button>
+        <button type="button" class="demo-chip" data-email="kd@edusphere.demo">K.D. College · registrar</button>
+        <button type="button" class="demo-chip" data-email="faculty@edusphere.demo">Faculty · two colleges</button>
+      </div>
+      <p class="demo-note">Tap a role to fill the form. Every account sees only its own campus.</p>
+    </div>
+
+  </div>
+</section>
+<div class="console-shell" id="console-shell" hidden>
+  <aside class="sidebar">
+    <div class="side-brand">
+      <span class="brand-mark">E</span>
+      <div><b>EduSphere</b><small id="side-campus">—</small></div>
+    </div>
+    <nav class="side-nav" id="side-nav"></nav>
+    <div class="side-foot">
+      <a href="../index.html">← Public site</a>
+      <a href="https://github.com/suman876-ops/edusphere-v2/blob/main/README.md" target="_blank" rel="noopener">Documentation ↗</a>
+      <button type="button" class="link-btn" id="signout">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="panel">
+    <header class="panel-head">
+      <div>
+        <h1 id="panel-title">Dashboard</h1>
+        <p id="panel-sub">Your campus at a glance</p>
+      </div>
+      <div class="panel-actions">
+        <select class="campus-switch" id="campus-switch" aria-label="Campus" hidden></select>
+        <span class="who" id="who">—</span>
+        <button class="btn btn-solid" type="button" id="primary-action">New record</button>
+      </div>
+    </header>
+
+    <div class="panel-body" id="panel-body">
+      <div class="empty-note">Loading…</div>
+    </div>
+  </main>
+</div>
+
+<!-- ================================================================ setup -->
+<div class="modal" id="setup-modal" hidden>
+  <div class="modal-card glass-panel">
+    <h2>Set up your campus</h2>
+    <p>No campus is attached to this account yet. Create one to start — you will be its administrator.</p>
+    <form id="setup-form">
+      <div class="field">
+        <label for="setup-group">Trust / group name</label>
+        <input id="setup-group" required minlength="2" placeholder="Demo Education Trust" />
+      </div>
+      <div class="field">
+        <label for="setup-campus">Campus name</label>
+        <input id="setup-campus" required minlength="2" placeholder="Main Campus" />
+      </div>
+      <div class="field">
+        <label for="setup-slug">Campus slug</label>
+        <input id="setup-slug" required pattern="[a-z0-9][a-z0-9-]{1,30}" placeholder="main" />
+      </div>
+      <p class="form-status" id="setup-status" role="status" aria-live="polite"></p>
+      <button class="btn btn-solid" type="submit" id="setup-btn">Create campus</button>
+    </form>
+  </div>
+</div>
+<div class="modal" id="setup-modal" hidden>
+  <div class="modal-card glass-panel">
+    <h2>Set up your campus</h2>
+    <p>No campus is attached to this account yet. Create one to start — you will be its administrator.</p>
+    <form id="setup-form">
+      <div class="field">
+        <label for="setup-group">Trust / group name</label>
+        <input id="setup-group" required minlength="2" placeholder="Demo Education Trust" />
+      </div>
+      <div class="field">
+        <label for="setup-campus">Campus name</label>
+        <input id="setup-campus" required minlength="2" placeholder="Main Campus" />
+      </div>
+      <div class="field">
+        <label for="setup-slug">Campus slug</label>
+        <input id="setup-slug" required pattern="[a-z0-9][a-z0-9-]{1,30}" placeholder="main" />
+      </div>
+      <p class="form-status" id="setup-status" role="status" aria-live="polite"></p>
+      <button class="btn btn-solid" type="submit" id="setup-btn">Create campus</button>
+    </form>
+  </div>
+</div>
+<div class="modal" id="record-modal" hidden>
+  <div class="modal-card glass-panel wide">
+    <h2 id="record-title">New record</h2>
+    <form id="record-form">
+      <div class="record-fields" id="record-fields"></div>
+      <p class="form-status" id="record-status" role="status" aria-live="polite"></p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" type="button" id="record-cancel">Cancel</button>
+        <button class="btn btn-solid" type="submit" id="record-save">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+
+
 <footer class="footer">
   <div class="lotus lotus-c" aria-hidden="true">
     <svg viewBox="0 0 220 140" fill="none" stroke="currentColor" stroke-width="0.9">
@@ -412,7 +571,7 @@
     <p class="credit">Designed &amp; Deployed by <a href="https://github.com/suman876-ops/edusphere-v2">Project 2.0</a> <span class="sep">·</span> 5th Sem</p>
 
     <nav class="foot-links" aria-label="Site links">
-      <a href="console/index.html">Staff console</a>
+      <a href="#console" data-view-link="console">Staff console</a>
       <a href="https://github.com/suman876-ops/edusphere-v2" target="_blank" rel="noopener">Source code</a>
       <a href="https://github.com/suman876-ops/edusphere-v2/blob/main/README.md" target="_blank" rel="noopener">Read me</a>
       <a href="https://github.com/suman876-ops/edusphere-v2/blob/main/SECURITY.md" target="_blank" rel="noopener">Security</a>
@@ -434,6 +593,8 @@
 <script src="assets/js/config.js" defer></script>
 <script src="assets/js/api.js" defer></script>
 <script src="assets/js/search.js" defer></script>
+<script src="assets/js/resources.js" defer></script>
+<script src="assets/js/console.js" defer></script>
 <script src="assets/js/app.js" defer></script>
 </body>
 </html>
