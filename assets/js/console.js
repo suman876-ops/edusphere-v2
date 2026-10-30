@@ -189,6 +189,7 @@
   function spriteReady() {
     var defs = document.getElementById('sprite-defs');
     if (!defs || defs.childElementCount) return;
+    renderSidebar();
     fetch('../index.html').then(function (r) { return r.text(); }).then(function (html) {
       var doc = new DOMParser().parseFromString(html, 'text/html');
       var src = doc.getElementById('sprite-defs') || doc.querySelector('.sprite defs');
@@ -672,11 +673,34 @@
     });
   }
 
-  loadSession();
-  bindAuth();
-  if (state.session && state.session.access_token) {
-    showConsole().catch(function () { showAuth(); });
-  } else {
-    showAuth();
+  /* ------------------------------------------------------------- public API */
+  var booted = false;
+
+  function boot() {
+    if (booted) return;
+    booted = true;
+    loadSession();
+    bindAuth();
+  }
+
+  function open() {
+    boot();
+    document.getElementById('console-view').hidden = false;
+    if (state.session && state.session.access_token) {
+      showConsole().catch(function () { showAuth(); });
+    } else {
+      showAuth();
+    }
+  }
+
+  window.EduSphereConsole = {
+    open: open,
+    isSignedIn: function () {
+      return !!(state.session && state.session.access_token);
+    }
+  };
+
+  if (location.hash === '#console') {
+    open();
   }
 })();
