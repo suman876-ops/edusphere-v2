@@ -246,6 +246,15 @@
       node.style.transitionDelay = Math.min(index % 6, 5) * 40 + 'ms';
       io.observe(node);
     });
+
+    // grids and the timeline animate their children, so they need the class too
+    Array.prototype.forEach.call(
+      document.querySelectorAll('.grid, .timeline, .flow'),
+      function (node) {
+        node.classList.add('reveal');
+        io.observe(node);
+      }
+    );
   } else {
     reveals.forEach(function (node) { node.classList.add('in'); });
   }
