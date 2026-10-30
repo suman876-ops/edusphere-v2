@@ -52,18 +52,17 @@ The console signs in against the seeded database. Accounts are created per role;
 describes the demo accounts that were used during development and are recreated by the seed script. Every password is
 `EduSphere@123`. The console's sign-in screen lists these; tap a role to fill the form.
 
-| Email | Role | Campus |
+| Email | Role | Campuses |
 | --- | --- | --- |
-| principal@edusphere.demo | admin | Main |
-| registrar@edusphere.demo | registrar | Main |
-| accounts@edusphere.demo | accountant | Main |
-| faculty@edusphere.demo | faculty | Main and North |
-| library@edusphere.demo | librarian | Main |
-| hostel@edusphere.demo | warden | Main |
-| transport@edusphere.demo | transport | Main |
-| north.admin@edusphere.demo | admin | North |
-| student@edusphere.demo | student | Main |
-| parent@edusphere.demo | parent | Main |
+| admin@edusphere.demo | admin | all four |
+| midnapore@edusphere.demo | registrar | Midnapore College |
+| rnlk@edusphere.demo | admin | RNLK Women's College |
+| mcc@edusphere.demo | accountant | Midnapore City College |
+| kd@edusphere.demo | registrar | K.D. College |
+| faculty@edusphere.demo | faculty | Midnapore College and Midnapore City College |
+
+Every password is `EduSphere@123`. An account with more than one campus gets a campus switcher in
+the console header; an account with one campus does not, because there is nothing to switch to.
 
 What is seeded: 2 campuses, 4 departments, 3 programs, 3 batches, 4 sections, 11 students with
 guardians, 4 staff, 5 subjects, 6 timetable slots, 3 attendance sessions with 15 records,
