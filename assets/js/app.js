@@ -457,8 +457,191 @@
     Array.prototype.forEach.call(nodes, function (node) { io.observe(node); });
   }
 
+
+  /* ======================================================= programmes */
+  var programmeState = { rows: [], level: 'all', query: '' };
+  var programmeBody = document.getElementById('programme-body');
+
+  function renderProgrammes() {
+    if (!programmeBody) return;
+    var rows = programmeState.rows.filter(function (row) {
+      var levelOk = programmeState.level === 'all' || row.level === programmeState.level;
+      var text = (row.programme + ' ' + row.college_name + ' ' + (row.stream || '')).toLowerCase();
+      var queryOk = !programmeState.query || text.indexOf(programmeState.query.toLowerCase()) !== -1;
+      return levelOk && queryOk;
+    });
+
+    programmeBody.innerHTML = '';
+    if (!rows.length) {
+      var empty = document.createElement('tr');
+      var cell = document.createElement('td');
+      cell.colSpan = 5;
+      cell.appendChild(el('p', 'empty-note', 'No programme matches that search.'));
+      empty.appendChild(cell);
+      programmeBody.appendChild(empty);
+      return;
+    }
+
+    rows.slice(0, 120).forEach(function (row) {
+      var tr = el('tr');
+      tr.appendChild(el('td', 'programme-name', row.programme));
+      tr.appendChild(el('td', null, row.college_name));
+      tr.appendChild(el('td', null, row.level));
+      tr.appendChild(el('td', null, row.duration_years ? row.duration_years + ' years' : '—'));
+      tr.appendChild(el('td', null, row.intake ? String(row.intake) : '—'));
+      programmeBody.appendChild(tr);
+    });
+  }
+
+  function loadProgrammes() {
+    if (!programmeBody) return;
+    api.programmes()
+      .then(function (rows) {
+        programmeState.rows = rows || [];
+        renderProgrammes();
+      })
+      .catch(function (error) {
+        programmeBody.innerHTML = '';
+        var tr = document.createElement('tr');
+        var cell = document.createElement('td');
+        cell.colSpan = 5;
+        cell.appendChild(el('p', 'empty-note', 'Programmes could not be loaded: ' + error.message));
+        tr.appendChild(cell);
+        programmeBody.appendChild(tr);
+      });
+  }
+
+  var programmeSearch = document.getElementById('programme-search');
+  if (programmeSearch) {
+    programmeSearch.addEventListener('input', function () {
+      programmeState.query = programmeSearch.value || '';
+      renderProgrammes();
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.chip[data-level]'), function (chip) {
+    chip.addEventListener('click', function () {
+      Array.prototype.forEach.call(document.querySelectorAll('.chip[data-level]'), function (c) {
+        c.setAttribute('aria-pressed', String(c === chip));
+      });
+      programmeState.level = chip.getAttribute('data-level');
+      renderProgrammes();
+    });
+  });
+
+  /* ========================================================== notices */
+  function loadNotices() {
+    var grid = document.getElementById('notice-grid');
+    if (!grid) return;
+    api.notices(4)
+      .then(function (rows) {
+        grid.innerHTML = '';
+        if (!rows.length) {
+          grid.appendChild(el('p', 'empty-note', 'No notices have been published yet.'));
+          return;
+        }
+        rows.forEach(function (notice) {
+          var card = el('div', 'card reveal');
+          card.appendChild(icon('bell'));
+          card.appendChild(el('h3', null, notice.title));
+          card.appendChild(el('p', null, notice.body));
+          card.appendChild(el('span', 'tag', new Date(notice.published_at).toLocaleDateString('en-IN')));
+          card.classList.add('in');
+          grid.appendChild(card);
+        });
+      })
+      .catch(function () {
+        grid.innerHTML = '';
+        grid.appendChild(el('p', 'empty-note', 'Notices are unavailable right now.'));
+      });
+  }
+
+  /* ====================================================== application */
+  var applyForm = document.getElementById('apply-form');
+  if (applyForm) {
+    var collegeSelect = document.getElementById('a-college');
+    var programmeSelect = document.getElementById('a-programme');
+    var applyStatus = document.getElementById('apply-status');
+    var applyButton = document.getElementById('apply-submit');
+
+    function fillProgrammes(slug) {
+      programmeSelect.innerHTML = '';
+      var options = programmeState.rows.filter(function (row) { return row.college_slug === slug; });
+      if (!options.length) {
+        var none = el('option', null, 'Select a college first');
+        none.value = '';
+        programmeSelect.appendChild(none);
+        return;
+      }
+      var blank = el('option', null, 'Select a programme');
+      blank.value = '';
+      programmeSelect.appendChild(blank);
+      options.forEach(function (row) {
+        var opt = el('option', null, row.programme + ' · ' + row.level);
+        opt.value = row.programme;
+        programmeSelect.appendChild(opt);
+      });
+    }
+
+    function fillColleges() {
+      api.colleges().then(function (rows) {
+        collegeSelect.innerHTML = '<option value="">Select a college</option>';
+        rows.forEach(function (row) {
+          var opt = el('option', null, row.name);
+          opt.value = row.slug;
+          collegeSelect.appendChild(opt);
+        });
+      }).catch(function () { /* the form still validates on submit */ });
+    }
+
+    collegeSelect.addEventListener('change', function () { fillProgrammes(collegeSelect.value); });
+
+    applyForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (!applyForm.reportValidity()) return;
+
+      var marks = document.getElementById('a-marks').value;
+      var payload = {
+        college_slug: collegeSelect.value,
+        programme: programmeSelect.value,
+        full_name: document.getElementById('a-name').value.trim(),
+        email: document.getElementById('a-email').value.trim().toLowerCase(),
+        phone: document.getElementById('a-phone').value.trim()
+      };
+      var message = document.getElementById('a-message').value.trim();
+      if (marks) payload.marks_percent = Number(marks);
+      if (message) payload.message = message;
+
+      applyButton.disabled = true;
+      applyStatus.className = 'form-status';
+      applyStatus.textContent = 'Sending…';
+
+      api.apply(payload)
+        .then(function () {
+          applyForm.reset();
+          programmeSelect.innerHTML = '<option value="">Select a college first</option>';
+          applyStatus.className = 'form-status ok';
+          applyStatus.textContent = 'Application received. The college office will call you on the number you gave.';
+        })
+        .catch(function (error) {
+          var text = String(error.message || '');
+          applyStatus.className = 'form-status bad';
+          if (/already exists/i.test(text)) {
+            applyStatus.textContent = 'You have already applied for this programme with this email today.';
+          } else {
+            applyStatus.textContent = 'Could not send: ' + text;
+          }
+        })
+        .finally(function () { applyButton.disabled = false; });
+    });
+
+    fillColleges();
+  }
+
   structuralStats();
   loadColleges();
+  loadProgrammes();
+  loadNotices();
   load();
   watchNumbers();
 
