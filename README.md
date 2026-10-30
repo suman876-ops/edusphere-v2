@@ -1,114 +1,85 @@
-# EduSphere — site
+# EduSphere — Multi-Campus College ERP
 
-The public page for EduSphere, a multi-campus college ERP. Static HTML, no framework, and the
-content is read live from Supabase at page load.
+One platform for every college that joins it. A visitor searches across all colleges, compares
+programmes and seats, and applies once. After admission the same account carries attendance, marks
+and fees.
 
 **Live:** https://suman876-ops.github.io/edusphere-v2/
 
-## What is live data and what is not
+## What is on the site
 
-| On the page | Source |
+| Page | What it does | Where the data comes from |
+| --- | --- | --- |
+| Home | headline, admission call to action | static copy |
+| Colleges | every college on the platform, with code, principal, NAAC, address, phone, email, map link | `site_public_colleges()` |
+| Programmes | 107 programmes across the four colleges, searchable, filterable by level | `site_public_programmes()` |
+| Admission | three-step explainer and a working application form | writes `site_applications` |
+| Notices | notice board | `site_notices` |
+| Sign in | one door: students and parents reach the portal, staff reach the console | Supabase Auth |
+
+## The four colleges
+
+| Campus code | College | Established | NAAC |
+| --- | --- | --- | --- |
+| CMP-PM-01 | Midnapore College (Autonomous) | 1873 | A+ (3.60) |
+| CMP-PM-02 | Raja Narendra Lal Khan Women's College (Autonomous) | 1957 | A+ (3.39) |
+| CMP-PM-03 | Midnapore City College | 2017 | not accredited |
+| CMP-PM-04 | K.D. College of Commerce & General Studies | 1961 | B+ (2.51) |
+
+Departments, programmes, intake and contact details are transcribed from each college's own
+admission page and prospectus. Student and staff rows are labelled `SAMPLE-` — no real student data
+was collected from any college.
+
+## Roles and dashboards
+
+Each role in the workflow has its own account, its own sidebar and its own dashboard tiles.
+Password for every demo account: `EduSphere@123`.
+
+| Email | Role | Sees |
+| --- | --- | --- |
+| principal@edusphere.demo | admin | every module |
+| admin@edusphere.demo | admin (cluster) | every module, all four campuses |
+| midnapore@edusphere.demo | registrar | students, admissions, academic structure |
+| accounts@edusphere.demo | accountant | fee heads, invoices, payments |
+| mcc@edusphere.demo | accountant | same, at Midnapore City College |
+| faculty@edusphere.demo | faculty | attendance, exams, marks, timetable, LMS |
+| hod@edusphere.demo | faculty (HoD) | same, department level |
+| librarian@edusphere.demo | librarian | books, issues, students |
+| warden@edusphere.demo | warden | hostels, rooms, allocations |
+| transport@edusphere.demo | transport | routes, stops, students |
+| student@edusphere.demo | student | own attendance, marks, fees, notices |
+| parent@edusphere.demo | parent | the same for their child, read-only |
+
+## How the system is built
+
+| Layer | What runs |
 | --- | --- |
-| Module cards (18) | `site_modules` in Supabase |
-| The notice card | latest row in `site_notices` |
-| Campus dropdown | `site_campuses` |
-| Enquiry form | inserts into `site_enquiries` |
-| Portals, roles, lifecycle counts | counted from the page itself |
-| Everything else | static copy |
+| Interface | one static page, three views (public, portal, console) |
+| Data | PostgreSQL 16 with row-level security on 34 tables |
+| Identity | Supabase Auth, email and password, confirmed addresses |
+| Delivery | GitHub Pages, with a service worker for the installed app |
+| Verification | 13 build checks and a CI workflow that blocks a stale commit |
 
-The public page carries no invented figures. If the API is unreachable the module grid says so and
-offers a retry rather than falling back to a snapshot.
+Row-level security is the boundary, not the interface: a student can read only their own rows, a
+parent only their child's, and staff only the campuses they belong to. That is enforced in the
+database and tested by running queries as each role.
 
-The **console** is different: it ships with a seeded demo campus so every screen has something to
-show. Those rows are real database records, listed below, and are deleted with two statements before
-a real college starts using the system.
-
-## Institutions in the database
-
-Four colleges, each modelled as a campus under one trust. Departments, programmes and intake
-figures come from the colleges' own admission pages and prospectuses; contact details and grades are
-as published by them.
-
-| Campus | Established | NAAC | Departments | Programmes | Source |
-| --- | --- | --- | --- | --- | --- |
-| Midnapore College (Autonomous) | 1873 | A (3.58) | 24 | 39 | midnaporecollege.ac.in |
-| Raja Narendra Lal Khan Women's College (Autonomous) | 1957 | A+ (3.39) | 23 | 36 | rnlkwc.ac.in |
-| Midnapore City College | 2017 | — | 17 | 25 | mcconline.org.in |
-| K.D. College of Commerce & General Studies | 1961 | B+ | 8 | 7 | kdcollege.ac.in |
-
-Programme intake is recorded where the college publishes it — for example Physics 50, Chemistry 50,
-Mathematics 60 and English 70 at Midnapore College; B.Sc. Computer Science 110 and BCA 198 at
-Midnapore City College. Where a college does not publish a figure the column is left empty rather
-than guessed.
-
-**What is real and what is sample.** Institution records — campuses, departments, programmes, intake,
-contacts — are transcribed from the official websites. Student, staff and notice rows are marked
-`SAMPLE-` and exist so the screens have something to show. No real student data was collected from
-any college.
-
-## Demo accounts
-
-The console signs in against the seeded database. Accounts are created per role; the table below
-describes the demo accounts that were used during development and are recreated by the seed script. Every password is
-`EduSphere@123`. The console's sign-in screen lists these; tap a role to fill the form.
-
-| Email | Role | Campuses |
-| --- | --- | --- |
-| admin@edusphere.demo | admin | all four |
-| midnapore@edusphere.demo | registrar | Midnapore College |
-| rnlk@edusphere.demo | admin | RNLK Women's College |
-| mcc@edusphere.demo | accountant | Midnapore City College |
-| kd@edusphere.demo | registrar | K.D. College |
-| faculty@edusphere.demo | faculty | Midnapore College and Midnapore City College |
-
-Every password is `EduSphere@123`. An account with more than one campus gets a campus switcher in
-the console header; an account with one campus does not, because there is nothing to switch to.
-
-What is seeded: 2 campuses, 4 departments, 3 programs, 3 batches, 4 sections, 11 students with
-guardians, 4 staff, 5 subjects, 6 timetable slots, 3 attendance sessions with 15 records,
-2 exams with 10 marks, 3 fee heads, 24 invoices, 12 payments, 5 books, 4 loans, 2 hostels,
-3 rooms, 3 allocations, 2 routes, 4 stops, 2 courses, 2 assignments, 3 submissions, 4 notices
-and 5 admission applications.
-
-To remove every seeded row before real use:
-
-```sql
-delete from erp_groups where id = 'a0000000-0000-4000-8000-000000000001';
-delete from auth.users where email like '%@edusphere.demo';
-```
-
-These accounts exist so the console can be demonstrated. They are not a security boundary — the
-passwords are published in this file — and they must be deleted before a real college uses it.
-
-## Languages
-
-| Language | Where | What it does |
-| --- | --- | --- |
-| HTML | `index.html` | markup and the inline SVG icon sprite |
-| CSS | `assets/css/styles.css` | design tokens, warm palette, glass cards, form |
-| JavaScript | `assets/js/app.js` | renders modules, notice, campuses; filters; search; form submit |
-| JavaScript | `assets/js/api.js` | fetch client for Supabase REST |
-| JavaScript | `assets/js/config.js` | public URL and publishable key |
-| TypeScript | `src/search.ts` → `assets/js/search.js` | typed search core |
-| Python | `tools/build.py` | eight checks: assets, icons, secrets, config, a11y, more |
-| Bash | `tools/serve.sh` | local preview |
-| YAML | `.github/workflows/ci.yml` | runs the checks on every push |
-| Make | `Makefile` | shortcuts |
-| Markdown | `README.md`, `SECURITY.md` | docs |
-
-## Layout
+## Repository layout
 
 ```
 .
-├── index.html
+├── index.html                  public site, portal and console in one page
 ├── assets/
-│   ├── css/styles.css
-│   └── js/{config.js, api.js, app.js, search.js}
-├── src/search.ts
-├── tools/{build.py, serve.sh}
-├── .github/workflows/ci.yml
-├── SECURITY.md
-└── Makefile
+│   ├── css/styles.css          design system, layout, motion
+│   ├── css/console.css         console and portal styling
+│   └── js/                     config, api, app, console, portal, resources, search
+├── src/search.ts               typed search core, compiled to assets/js/search.js
+├── tools/build.py              13 checks: links, anchors, icons, secrets, a11y
+├── tools/serve.sh              local preview
+├── manifest.webmanifest        installable app
+├── sw.js                       offline shell
+├── SECURITY.md                 policies and what was tested
+└── Makefile                    make, make serve, make zip
 ```
 
 ## Working on it
@@ -119,16 +90,15 @@ make serve      # http://localhost:8080
 make zip        # dist/edusphere-site.zip
 ```
 
-Content lives in the database, not in the repository. To change a module or a notice, edit the row
-in Supabase; the page picks it up on the next load.
+Content lives in the database. To add a college, add its campus, departments and programmes; the
+directory, the programme search and the application form pick it up without a code change.
 
 ## Before real traffic
 
-- add a CAPTCHA to the enquiry form
-- rate limit per IP as well as per email
-- wire enquiries to an email or a dashboard, so nobody has to read the table by hand
-
-See [SECURITY.md](SECURITY.md) for what the policies allow and what was tested.
+- add a CAPTCHA to the application form and rate limit per IP
+- turn on leaked-password protection in Supabase Auth
+- delete the demo accounts and their sample rows
+- wire applications to an email or a dashboard so nobody reads the table by hand
 
 ## Licence
 
