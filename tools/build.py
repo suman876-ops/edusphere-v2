@@ -207,6 +207,34 @@ def check_console() -> list[str]:
     return problems
 
 
+
+# Pictographic emoji only. Dingbats such as the gold star that decorates a section
+# label are typography: they render as text in every font stack we use.
+EMOJI = re.compile(
+    "[" "\U0001F000-\U0001FAFF" "\U0001F1E6-\U0001F1FF" "\uFE0F" "]",
+    re.UNICODE,
+)
+
+
+def check_no_emoji() -> list[str]:
+    """Icons come from the SVG sprite; an emoji in markup renders differently everywhere."""
+    problems = []
+    for page in (INDEX, ROOT / "console" / "index.html"):
+        if not page.exists():
+            continue
+        for number, line in enumerate(read(page).splitlines(), 1):
+            for match in EMOJI.finditer(line):
+                problems.append(f"{page.name}:{number} emoji {match.group(0)!r} in markup")
+    return problems
+
+
+def check_sprite_id() -> list[str]:
+    text = read(INDEX)
+    if 'id="sprite-defs"' not in text:
+        return ['the sprite <defs> has no id="sprite-defs" — the console cannot reuse it']
+    return []
+
+
 CHECKS = [
     ("assets", "every referenced asset exists", check_assets),
     ("icons", "every icon reference resolves to the sprite", check_icons),
@@ -218,6 +246,8 @@ CHECKS = [
     ("a11y", "labels, lang and live regions", check_accessibility),
     ("links", "every internal link resolves", check_links),
     ("console", "console shell is wired to its scripts", check_console),
+    ("emoji", "no emoji left in markup", check_no_emoji),
+    ("sprite", "sprite is reusable by the console", check_sprite_id),
 ]
 
 
