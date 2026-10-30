@@ -306,11 +306,18 @@
 
           card.appendChild(el('h3', null, college.name));
 
+          if (college.campus_code) {
+            var code = el('p', 'college-code', college.campus_code);
+            card.appendChild(code);
+          }
+
           var meta = [];
           if (college.established_year) meta.push('Est. ' + college.established_year);
           if (college.naac_grade) meta.push('NAAC ' + college.naac_grade);
-          if (college.college_kind) meta.push(college.college_kind);
+          else meta.push('NAAC not accredited');
           if (meta.length) card.appendChild(el('p', null, meta.join(' · ')));
+
+          if (college.college_type) card.appendChild(el('p', 'college-type', college.college_type));
 
           card.appendChild(el('p', null,
             college.departments + ' departments · ' + college.ug_programmes + ' UG and '
@@ -341,6 +348,7 @@
           }
           fact('Phone', college.phone, college.phone ? 'tel:' + college.phone.replace(/[^0-9+]/g, '') : null);
           fact('Email', college.email, college.email ? 'mailto:' + college.email : null);
+          fact('Principal', college.principal, null);
           fact('Affiliation', college.affiliation, null);
           card.appendChild(facts);
 
