@@ -723,7 +723,7 @@
 
   function open() {
     boot();
-    document.getElementById('console-view').hidden = false;
+    document.getElementById('console').hidden = false;
     if (state.session && state.session.access_token) {
       showConsole().catch(function () { showAuth(); });
     } else {
