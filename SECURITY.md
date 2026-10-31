@@ -1,60 +1,97 @@
 # Security notes
 
-The site is static and talks to Supabase directly from the browser. That means the API key in
-`assets/js/config.js` is public, and the only thing standing between a visitor and the data is
-PostgreSQL row-level security. This document records what that means and what was checked.
+The site is static and talks to Supabase from the browser. The API key in `assets/js/config.js` is
+public by design, so the real boundary is PostgreSQL row-level security. This is what that boundary
+is, and what the last audit found.
 
 ## The key
 
-`config.js` holds a **publishable** key (`sb_publishable_…`). It is safe to publish: it carries no
-privileges of its own, and every request it makes is filtered by the policies below. The
-`service_role` key — which bypasses RLS entirely — is never in this repository, and `tools/build.py`
-fails the build if the string appears in any file.
+`config.js` holds a **publishable** key (`sb_publishable_…`). It carries no privileges of its own;
+every request it makes is filtered by the policies below. The `service_role` key is never in this
+repository, and `tools/build.py` fails the build if one appears.
 
-## Tables and policies
+## Two levels of access control
 
-| Table | anon can read | anon can write | Notes |
-| --- | --- | --- | --- |
-| `site_modules` | published rows only | no | the module catalogue |
-| `site_campuses` | published rows only | no | campus list for the enquiry form |
-| `site_notices` | published, already live, not expired | no | the notice card |
-| `site_enquiries` | **no** | insert, `status = 'new'` only | staff read through the service role |
+1. **Campus.** A row belongs to a campus, and `erp_has_campus()` decides whether the signed-in person
+   is staff there. Students and parents are excluded from that function on purpose — they get their
+   rows from the self and child policies instead.
+2. **Module.** A row also belongs to a module (fees, library, hostel, exams…), and `erp_can_read()`
+   checks the role matrix in `erp_role_modules`. A librarian may read the library module; the fee
+   ledger is not theirs.
 
-`site_enquiries` deliberately has no `SELECT` policy for `anon` or `authenticated`. RLS plus the
-absence of a `GRANT` means a visitor cannot read back enquiries, their own or anyone else's — the
-form posts with `Prefer: return=minimal` so it does not need the row back.
+| Role | Modules it may read |
+| --- | --- |
+| admin | all |
+| registrar | students, academics, admissions, timetable, comms, files, iam |
+| accountant | fees, students, comms |
+| faculty | students, attendance, exams, timetable, lms, comms |
+| librarian | library, students, comms |
+| warden | hostel, students, comms |
+| transport | transport, students, comms |
+| student / parent | own rows only, through separate policies |
+
+Writes are narrower still: a role may write only inside a campus it belongs to, and delete is
+reserved for admins.
+
+## The public surface
+
+| Function / table | anon can | Notes |
+| --- | --- | --- |
+| `site_public_colleges()` | execute | returns only published institution fields |
+| `site_public_programmes()` | execute | programme, level, seats |
+| `site_modules`, `site_campuses`, `site_notices` | select | published rows only |
+| `site_applications` | insert only | cannot be read back by anyone anonymous |
+| `site_enquiries` | insert only | same |
+| every `erp_*` table | **nothing** | grants revoked from anon |
 
 ## Abuse control
 
-A `BEFORE INSERT` trigger caps an email address at five enquiries per hour. Beyond that the insert
-raises, and the form shows a plain message instead of a stack trace. The function is
-`SECURITY DEFINER` with `search_path` pinned to `public, pg_temp`, and `EXECUTE` is revoked from
-`anon` and `authenticated`.
+- An application is refused if the same email already applied for that programme in the last day,
+  or has sent five applications in the last hour.
+- Enquiries are capped at five per email per hour.
+- Both guards are `SECURITY DEFINER` with `search_path` pinned, and `EXECUTE` is revoked from
+  `public`, `anon` and `authenticated`.
 
-## What was verified
+## What the audit tested
 
-| Check | Result |
+Run as each role inside the database, not inferred from the policy text:
+
+| Test | Result |
 | --- | --- |
-| RLS enabled on all four tables | yes |
-| anon can read `site_modules` | 18 rows |
-| anon can read `site_enquiries` | denied — `permission denied for table site_enquiries` |
-| anon can insert an enquiry with `status = 'new'` | accepted |
-| anon can insert with `status = 'closed'` | rejected — RLS policy violation |
-| anon can update or delete any row | no policy, no grant |
-| enquiry rate limit | 5 per email per hour, enforced in a trigger |
-| service key in the repository | none; the build fails if one appears |
+| anon reads `erp_students` | refused — permission denied |
+| anon reads `site_applications` | refused |
+| anon reads the college directory | 4 colleges |
+| student reads the roll | 1 row — their own |
+| parent updates a mark | no rows affected |
+| librarian reads fee invoices | 0 rows |
+| librarian reads books | 5 rows |
+| accountant reads students / invoices | 12 / 36 rows |
+| faculty reads marks / invoices | 48 / 0 rows |
+| principal reads invoices | 145 rows, all four campuses |
+| dashboard visible before sign-in | fixed — `[hidden]` now wins over display rules |
 
-## Known limits
+## Client hardening
 
-- The publishable key is public and can be scraped. That is by design; the rate limit and RLS are
-  the defence, not secrecy.
-- The rate limit is per email address, not per IP — an attacker with many addresses is not slowed by
-  it. Supabase's own rate limiting at the edge is the next layer, and a CAPTCHA belongs on the form
-  before this goes in front of real traffic.
-- Enquiries are not emailed anywhere yet; they land in the table.
-- Content is edited with SQL or the Supabase dashboard. There is no admin UI, and therefore no admin
-  UI to secure.
+- A Content-Security-Policy limits scripts to the site itself, styles to the site and Google Fonts,
+  and network calls to Supabase. No inline script is permitted anywhere.
+- Every external link opens with `rel="noopener noreferrer"`.
+- User-supplied text is written with `textContent`, never `innerHTML`.
+- The build refuses a page with a dead internal link, a missing anchor target, an unresolved icon,
+  a missing form label, or a committed secret.
+
+## Still open, and why
+
+- **Leaked-password protection** is off. It is a dashboard switch (Authentication → Policies), not
+  something SQL can turn on.
+- **The demo accounts** are published in the README with a known password. They must be deleted
+  before real use: `delete from auth.users where email like '%@edusphere.demo';`
+- **Rate limiting is per email**, not per IP. A determined attacker with many addresses is not slowed
+  by it; a CAPTCHA on the application form is the next step.
+- **Legacy objects** from the earlier schema — `app_sequences`, `job_queue`, `auth_*` helper
+  functions — still appear in the Supabase advisor. They are not part of this site and were left
+  untouched rather than dropped, since another project may depend on them.
+- **TOTP and SSO** from the project brief are not built. Authentication is email and password only.
 
 ## Reporting
 
-Security issues: open a private advisory on the repository rather than a public issue.
+Open a private security advisory on the repository rather than a public issue.
