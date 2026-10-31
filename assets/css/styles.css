@@ -1734,3 +1734,86 @@ h1 { line-height: 1.06; letter-spacing: -0.025em; }
  * sign-in card. This makes hidden mean hidden, whatever the display value.
  */
 [hidden] { display: none !important; }
+
+
+/* ==================================================== workflow page bits */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.side-panel {
+  padding: 20px 22px;
+  border-radius: var(--r);
+  border: 1px solid rgba(120, 74, 42, 0.16);
+  background: rgba(255, 253, 249, 0.62);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: var(--shadow);
+}
+
+.side-panel h3 {
+  font-family: var(--display);
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--maroon);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plain-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plain-list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.plain-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.7;
+}
+
+.outputs {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 18px;
+  align-items: start;
+  margin-top: 14px;
+  padding: 18px 20px;
+  border-radius: var(--r);
+  border: 1px solid rgba(120, 74, 42, 0.16);
+  border-left: 3px solid rgba(165, 20, 44, 0.35);
+  background: rgba(255, 253, 249, 0.62);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 760px) {
+  .two-col { grid-template-columns: 1fr; }
+  .outputs { grid-template-columns: 1fr; gap: 10px; }
+}
