@@ -135,13 +135,28 @@ def check_config() -> list[str]:
     return problems
 
 
+
+
+def _jwt_role(payload_b64: str) -> str:
+    """Read the role claim out of a JWT payload without verifying it."""
+    try:
+        padded = payload_b64 + "=" * (-len(payload_b64) % 4)
+        payload = json.loads(base64.urlsafe_b64decode(padded))
+        return str(payload.get("role", ""))
+    except Exception:
+        return ""
+
+
 def check_no_secrets() -> list[str]:
     problems = []
     patterns = [
         (re.compile(r'"role"\\s*:\\s*"service_role"'), "a service-role JWT payload appears"),
         (re.compile(r"service_role[_-]?key\\s*[:=]\\s*['\"][^'\"]{8,}", re.I),
          "a service-role credential appears"),
-        (re.compile(r"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+"),
+        # A JWT is only a secret when it can do something. The client config is
+        # allowed to carry the project's anon key, which is public by design and
+        # is filtered by row-level security; a service_role key never is.
+        (re.compile(r"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.([A-Za-z0-9_-]+)\.[A-Za-z0-9_-]+"),
          "a raw JWT is committed"),
         (re.compile(r"(?i)(api[_-]?secret|password|private[_-]?key)\s*[:=]\s*['\"][^'\"]{8,}"),
          "a credential-shaped assignment appears"),
@@ -154,6 +169,9 @@ def check_no_secrets() -> list[str]:
             for match in pattern.finditer(text):
                 snippet = match.group(0)[:60]
                 if path.name == "SECURITY.md" and "service_role" in snippet.lower():
+                    continue
+                # an anon or authenticated JWT is a public client key, not a secret
+                if message.startswith("a raw JWT") and _jwt_role(match.group(1)) in ("anon", "authenticated"):
                     continue
                 problems.append(f"{path.relative_to(ROOT)}: {message} — {snippet!r}")
     return problems
