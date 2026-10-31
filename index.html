@@ -73,6 +73,8 @@
       <a href="#colleges">Colleges</a>
       <a href="#programmes">Programmes</a>
       <a href="#apply">Admission</a>
+      <a href="#platform">How it works</a>
+      <a href="#lifecycle">Journey</a>
       <a href="#notices">Notices</a>
     </nav>
     <button class="nav-cta" type="button" data-view-link="console">Sign in</button>
@@ -242,6 +244,149 @@
           <p class="form-status" id="apply-status" role="status" aria-live="polite"></p>
         </div>
       </form>
+    </div>
+  </section>
+
+  <!-- ========================================================== platform -->
+  <section id="platform">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-label"><span class="ico-gold">✦</span>How it works</span>
+        <h2>Six doors, <em>one platform</em></h2>
+        <div class="divider"><i></i></div>
+        <p>Every visitor arrives through one of six doors. The request meets the edge, is checked at
+          the gateway, is handled by one of eighteen modules, and lands in a database that shows a
+          campus only its own rows.</p>
+      </div>
+
+      <div class="arch reveal">
+        <div class="arch-band arch-access">
+          <span class="arch-label">Access via</span>
+          <div class="arch-items">
+            <span class="arch-chip strong">Public website + admission portal</span>
+            <span class="arch-chip strong">Student portal</span>
+            <span class="arch-chip strong">Parent portal</span>
+            <span class="arch-chip strong">Faculty portal</span>
+            <span class="arch-chip strong">Admin and staff console</span>
+            <span class="arch-chip strong">Mobile app — QR scan, GPS</span>
+          </div>
+        </div>
+
+        <div class="arch-link"><span>↓</span></div>
+
+        <div class="arch-band arch-edge">
+          <span class="arch-label">Edge</span>
+          <div class="arch-items">
+            <span class="arch-chip">Internet</span>
+            <span class="arch-chip">CDN and WAF — static assets, tenant subdomains</span>
+            <span class="arch-chip">API gateway — TLS, rate limit, tenant resolver, JWT pre-check</span>
+          </div>
+        </div>
+
+        <div class="arch-link"><span>↓</span></div>
+
+        <div class="arch-band arch-app">
+          <span class="arch-label">Application</span>
+          <div class="arch-items">
+            <span class="arch-chip">Auth and IAM</span>
+            <span class="arch-chip">Tenancy</span>
+            <span class="arch-chip">Admissions</span>
+            <span class="arch-chip">Students</span>
+            <span class="arch-chip">Faculty and HR</span>
+            <span class="arch-chip">Academics</span>
+            <span class="arch-chip">Timetable</span>
+            <span class="arch-chip">Attendance</span>
+            <span class="arch-chip">Exams and results</span>
+            <span class="arch-chip">Fees and payments</span>
+            <span class="arch-chip">Library</span>
+            <span class="arch-chip">Hostel</span>
+            <span class="arch-chip">Transport</span>
+            <span class="arch-chip">LMS-lite</span>
+            <span class="arch-chip">Communication</span>
+            <span class="arch-chip">Reports and BI</span>
+            <span class="arch-chip">Files</span>
+            <span class="arch-chip">Audit</span>
+          </div>
+        </div>
+
+        <div class="arch-link"><span>↓</span></div>
+
+        <div class="arch-band arch-data">
+          <span class="arch-label">Data</span>
+          <div class="arch-items">
+            <span class="arch-chip">PostgreSQL 16 — row-level security</span>
+            <span class="arch-chip">Cache and QR tokens</span>
+            <span class="arch-chip">Background jobs</span>
+            <span class="arch-chip">Search index</span>
+            <span class="arch-chip">Object storage</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="glass-panel side-panel reveal">
+          <h3><span class="ico-gold">✦</span> India-specific integrations</h3>
+          <ul class="plain-list">
+            <li>DigiLocker — document verification</li>
+            <li>Aadhaar eKYC — optional identity check</li>
+            <li>UPI and Razorpay — fee payment</li>
+            <li>SMS and email — transactional</li>
+            <li>GST invoicing — receipts</li>
+            <li>State and university exam system</li>
+            <li>Regional language support</li>
+          </ul>
+        </div>
+
+        <div class="glass-panel side-panel reveal">
+          <h3><span class="ico-gold">✦</span> Real-time services</h3>
+          <ul class="plain-list">
+            <li>Socket notifications</li>
+            <li>Live updates across a campus</li>
+            <li>Email and SMS — alerts, OTP, notices</li>
+            <li>Push notification to the mobile app</li>
+            <li>Background jobs — receipts, reports</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= lifecycle -->
+  <section id="lifecycle">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-label"><span class="ico-gold">✦</span>The journey</span>
+        <h2>From enquiry to <em>alumni</em></h2>
+        <div class="divider"><i></i></div>
+        <p>Nine stages, one account. What a student does at each stage is the same platform, the
+          same record, carried forward.</p>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="tl"><span class="tl-num">1</span><div><b>Enquiry and application</b><span>The form on this site, with a reference number.</span></div></div>
+        <div class="tl"><span class="tl-num">2</span><div><b>Admission and fee payment</b><span>Offer, acceptance, first instalment.</span></div></div>
+        <div class="tl"><span class="tl-num">3</span><div><b>Academic setup</b><span>Programme, batch, section, timetable.</span></div></div>
+        <div class="tl"><span class="tl-num">4</span><div><b>Teaching and attendance</b><span>QR and geofenced attendance per class.</span></div></div>
+        <div class="tl"><span class="tl-num">5</span><div><b>Exams and results</b><span>Marks, grades, CGPA.</span></div></div>
+        <div class="tl"><span class="tl-num">6</span><div><b>Ongoing operations</b><span>Library, hostel, transport.</span></div></div>
+        <div class="tl"><span class="tl-num">7</span><div><b>Communication</b><span>Notices to students, parents and staff.</span></div></div>
+        <div class="tl"><span class="tl-num">8</span><div><b>Reports and compliance</b><span>Dashboards and statutory returns.</span></div></div>
+        <div class="tl"><span class="tl-num">9</span><div><b>Alumni</b><span>The record outlives the course.</span></div></div>
+      </div>
+
+      <div class="outputs reveal">
+        <span class="arch-label">Outputs</span>
+        <div class="arch-items">
+          <span class="arch-chip">ID cards</span>
+          <span class="arch-chip">Hall tickets</span>
+          <span class="arch-chip">Mark sheets</span>
+          <span class="arch-chip">Fee receipts</span>
+          <span class="arch-chip">Reports — Excel and PDF</span>
+          <span class="arch-chip">Notifications</span>
+          <span class="arch-chip">Live bus tracking</span>
+          <span class="arch-chip">Search across students, books, staff</span>
+        </div>
+      </div>
     </div>
   </section>
 
