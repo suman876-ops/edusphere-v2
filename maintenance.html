@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EduSphere — Scheduled maintenance</title>
+<meta name="description" content="EduSphere is briefly offline for scheduled maintenance. Admissions, portal and console will be back shortly." />
+<meta name="robots" content="noindex, follow" />
+<meta name="theme-color" content="#f8f2e7" />
+<!-- Send crawlers and well-behaved clients a retry hint (seconds) -->
+<meta http-equiv="retry-after" content="1800" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23a5142c'/><path d='M12 3.6 5.6 5.9v4.8c0 3.7 2.6 6.9 6.4 8.3 3.8-1.4 6.4-4.6 6.4-8.3V5.9L12 3.6Z' fill='%23fff6e6'/><path d='M8.6 8.2h6.8M8.6 10.9h6.8M8.6 13.6h4.2' stroke='%23a5142c' stroke-width='1.1' stroke-linecap='round'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================= tokens
+     Same palette and type as the EduSphere site, so the maintenance
+     page reads as part of the product rather than an error page. */
+  :root {
+    --paper: #f8f2e7;
+    --paper-2: #f2e8d6;
+    --paper-3: #fffdf8;
+
+    --ink: #33201a;
+    --ink-soft: #6a4a3b;
+    --ink-faint: #7d6353;
+
+    --maroon: #a5142c;
+    --maroon-deep: #7d0f22;
+
+    --gold: #b8892f;
+    --gold-line: rgba(184, 137, 47, 0.35);
+
+    --line: rgba(120, 74, 42, 0.16);
+    --line-soft: rgba(120, 74, 42, 0.09);
+
+    --shadow: 0 22px 48px -34px rgba(86, 45, 16, 0.55);
+
+    --r: 18px;
+    --r-lg: 26px;
+    --shell: 780px;
+    --pad: clamp(20px, 4vw, 40px);
+
+    --display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+    --sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* warm paper wash + a single soft light from the top */
+  .wash {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(900px 620px at 50% -8%, #fffaf0 0%, transparent 62%),
+      radial-gradient(700px 520px at 88% 108%, #f6e7cf 0%, transparent 60%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.5;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  }
+
+  /* ------------------------------------------------------------- header */
+  .top {
+    width: 100%;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 22px var(--pad);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(160deg, var(--maroon) 0%, var(--maroon-deep) 100%);
+    box-shadow: 0 8px 18px -12px rgba(125, 15, 34, 0.9);
+  }
+  .mark svg { width: 20px; height: 20px; display: block; }
+
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+  }
+  .wordmark span { color: var(--maroon); }
+
+  .top .tag {
+    margin-left: auto;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 12px;
+    background: var(--paper-3);
+    white-space: nowrap;
+  }
+
+  /* --------------------------------------------------------------- card */
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 3vw, 34px) var(--pad) clamp(28px, 5vw, 56px);
+  }
+
+  .card {
+    width: 100%;
+    max-width: var(--shell);
+    background: linear-gradient(180deg, rgba(255, 253, 249, 0.92) 0%, rgba(255, 252, 246, 0.74) 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow);
+    padding: clamp(26px, 4.4vw, 46px);
+    backdrop-filter: blur(6px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* thin gold rule along the top edge */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold-line), var(--gold), var(--gold-line), transparent);
+  }
+
+  /* ------------------------------------------------------------- status */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--maroon);
+    background: rgba(165, 20, 44, 0.06);
+    border: 1px solid rgba(165, 20, 44, 0.18);
+    border-radius: 999px;
+    padding: 7px 14px 7px 12px;
+    margin-bottom: 20px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--maroon);
+    box-shadow: 0 0 0 0 rgba(165, 20, 44, 0.5);
+    animation: pulse 2.4s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(165, 20, 44, 0.45); }
+    70%  { box-shadow: 0 0 0 9px rgba(165, 20, 44, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(165, 20, 44, 0); }
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(30px, 5.2vw, 46px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--maroon);
+  }
+
+  .lede {
+    font-size: clamp(15px, 1.9vw, 17px);
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+    max-width: 58ch;
+  }
+
+  .lede-bn {
+    font-size: 15px;
+    color: var(--ink-faint);
+    margin: 0 0 26px;
+    padding-left: 14px;
+    border-left: 2px solid var(--gold-line);
+  }
+
+  /* ---------------------------------------------------------- countdown */
+  .clock {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0 0 10px;
+  }
+
+  .unit {
+    background: var(--paper-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 12px 8px 10px;
+    text-align: center;
+  }
+
+  .unit b {
+    display: block;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(24px, 4.4vw, 34px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .unit small {
+    display: block;
+    margin-top: 7px;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .eta {
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    margin: 0 0 26px;
+  }
+  .eta strong { color: var(--ink-soft); font-weight: 600; }
+
+  /* ------------------------------------------------------------- blocks */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+
+  .panel {
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r);
+    padding: 16px 18px;
+    background: rgba(255, 253, 249, 0.6);
+  }
+
+  .panel h2 {
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+
+  .panel ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  .panel li {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    padding: 5px 0;
+  }
+
+  .panel li svg { flex: 0 0 auto; margin-top: 3px; }
+
+  .tick { color: var(--maroon); }
+  .spark { color: var(--gold); }
+
+  /* ------------------------------------------------------------ actions */
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 11px 22px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+
+  .btn-primary {
+    color: #fff8ee;
+    background: linear-gradient(160deg, var(--maroon) 0%, var(--maroon-deep) 100%);
+    border: 1px solid var(--maroon-deep);
+    box-shadow: 0 14px 26px -18px rgba(125, 15, 34, 0.95);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 18px 30px -18px rgba(125, 15, 34, 0.95); }
+
+  .btn-ghost {
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover { background: rgba(255, 253, 249, 0.85); color: var(--ink); }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--maroon);
+    outline-offset: 3px;
+  }
+
+  .checked {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ------------------------------------------------------------- footer */
+  footer {
+    max-width: 1160px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 18px var(--pad) 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    align-items: center;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line-soft);
+  }
+  footer a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--line); }
+  footer a:hover { color: var(--maroon); border-color: var(--maroon); }
+  footer .sep { margin-left: auto; }
+
+  /* --------------------------------------------------------- responsive */
+  @media (max-width: 620px) {
+    .grid { grid-template-columns: 1fr; }
+    .top .tag { display: none; }
+    .checked { margin-left: 0; width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* printing the page should still look like a notice */
+  @media print {
+    .wash, .grain, .actions { display: none; }
+    body { background: #fff; }
+    .card { box-shadow: none; border-color: #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="wash" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="mark" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 3.6 5.6 5.9v4.8c0 3.7 2.6 6.9 6.4 8.3 3.8-1.4 6.4-4.6 6.4-8.3V5.9L12 3.6Z" fill="#fff6e6"/><path d="M8.6 8.2h6.8M8.6 10.9h6.8M8.6 13.6h4.2" stroke="#a5142c" stroke-width="1.1" stroke-linecap="round"/></svg>
+  </div>
+  <div class="wordmark">Edu<span>Sphere</span></div>
+  <div class="tag">Scheduled maintenance</div>
+</header>
+
+<main>
+  <div class="card" role="main">
+    <div class="status"><span class="dot" aria-hidden="true"></span> Maintenance in progress</div>
+
+    <h1>We are upgrading the <em>campus platform</em> right now.</h1>
+
+    <p class="lede">
+      Admissions, the student portal and the staff console are offline for a short, planned upgrade.
+      Nothing you have submitted is lost — applications, attendance and fee records are safe.
+    </p>
+    <p class="lede-bn" lang="bn">
+      রক্ষণাবেক্ষণের কাজ চলছে। কিছুক্ষণ পরে আবার চেষ্টা করুন — আপনার জমা দেওয়া কোনো তথ্য হারায়নি।
+    </p>
+
+    <div class="clock" aria-live="polite" aria-label="Time remaining until the site is back">
+      <div class="unit"><b id="d">—</b><small>Days</small></div>
+      <div class="unit"><b id="h">—</b><small>Hours</small></div>
+      <div class="unit"><b id="m">—</b><small>Minutes</small></div>
+      <div class="unit"><b id="s">—</b><small>Seconds</small></div>
+    </div>
+    <p class="eta" id="eta">Expected back around <strong>10:00 PM IST, today</strong>.</p>
+
+    <div class="grid">
+      <div class="panel">
+        <h2>What we are doing</h2>
+        <ul>
+          <li>
+            <svg class="spark" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Database upgrade and index rebuild
+          </li>
+          <li>
+            <svg class="spark" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Security patches on the sign-in layer
+          </li>
+          <li>
+            <svg class="spark" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Faster programme and seat search
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>Still available</h2>
+        <ul>
+          <li>
+            <svg class="tick" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Already-submitted applications
+          </li>
+          <li>
+            <svg class="tick" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Attendance, marks and fee records
+          </li>
+          <li>
+            <svg class="tick" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Campus office by phone and email
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" type="button" id="check">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Check again
+      </button>
+      <a class="btn btn-ghost" href="mailto:admin@edusphere.demo?subject=EduSphere%20maintenance">
+        Contact the campus office
+      </a>
+      <span class="checked" id="checked">Not checked yet</span>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 EduSphere · Built in India</span>
+  <span class="sep">Maintenance window posted 31 Oct 2026</span>
+</footer>
+
+<noscript>
+  <p style="max-width:780px;margin:0 auto;padding:0 20px 30px;color:#6a4a3b;font-size:14px">
+    The site is under scheduled maintenance and should be back within about thirty minutes.
+    If it stays down, write to <a href="mailto:admin@edusphere.demo">admin@edusphere.demo</a>.
+  </p>
+</noscript>
+
+<script>
+  (function () {
+    "use strict";
+
+    /* ---------------------------------------------------------------
+       The one value to change for the next window: when the site is
+       expected back, as an ISO string with the IST offset.
+       --------------------------------------------------------------- */
+    var BACK_AT = new Date("2026-10-31T22:00:00+05:30");
+
+    var el = {
+      d: document.getElementById("d"),
+      h: document.getElementById("h"),
+      m: document.getElementById("m"),
+      s: document.getElementById("s"),
+      eta: document.getElementById("eta"),
+      checked: document.getElementById("checked"),
+      check: document.getElementById("check")
+    };
+
+    function pad(n) { return n < 10 ? "0" + n : String(n); }
+
+    function tick() {
+      var ms = BACK_AT.getTime() - Date.now();
+
+      if (ms <= 0) {
+        el.d.textContent = "00";
+        el.h.textContent = "00";
+        el.m.textContent = "00";
+        el.s.textContent = "00";
+        el.eta.innerHTML = "We are in the final checks — <strong>any moment now</strong>.";
+        return;
+      }
+
+      var total = Math.floor(ms / 1000);
+      el.d.textContent = pad(Math.floor(total / 86400));
+      el.h.textContent = pad(Math.floor((total % 86400) / 3600));
+      el.m.textContent = pad(Math.floor((total % 3600) / 60));
+      el.s.textContent = pad(total % 60);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+
+    /* "Check again" re-requests the page; the timestamp keeps it honest. */
+    el.check.addEventListener("click", function () {
+      el.checked.textContent = "Checking…";
+      window.location.reload();
+    });
+
+    try {
+      var last = sessionStorage.getItem("edusphere-maint-check");
+      if (last) {
+        var when = new Date(Number(last));
+        el.checked.textContent = "Last checked " +
+          when.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+      }
+      sessionStorage.setItem("edusphere-maint-check", String(Date.now()));
+    } catch (e) {
+      /* private mode: the timestamp is a nicety, not a requirement */
+    }
+  })();
+</script>
+</body>
+</html>

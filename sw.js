@@ -1,5 +1,5 @@
 /* Offline shell: cache the page and its assets, fall back to the cache when the network fails. */
-const CACHE = 'edusphere-v1';
+const CACHE = 'edusphere-v2';
 const ASSETS = [
   './index.html',
   './assets/css/styles.css',

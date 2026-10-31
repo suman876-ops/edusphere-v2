@@ -3,608 +3,555 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>EduSphere — Multi-Campus College ERP</title>
-<meta name="description" content="EduSphere — one platform for every campus of a college group: admissions to alumni, users, portals, modules, data layer and integrations." />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self' https://krmrjbygrdfxgrlwmhsf.supabase.co wss://krmrjbygrdfxgrlwmhsf.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" />
+<title>EduSphere — Scheduled maintenance</title>
+<meta name="description" content="EduSphere is briefly offline for scheduled maintenance. Admissions, portal and console will be back shortly." />
+<meta name="robots" content="noindex, follow" />
 <meta name="theme-color" content="#f8f2e7" />
+<!-- Send crawlers and well-behaved clients a retry hint (seconds) -->
+<meta http-equiv="retry-after" content="1800" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23a5142c'/><path d='M12 3.6 5.6 5.9v4.8c0 3.7 2.6 6.9 6.4 8.3 3.8-1.4 6.4-4.6 6.4-8.3V5.9L12 3.6Z' fill='%23fff6e6'/><path d='M8.6 8.2h6.8M8.6 10.9h6.8M8.6 13.6h4.2' stroke='%23a5142c' stroke-width='1.1' stroke-linecap='round'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css" />
-<link rel="stylesheet" href="assets/css/console.css" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23b0162f'/><path d='M12 3.6 5.6 5.9v4.8c0 3.7 2.6 6.9 6.4 8.3 3.8-1.4 6.4-4.6 6.4-8.3V5.9L12 3.6Z' fill='%23fff6e6'/><path d='M8.6 8.2h6.8M8.6 10.9h6.8M8.6 13.6h4.2' stroke='%23b0162f' stroke-width='1.1' stroke-linecap='round'/></svg>" />
-<link rel="manifest" href="manifest.webmanifest" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<style>
+  /* ============================================================= tokens
+     Same palette and type as the EduSphere site, so the maintenance
+     page reads as part of the product rather than an error page. */
+  :root {
+    --paper: #f8f2e7;
+    --paper-2: #f2e8d6;
+    --paper-3: #fffdf8;
+
+    --ink: #33201a;
+    --ink-soft: #6a4a3b;
+    --ink-faint: #7d6353;
+
+    --maroon: #a5142c;
+    --maroon-deep: #7d0f22;
+
+    --gold: #b8892f;
+    --gold-line: rgba(184, 137, 47, 0.35);
+
+    --line: rgba(120, 74, 42, 0.16);
+    --line-soft: rgba(120, 74, 42, 0.09);
+
+    --shadow: 0 22px 48px -34px rgba(86, 45, 16, 0.55);
+
+    --r: 18px;
+    --r-lg: 26px;
+    --shell: 780px;
+    --pad: clamp(20px, 4vw, 40px);
+
+    --display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+    --sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* warm paper wash + a single soft light from the top */
+  .wash {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(900px 620px at 50% -8%, #fffaf0 0%, transparent 62%),
+      radial-gradient(700px 520px at 88% 108%, #f6e7cf 0%, transparent 60%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.5;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  }
+
+  /* ------------------------------------------------------------- header */
+  .top {
+    width: 100%;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 22px var(--pad);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(160deg, var(--maroon) 0%, var(--maroon-deep) 100%);
+    box-shadow: 0 8px 18px -12px rgba(125, 15, 34, 0.9);
+  }
+  .mark svg { width: 20px; height: 20px; display: block; }
+
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+  }
+  .wordmark span { color: var(--maroon); }
+
+  .top .tag {
+    margin-left: auto;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 12px;
+    background: var(--paper-3);
+    white-space: nowrap;
+  }
+
+  /* --------------------------------------------------------------- card */
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 3vw, 34px) var(--pad) clamp(28px, 5vw, 56px);
+  }
+
+  .card {
+    width: 100%;
+    max-width: var(--shell);
+    background: linear-gradient(180deg, rgba(255, 253, 249, 0.92) 0%, rgba(255, 252, 246, 0.74) 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow);
+    padding: clamp(26px, 4.4vw, 46px);
+    backdrop-filter: blur(6px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* thin gold rule along the top edge */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold-line), var(--gold), var(--gold-line), transparent);
+  }
+
+  /* ------------------------------------------------------------- status */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--maroon);
+    background: rgba(165, 20, 44, 0.06);
+    border: 1px solid rgba(165, 20, 44, 0.18);
+    border-radius: 999px;
+    padding: 7px 14px 7px 12px;
+    margin-bottom: 20px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--maroon);
+    box-shadow: 0 0 0 0 rgba(165, 20, 44, 0.5);
+    animation: pulse 2.4s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(165, 20, 44, 0.45); }
+    70%  { box-shadow: 0 0 0 9px rgba(165, 20, 44, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(165, 20, 44, 0); }
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(30px, 5.2vw, 46px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--maroon);
+  }
+
+  .lede {
+    font-size: clamp(15px, 1.9vw, 17px);
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+    max-width: 58ch;
+  }
+
+  .lede-bn {
+    font-size: 15px;
+    color: var(--ink-faint);
+    margin: 0 0 26px;
+    padding-left: 14px;
+    border-left: 2px solid var(--gold-line);
+  }
+
+  /* ---------------------------------------------------------- countdown */
+  .clock {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0 0 10px;
+  }
+
+  .unit {
+    background: var(--paper-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 12px 8px 10px;
+    text-align: center;
+  }
+
+  .unit b {
+    display: block;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(24px, 4.4vw, 34px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .unit small {
+    display: block;
+    margin-top: 7px;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .eta {
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    margin: 0 0 26px;
+  }
+  .eta strong { color: var(--ink-soft); font-weight: 600; }
+
+  /* ------------------------------------------------------------- blocks */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+
+  .panel {
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r);
+    padding: 16px 18px;
+    background: rgba(255, 253, 249, 0.6);
+  }
+
+  .panel h2 {
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+
+  .panel ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  .panel li {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    padding: 5px 0;
+  }
+
+  .panel li svg { flex: 0 0 auto; margin-top: 3px; }
+
+  .tick { color: var(--maroon); }
+  .spark { color: var(--gold); }
+
+  /* ------------------------------------------------------------ actions */
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 11px 22px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+
+  .btn-primary {
+    color: #fff8ee;
+    background: linear-gradient(160deg, var(--maroon) 0%, var(--maroon-deep) 100%);
+    border: 1px solid var(--maroon-deep);
+    box-shadow: 0 14px 26px -18px rgba(125, 15, 34, 0.95);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 18px 30px -18px rgba(125, 15, 34, 0.95); }
+
+  .btn-ghost {
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover { background: rgba(255, 253, 249, 0.85); color: var(--ink); }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--maroon);
+    outline-offset: 3px;
+  }
+
+  .checked {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ------------------------------------------------------------- footer */
+  footer {
+    max-width: 1160px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 18px var(--pad) 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    align-items: center;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line-soft);
+  }
+  footer a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--line); }
+  footer a:hover { color: var(--maroon); border-color: var(--maroon); }
+  footer .sep { margin-left: auto; }
+
+  /* --------------------------------------------------------- responsive */
+  @media (max-width: 620px) {
+    .grid { grid-template-columns: 1fr; }
+    .top .tag { display: none; }
+    .checked { margin-left: 0; width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* printing the page should still look like a notice */
+  @media print {
+    .wash, .grain, .actions { display: none; }
+    body { background: #fff; }
+    .card { box-shadow: none; border-color: #ccc; }
+  }
+</style>
 </head>
 <body>
-<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-  <defs id="sprite-defs">
-    <g id="i-shield"><path d="M12 2.6 4.5 5.6v6.2c0 4.4 3.1 8 7.5 9.6 4.4-1.6 7.5-5.2 7.5-9.6V5.6L12 2.6Z"/><path d="m8.8 11.9 2.2 2.2 4.3-4.3"/></g>
-    <g id="i-building"><path d="M4 21V7.5A1.5 1.5 0 0 1 5.5 6H12a1.5 1.5 0 0 1 1.5 1.5V21"/><path d="M13.5 10H19a1 1 0 0 1 1 1v10"/><path d="M2.5 21h19"/><path d="M7.5 9.5h2M7.5 13h2M7.5 16.5h2M16.5 13.5h1M16.5 17h1"/></g>
-    <g id="i-file"><path d="M13.5 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5L13.5 3Z"/><path d="M13.5 3v5.5H19"/><path d="M9 13h6M9 16.5h4"/></g>
-    <g id="i-cap"><path d="M22 9 12 4 2 9l10 5 10-5Z"/><path d="M6 11.2V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.8"/><path d="M22 9v5"/></g>
-    <g id="i-users"><circle cx="9" cy="8" r="3.2"/><path d="M3 20.2c0-3.2 2.7-5.7 6-5.7s6 2.5 6 5.7"/><path d="M16.2 5.3a3.2 3.2 0 0 1 0 5.4"/><path d="M17.6 14.9c2 .7 3.4 2.5 3.4 5.3"/></g>
-    <g id="i-layers"><path d="m12 3 9 4.8-9 4.8-9-4.8L12 3Z"/><path d="m3 12.6 9 4.8 9-4.8"/><path d="m3 17.4 9 4.8 9-4.8"/></g>
-    <g id="i-calendar"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M8 14.5h2.5M8 18h2.5M14 14.5h2"/></g>
-    <g id="i-qr"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3z"/><path d="M20 14v1M14 20h1M18 18h3v3h-3z"/></g>
-    <g id="i-award"><circle cx="12" cy="9" r="5.2"/><path d="M8.6 13.4 7.5 21l4.5-2.4L16.5 21l-1.1-7.6"/></g>
-    <g id="i-rupee"><path d="M6 3h12"/><path d="M6 8h12"/><path d="m6 13 8.5 8"/><path d="M6 13h3"/><path d="M9 13c6.7 0 6.7-10 0-10"/></g>
-    <g id="i-book"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v14.5H6.5A2.5 2.5 0 0 0 4 20V5.5Z"/><path d="M4 20a2.5 2.5 0 0 1 2.5-2.5H19"/><path d="M8 7.5h7M8 11h5"/></g>
-    <g id="i-bed"><path d="M3 19.5v-8h13.5a4 4 0 0 1 4 4v4"/><path d="M3 11.5V5.5"/><path d="M3 16h17.5"/><circle cx="7.5" cy="9" r="1.8"/></g>
-    <g id="i-bus"><rect x="3" y="4" width="18" height="12" rx="2.5"/><path d="M3 10h18"/><path d="M7 20v-2M17 20v-2"/><circle cx="7.5" cy="13.6" r="0.9"/><circle cx="16.5" cy="13.6" r="0.9"/></g>
-    <g id="i-landmark"><path d="M3 21h18"/><path d="M5 21V10.5M9.5 21V10.5M14.5 21V10.5M19 21V10.5"/><path d="M12 3 21 8H3l9-5Z"/></g>
-    <g id="i-monitor"><rect x="2.5" y="4" width="19" height="12.5" rx="2.5"/><path d="M8.5 20.5h7M12 16.5v4"/></g>
-    <g id="i-phone"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M10.5 18.5h3"/></g>
-    <g id="i-database"><ellipse cx="12" cy="5.8" rx="7.5" ry="2.8"/><path d="M4.5 5.8v6.2c0 1.6 3.4 2.8 7.5 2.8s7.5-1.2 7.5-2.8V5.8"/><path d="M4.5 12v6.2c0 1.6 3.4 2.8 7.5 2.8s7.5-1.2 7.5-2.8V12"/></g>
-    <g id="i-bolt"><path d="M13.5 2.5 4.8 13.2h5.4l-.7 8.3 8.7-10.7h-5.4l.7-8.3Z"/></g>
-    <g id="i-gear"><path d="M12.2 2h-.4a2 2 0 0 0-2 2v.2a2 2 0 0 1-1 1.7l-.4.3a2 2 0 0 1-2 0l-.2-.1a2 2 0 0 0-2.7.7l-.2.4a2 2 0 0 0 .7 2.7l.2.1a2 2 0 0 1 1 1.7v.5a2 2 0 0 1-1 1.7l-.2.1a2 2 0 0 0-.7 2.7l.2.4a2 2 0 0 0 2.7.7l.2-.1a2 2 0 0 1 2 0l.4.3a2 2 0 0 1 1 1.7V20a2 2 0 0 0 2 2h.4a2 2 0 0 0 2-2v-.2a2 2 0 0 1 1-1.7l.4-.3a2 2 0 0 1 2 0l.2.1a2 2 0 0 0 2.7-.7l.2-.4a2 2 0 0 0-.7-2.7l-.2-.1a2 2 0 0 1-1-1.7v-.5a2 2 0 0 1 1-1.7l.2-.1a2 2 0 0 0 .7-2.7l-.2-.4a2 2 0 0 0-2.7-.7l-.2.1a2 2 0 0 1-2 0l-.4-.3a2 2 0 0 1-1-1.7V4a2 2 0 0 0-2-2Z"/><circle cx="12" cy="12" r="3"/></g>
-    <g id="i-search"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 4.8 4.8"/></g>
-    <g id="i-box"><path d="m12 2.8 8.2 4.6v9.2L12 21.2l-8.2-4.6V7.4L12 2.8Z"/><path d="m3.8 7.4 8.2 4.6 8.2-4.6"/><path d="M12 12v9.2"/></g>
-    <g id="i-globe"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4"/><path d="M12 2.8c2.9 3.4 2.9 15 0 18.4-2.9-3.4-2.9-15 0-18.4Z"/></g>
-    <g id="i-idcard"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8.6" cy="10.8" r="2"/><path d="M5.4 16.2c0-1.8 1.4-3.2 3.2-3.2s3.2 1.4 3.2 3.2"/><path d="M14 10h4.2M14 13.4h4.2M14 16.8h2.4"/></g>
-    <g id="i-lock"><rect x="4.5" y="10" width="15" height="10.5" rx="2.5"/><path d="M8 10V7.2a4 4 0 0 1 8 0V10"/><path d="M12 14.2v2.4"/></g>
-    <g id="i-card"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/><path d="M6 15h4.5"/></g>
-    <g id="i-mail"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3.4 7.2 8.6 6 8.6-6"/></g>
-    <g id="i-receipt"><path d="M6 3h12v18l-3-2.1-3 2.1-3-2.1L6 21V3Z"/><path d="M9.2 8h5.6M9.2 12h5.6M9.2 16h3"/></g>
-    <g id="i-bell"><path d="M18 16.2H6l1.4-2.2V10a4.6 4.6 0 0 1 9.2 0v4l1.4 2.2Z"/><path d="M10 19.2a2 2 0 0 0 4 0"/></g>
-    <g id="i-ticket"><path d="M3 9.5V6.5h18v3a2.6 2.6 0 0 0 0 5.2v3H3v-3a2.6 2.6 0 0 0 0-5.2Z"/><path d="M9.5 6.5v11"/></g>
-    <g id="i-pin"><path d="M12 21.2s7.2-6.6 7.2-11.3A7.2 7.2 0 0 0 4.8 9.9c0 4.7 7.2 11.3 7.2 11.3Z"/><circle cx="12" cy="9.8" r="2.6"/></g>
-    <g id="i-chart"><path d="M3.5 3.5v17h17"/><rect x="7" y="11.5" width="3" height="6"/><rect x="12" y="7.5" width="3" height="10"/><rect x="17" y="4.5" width="3" height="13"/></g>
-    <g id="i-chat"><path d="M20.5 11.6c0 4-3.8 7.2-8.5 7.2a10 10 0 0 1-2.6-.3L4.5 20.5l1.3-4.1a6.8 6.8 0 0 1-2.3-4.8C3.5 7.6 7.3 4.4 12 4.4s8.5 3.2 8.5 7.2Z"/><path d="M8.8 10.8h6.4M8.8 14h4.2"/></g>
-    <g id="i-play"><circle cx="12" cy="12" r="9.2"/><path d="m10.2 8.4 5.6 3.6-5.6 3.6V8.4Z"/></g>
-    <g id="i-clipboard"><rect x="5" y="4.5" width="14" height="16.5" rx="2.5"/><path d="M9 4.5V3.2h6v1.3"/><path d="M9 10.5h6M9 14h6M9 17.5h3.5"/></g>
-    <g id="i-folder"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.2l2 2.2H18.5A2.5 2.5 0 0 1 21 9.7v8.3a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18V7.5Z"/></g>
+<div class="wash" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
 
-  </defs>
-</svg>
-
-<div class="wash"></div>
-<div class="weave"></div>
-
-<header class="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="#top">
-      <span class="brand-mark">E</span>
-      <span><b>EduSphere</b><small>College ERP</small></span>
-    </a>
-    <nav class="nav-links" aria-label="Sections">
-      <a href="#users">Users</a>
-      <a href="#colleges">Colleges</a>
-      <a href="#programmes">Programmes</a>
-      <a href="#apply">Admission</a>
-      <a href="#platform">How it works</a>
-      <a href="#lifecycle">Journey</a>
-      <a href="#notices">Notices</a>
-    </nav>
-    <button class="nav-cta" type="button" data-view-link="console">Sign in</button>
+<header class="top">
+  <div class="mark" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 3.6 5.6 5.9v4.8c0 3.7 2.6 6.9 6.4 8.3 3.8-1.4 6.4-4.6 6.4-8.3V5.9L12 3.6Z" fill="#fff6e6"/><path d="M8.6 8.2h6.8M8.6 10.9h6.8M8.6 13.6h4.2" stroke="#a5142c" stroke-width="1.1" stroke-linecap="round"/></svg>
   </div>
+  <div class="wordmark">Edu<span>Sphere</span></div>
+  <div class="tag">Scheduled maintenance</div>
 </header>
 
-<main id="top" class="view" data-view="site">
+<main>
+  <div class="card" role="main">
+    <div class="status"><span class="dot" aria-hidden="true"></span> Maintenance in progress</div>
 
-  <!-- ============================================================== hero -->
-  <section class="hero">
-    <div class="lotus lotus-a" aria-hidden="true">
-      <svg viewBox="0 0 220 140" fill="none" stroke="currentColor" stroke-width="0.9">
-        <path d="M110 128 C 86 104 86 62 110 30 C 134 62 134 104 110 128 Z"/>
-        <path d="M110 128 C 76 114 54 88 48 54 C 84 62 104 92 110 128 Z"/>
-        <path d="M110 128 C 144 114 166 88 172 54 C 136 62 116 92 110 128 Z"/>
-      </svg>
+    <h1>We are upgrading the <em>campus platform</em> right now.</h1>
+
+    <p class="lede">
+      Admissions, the student portal and the staff console are offline for a short, planned upgrade.
+      Nothing you have submitted is lost — applications, attendance and fee records are safe.
+    </p>
+    <p class="lede-bn" lang="bn">
+      রক্ষণাবেক্ষণের কাজ চলছে। কিছুক্ষণ পরে আবার চেষ্টা করুন — আপনার জমা দেওয়া কোনো তথ্য হারায়নি।
+    </p>
+
+    <div class="clock" aria-live="polite" aria-label="Time remaining until the site is back">
+      <div class="unit"><b id="d">—</b><small>Days</small></div>
+      <div class="unit"><b id="h">—</b><small>Hours</small></div>
+      <div class="unit"><b id="m">—</b><small>Minutes</small></div>
+      <div class="unit"><b id="s">—</b><small>Seconds</small></div>
     </div>
-    <div class="wrap">
-      <div class="eyebrow">Admissions open · session 2026-27</div>
-      <h1>Every college. <em>One place</em> to join them.</h1>
-      <p class="lede">
-        One platform for every college that joins it — not a page per college, but a single place
-        where each institution keeps its own departments, programmes, seats and admission office.
-        Search across all of them at once, apply once, and after admission the same account carries
-        your attendance, marks and fees. Four colleges are live today; the platform is built so that
-        more can be added without rebuilding anything.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-solid" href="#apply">Apply for admission →</a>
-        <a class="btn btn-outline" href="#programmes">Browse programmes</a>
-      </div>
-    </div>
-  </section>
+    <p class="eta" id="eta">Expected back around <strong>10:00 PM IST, today</strong>.</p>
 
-  <!-- ============================================================= users -->
-  <section id="users">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>Users</span>
-        <h2>Who the platform <em>serves</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Eleven kinds of people, one system. Each one signs in with their own account and sees
-          only what their role allows — an applicant sees the public site, a student sees their own
-          record, a principal sees the whole campus.</p>
+    <div class="grid">
+      <div class="panel">
+        <h2>What we are doing</h2>
+        <ul>
+          <li>
+            <svg class="spark" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Database upgrade and index rebuild
+          </li>
+          <li>
+            <svg class="spark" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Security patches on the sign-in layer
+          </li>
+          <li>
+            <svg class="spark" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Faster programme and seat search
+          </li>
+        </ul>
       </div>
 
-      <div class="users reveal">
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-file"></use></svg></span><b>Applicant</b><small>Admission enquiry</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-cap"></use></svg></span><b>Student</b><small>Own records</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-users"></use></svg></span><b>Parent</b><small>Their child</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-users"></use></svg></span><b>Faculty</b><small>Teacher</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-clipboard"></use></svg></span><b>HoD</b><small>Department</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-folder"></use></svg></span><b>Registrar</b><small>Admin staff</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-rupee"></use></svg></span><b>Accountant</b><small>Fees &amp; receipts</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-book"></use></svg></span><b>Librarian</b><small>Books &amp; issues</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-bed"></use></svg></span><b>Hostel warden</b><small>Rooms &amp; mess</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-bus"></use></svg></span><b>Transport manager</b><small>Routes &amp; stops</small></div>
-        <div class="user"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-landmark"></use></svg></span><b>Principal</b><small>Management</small></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================== colleges -->
-  <section id="colleges">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>The colleges</span>
-        <h2>Choose a <em>college</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Four colleges are live on the platform today. Each one keeps its own departments,
-          programmes and admission office — and any further college can be added to the same
-          platform, with the same search, the same application form and the same student account.</p>
-      </div>
-      <div class="grid g-2" id="college-grid" aria-live="polite">
-        <p class="empty-note">Loading colleges…</p>
+      <div class="panel">
+        <h2>Still available</h2>
+        <ul>
+          <li>
+            <svg class="tick" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Already-submitted applications
+          </li>
+          <li>
+            <svg class="tick" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Attendance, marks and fee records
+          </li>
+          <li>
+            <svg class="tick" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Campus office by phone and email
+          </li>
+        </ul>
       </div>
     </div>
-  </section>
 
-  <!-- ======================================================== programmes -->
-  <section id="programmes">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>What you can study</span>
-        <h2>Programmes <em>on offer</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Every programme in the group, with the seats the college publishes. Filter by college or
-          by level.</p>
-      </div>
-
-      <div class="toolbar-row">
-        <input id="programme-search" type="search" placeholder="Search a programme — physics, commerce, BCA…" aria-label="Search programmes" autocomplete="off" />
-        <div class="chips" role="group" aria-label="Filter by level">
-          <button class="chip" data-level="all" aria-pressed="true">All</button>
-          <button class="chip" data-level="UG" aria-pressed="false">Undergraduate</button>
-          <button class="chip" data-level="PG" aria-pressed="false">Postgraduate</button>
-        </div>
-      </div>
-
-      <div class="table-shell reveal">
-        <div class="table-scroll">
-          <table class="programme-table">
-            <thead>
-              <tr><th>Programme</th><th>College</th><th>Level</th><th>Duration</th><th>Seats</th></tr>
-            </thead>
-            <tbody id="programme-body">
-              <tr><td colspan="5"><p class="empty-note">Loading programmes…</p></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div class="actions">
+      <button class="btn btn-primary" type="button" id="check">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Check again
+      </button>
+      <a class="btn btn-ghost" href="mailto:admin@edusphere.demo?subject=EduSphere%20maintenance">
+        Contact the campus office
+      </a>
+      <span class="checked" id="checked">Not checked yet</span>
     </div>
-  </section>
-
-  <!-- ============================================================ apply -->
-  <section id="apply">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>Admission</span>
-        <h2>Apply in <em>three steps</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Send this form, and the admission office of the college you picked gets your application
-          with a reference number you can quote on the phone.</p>
-      </div>
-
-      <div class="steps reveal">
-        <div class="step"><span class="step-n">1</span><b>Choose</b><span>Pick the college and the programme from the list above.</span></div>
-        <div class="step"><span class="step-n">2</span><b>Apply</b><span>Fill in your details. No application fee at this stage.</span></div>
-        <div class="step"><span class="step-n">3</span><b>Track</b><span>The office reviews it and contacts you on the phone number you give.</span></div>
-      </div>
-
-      <form class="enquiry glass-panel reveal" id="apply-form" novalidate>
-        <div class="field">
-          <label for="a-college">College</label>
-          <select id="a-college" name="college_slug" required>
-            <option value="">Select a college</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="a-programme">Programme</label>
-          <select id="a-programme" name="programme" required>
-            <option value="">Select a college first</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="a-name">Full name</label>
-          <input id="a-name" name="full_name" type="text" required minlength="2" maxlength="120" autocomplete="name" placeholder="Your name" />
-        </div>
-        <div class="field">
-          <label for="a-email">Email</label>
-          <input id="a-email" name="email" type="email" required maxlength="160" autocomplete="email" placeholder="you@example.com" />
-        </div>
-        <div class="field">
-          <label for="a-phone">Phone</label>
-          <input id="a-phone" name="phone" type="tel" required pattern="[0-9+()\- ]{7,18}" autocomplete="tel" placeholder="+91 90000 00000" />
-        </div>
-        <div class="field">
-          <label for="a-marks">Class XII marks <span class="opt">(%)</span></label>
-          <input id="a-marks" name="marks_percent" type="number" min="0" max="100" step="0.01" placeholder="e.g. 78.5" />
-        </div>
-        <div class="field field-wide">
-          <label for="a-message">Anything we should know <span class="opt">(optional)</span></label>
-          <textarea id="a-message" name="message" rows="3" maxlength="1000" placeholder="Subject combination, hostel requirement, questions…"></textarea>
-        </div>
-        <div class="form-foot field-wide">
-          <button class="btn btn-solid" type="submit" id="apply-submit">Send application</button>
-          <p class="form-status" id="apply-status" role="status" aria-live="polite"></p>
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <!-- ========================================================== platform -->
-  <section id="platform">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>How it works</span>
-        <h2>Six doors, <em>one platform</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Every visitor arrives through one of six doors. The request meets the edge, is checked at
-          the gateway, is handled by one of eighteen modules, and lands in a database that shows a
-          campus only its own rows.</p>
-      </div>
-
-      <div class="arch reveal">
-        <div class="arch-band arch-access">
-          <span class="arch-label">Access via</span>
-          <div class="arch-items">
-            <span class="arch-chip strong">Public website + admission portal</span>
-            <span class="arch-chip strong">Student portal</span>
-            <span class="arch-chip strong">Parent portal</span>
-            <span class="arch-chip strong">Faculty portal</span>
-            <span class="arch-chip strong">Admin and staff console</span>
-            <span class="arch-chip strong">Mobile app — QR scan, GPS</span>
-          </div>
-        </div>
-
-        <div class="arch-link"><span>↓</span></div>
-
-        <div class="arch-band arch-edge">
-          <span class="arch-label">Edge</span>
-          <div class="arch-items">
-            <span class="arch-chip">Internet</span>
-            <span class="arch-chip">CDN and WAF — static assets, tenant subdomains</span>
-            <span class="arch-chip">API gateway — TLS, rate limit, tenant resolver, JWT pre-check</span>
-          </div>
-        </div>
-
-        <div class="arch-link"><span>↓</span></div>
-
-        <div class="arch-band arch-app">
-          <span class="arch-label">Application</span>
-          <div class="arch-items">
-            <span class="arch-chip">Auth and IAM</span>
-            <span class="arch-chip">Tenancy</span>
-            <span class="arch-chip">Admissions</span>
-            <span class="arch-chip">Students</span>
-            <span class="arch-chip">Faculty and HR</span>
-            <span class="arch-chip">Academics</span>
-            <span class="arch-chip">Timetable</span>
-            <span class="arch-chip">Attendance</span>
-            <span class="arch-chip">Exams and results</span>
-            <span class="arch-chip">Fees and payments</span>
-            <span class="arch-chip">Library</span>
-            <span class="arch-chip">Hostel</span>
-            <span class="arch-chip">Transport</span>
-            <span class="arch-chip">LMS-lite</span>
-            <span class="arch-chip">Communication</span>
-            <span class="arch-chip">Reports and BI</span>
-            <span class="arch-chip">Files</span>
-            <span class="arch-chip">Audit</span>
-          </div>
-        </div>
-
-        <div class="arch-link"><span>↓</span></div>
-
-        <div class="arch-band arch-data">
-          <span class="arch-label">Data</span>
-          <div class="arch-items">
-            <span class="arch-chip">PostgreSQL 16 — row-level security</span>
-            <span class="arch-chip">Cache and QR tokens</span>
-            <span class="arch-chip">Background jobs</span>
-            <span class="arch-chip">Search index</span>
-            <span class="arch-chip">Object storage</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="two-col">
-        <div class="glass-panel side-panel reveal">
-          <h3><span class="ico-gold">✦</span> India-specific integrations</h3>
-          <ul class="plain-list">
-            <li>DigiLocker — document verification</li>
-            <li>Aadhaar eKYC — optional identity check</li>
-            <li>UPI and Razorpay — fee payment</li>
-            <li>SMS and email — transactional</li>
-            <li>GST invoicing — receipts</li>
-            <li>State and university exam system</li>
-            <li>Regional language support</li>
-          </ul>
-        </div>
-
-        <div class="glass-panel side-panel reveal">
-          <h3><span class="ico-gold">✦</span> Real-time services</h3>
-          <ul class="plain-list">
-            <li>Socket notifications</li>
-            <li>Live updates across a campus</li>
-            <li>Email and SMS — alerts, OTP, notices</li>
-            <li>Push notification to the mobile app</li>
-            <li>Background jobs — receipts, reports</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================= lifecycle -->
-  <section id="lifecycle">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>The journey</span>
-        <h2>From enquiry to <em>alumni</em></h2>
-        <div class="divider"><i></i></div>
-        <p>Nine stages, one account. What a student does at each stage is the same platform, the
-          same record, carried forward.</p>
-      </div>
-
-      <div class="timeline reveal">
-        <div class="tl"><span class="tl-num">1</span><div><b>Enquiry and application</b><span>The form on this site, with a reference number.</span></div></div>
-        <div class="tl"><span class="tl-num">2</span><div><b>Admission and fee payment</b><span>Offer, acceptance, first instalment.</span></div></div>
-        <div class="tl"><span class="tl-num">3</span><div><b>Academic setup</b><span>Programme, batch, section, timetable.</span></div></div>
-        <div class="tl"><span class="tl-num">4</span><div><b>Teaching and attendance</b><span>QR and geofenced attendance per class.</span></div></div>
-        <div class="tl"><span class="tl-num">5</span><div><b>Exams and results</b><span>Marks, grades, CGPA.</span></div></div>
-        <div class="tl"><span class="tl-num">6</span><div><b>Ongoing operations</b><span>Library, hostel, transport.</span></div></div>
-        <div class="tl"><span class="tl-num">7</span><div><b>Communication</b><span>Notices to students, parents and staff.</span></div></div>
-        <div class="tl"><span class="tl-num">8</span><div><b>Reports and compliance</b><span>Dashboards and statutory returns.</span></div></div>
-        <div class="tl"><span class="tl-num">9</span><div><b>Alumni</b><span>The record outlives the course.</span></div></div>
-      </div>
-
-      <div class="outputs reveal">
-        <span class="arch-label">Outputs</span>
-        <div class="arch-items">
-          <span class="arch-chip">ID cards</span>
-          <span class="arch-chip">Hall tickets</span>
-          <span class="arch-chip">Mark sheets</span>
-          <span class="arch-chip">Fee receipts</span>
-          <span class="arch-chip">Reports — Excel and PDF</span>
-          <span class="arch-chip">Notifications</span>
-          <span class="arch-chip">Live bus tracking</span>
-          <span class="arch-chip">Search across students, books, staff</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================== notices -->
-  <section id="notices">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-label"><span class="ico-gold">✦</span>Notice board</span>
-        <h2>Latest <em>notices</em></h2>
-        <div class="divider"><i></i></div>
-      </div>
-      <div class="grid g-2" id="notice-grid" aria-live="polite">
-        <p class="empty-note">Loading notices…</p>
-      </div>
-    </div>
-  </section>
-
+  </div>
 </main>
 
-
-<!-- =========================================================== portal view -->
-<div class="view" id="portal" hidden>
-  <div class="wrap portal-wrap">
-    <div class="sec-head">
-      <span class="sec-label"><span class="ico-gold">✦</span>My portal</span>
-      <h2>Your <em>records</em></h2>
-      <div class="divider"><i></i></div>
-      <p>Attendance, marks, fees and notices — only your own rows, read straight from the database.</p>
-    </div>
-    <div class="grid g-2" id="portal-body">
-      <p class="empty-note">Loading…</p>
-    </div>
-    <p class="portal-back"><a href="#" data-view-link="site">← Back to the website</a></p>
-  </div>
-</div>
-
-<!-- ========================================================== console view -->
-<div class="view" id="console" hidden>
-<!-- ============================================================== sign in -->
-<section class="auth-screen" id="auth-screen">
-  <div class="auth-card glass-panel">
-    <div class="auth-brand">
-      <span class="brand-mark">E</span>
-      <div><b>EduSphere</b><small>Staff console</small></div>
-    </div>
-
-    <form id="signin-form" class="auth-form">
-      <h1>Sign in</h1>
-      <p class="auth-note">Staff accounts only. Ask your administrator for access.</p>
-      <div class="field">
-        <label for="auth-email">Email</label>
-        <input id="auth-email" type="email" autocomplete="email" required placeholder="you@college.edu" />
-      </div>
-      <div class="field">
-        <label for="auth-password">Password</label>
-        <input id="auth-password" type="password" autocomplete="current-password" required minlength="8" placeholder="••••••••" />
-      </div>
-      <button class="btn btn-solid" type="submit" id="signin-btn">Sign in</button>
-      <p class="form-status" id="auth-status" role="status" aria-live="polite"></p>
-      <p class="conn-status" id="conn-status" aria-live="polite">Checking the connection…</p>
-      <p class="auth-switch">
-        New here? <button type="button" class="link-btn" id="to-signup">Create an account</button>
-      </p>
-    </form>
-
-    <form id="signup-form" class="auth-form" hidden>
-      <h1>Create account</h1>
-      <p class="auth-note">The first account on a fresh installation becomes the administrator of its campus.</p>
-      <div class="field">
-        <label for="su-name">Full name</label>
-        <input id="su-name" type="text" autocomplete="name" required minlength="2" placeholder="Your name" />
-      </div>
-      <div class="field">
-        <label for="su-email">Email</label>
-        <input id="su-email" type="email" autocomplete="email" required placeholder="you@college.edu" />
-      </div>
-      <div class="field">
-        <label for="su-password">Password</label>
-        <input id="su-password" type="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters" />
-      </div>
-      <button class="btn btn-solid" type="submit" id="signup-btn">Create account</button>
-      <p class="form-status" id="signup-status" role="status" aria-live="polite"></p>
-      <p class="auth-switch">
-        Already have an account? <button type="button" class="link-btn" id="to-signin">Sign in</button>
-      </p>
-    </form>
-    
-</section>
-<div class="console-shell" id="console-shell" hidden>
-  <aside class="sidebar">
-    <div class="side-brand">
-      <span class="brand-mark">E</span>
-      <div><b>EduSphere</b><small id="side-campus">—</small></div>
-    </div>
-    <nav class="side-nav" id="side-nav"></nav>
-    <div class="side-foot">
-      <a href="#" data-view-link="site">← Public site</a>
-      <a href="https://github.com/suman876-ops/edusphere-v2/blob/main/README.md" target="_blank" rel="noopener noreferrer">Documentation ↗</a>
-      <button type="button" class="link-btn" id="signout">Sign out</button>
-    </div>
-  </aside>
-
-  <main class="panel">
-    <header class="panel-head">
-      <div>
-        <h1 id="panel-title">Dashboard</h1>
-        <p id="panel-sub">Your campus at a glance</p>
-      </div>
-      <div class="panel-actions">
-        <select class="campus-switch" id="campus-switch" aria-label="Campus" hidden></select>
-        <span class="who" id="who">—</span>
-        <button class="btn btn-solid" type="button" id="primary-action">New record</button>
-      </div>
-    </header>
-
-    <div class="panel-body" id="panel-body">
-      <div class="empty-note">Loading…</div>
-    </div>
-  </main>
-</div>
-
-<!-- ================================================================ setup -->
-<div class="modal" id="setup-modal" hidden>
-  <div class="modal-card glass-panel">
-    <h2>Set up your campus</h2>
-    <p>No campus is attached to this account yet. Create one to start — you will be its administrator.</p>
-    <form id="setup-form">
-      <div class="field">
-        <label for="setup-group">Trust / group name</label>
-        <input id="setup-group" required minlength="2" placeholder="Demo Education Trust" />
-      </div>
-      <div class="field">
-        <label for="setup-campus">Campus name</label>
-        <input id="setup-campus" required minlength="2" placeholder="Main Campus" />
-      </div>
-      <div class="field">
-        <label for="setup-slug">Campus slug</label>
-        <input id="setup-slug" required pattern="[a-z0-9][a-z0-9-]{1,30}" placeholder="main" />
-      </div>
-      <p class="form-status" id="setup-status" role="status" aria-live="polite"></p>
-      <button class="btn btn-solid" type="submit" id="setup-btn">Create campus</button>
-    </form>
-  </div>
-</div>
-<div class="modal" id="setup-modal" hidden>
-  <div class="modal-card glass-panel">
-    <h2>Set up your campus</h2>
-    <p>No campus is attached to this account yet. Create one to start — you will be its administrator.</p>
-    <form id="setup-form">
-      <div class="field">
-        <label for="setup-group">Trust / group name</label>
-        <input id="setup-group" required minlength="2" placeholder="Demo Education Trust" />
-      </div>
-      <div class="field">
-        <label for="setup-campus">Campus name</label>
-        <input id="setup-campus" required minlength="2" placeholder="Main Campus" />
-      </div>
-      <div class="field">
-        <label for="setup-slug">Campus slug</label>
-        <input id="setup-slug" required pattern="[a-z0-9][a-z0-9-]{1,30}" placeholder="main" />
-      </div>
-      <p class="form-status" id="setup-status" role="status" aria-live="polite"></p>
-      <button class="btn btn-solid" type="submit" id="setup-btn">Create campus</button>
-    </form>
-  </div>
-</div>
-<div class="modal" id="record-modal" hidden>
-  <div class="modal-card glass-panel wide">
-    <h2 id="record-title">New record</h2>
-    <form id="record-form">
-      <div class="record-fields" id="record-fields"></div>
-      <p class="form-status" id="record-status" role="status" aria-live="polite"></p>
-      <div class="modal-actions">
-        <button class="btn btn-outline" type="button" id="record-cancel">Cancel</button>
-        <button class="btn btn-solid" type="submit" id="record-save">Save</button>
-      </div>
-    </form>
-  </div>
-</div>
-</div>
-
-
-<footer class="footer">
-  <div class="lotus lotus-c" aria-hidden="true">
-    <svg viewBox="0 0 220 140" fill="none" stroke="currentColor" stroke-width="0.9">
-      <path d="M110 128 C 86 104 86 62 110 30 C 134 62 134 104 110 128 Z"/>
-      <path d="M110 128 C 76 114 54 88 48 54 C 84 62 104 92 110 128 Z"/>
-      <path d="M110 128 C 144 114 166 88 172 54 C 136 62 116 92 110 128 Z"/>
-      <path d="M110 128 C 70 126 40 112 22 88 C 62 82 96 100 110 128 Z"/>
-      <path d="M110 128 C 150 126 180 112 198 88 C 158 82 124 100 110 128 Z"/>
-      <path d="M64 132 Q110 112 156 132"/>
-    </svg>
-  </div>
-
-  <div class="wrap foot-center">
-    <div class="crest">EduSphere <span class="heart">❤</span> College ERP</div>
-    <p class="credit">Designed &amp; Deployed by Project 2.0 <span class="sep">·</span> 5th Sem</p>
-
-    
-
-    <div class="foot-bottom">
-      <div>© 2026 EduSphere · Built in India</div>
-      <div>Crafted with care, <a class="college-link" href="https://rnlkwc.ac.in" target="_blank" rel="noopener noreferrer">Raja Narendra Lal Khan Women's College</a></div>
-    </div>
-  </div>
+<footer>
+  <span>© 2026 EduSphere · Built in India</span>
+  <span class="sep">Maintenance window posted 31 Oct 2026</span>
 </footer>
 
-<div class="floaters">
-  <button class="floater gold" id="to-top" aria-label="Back to top" title="Back to top">↑</button>
-</div>
-<div class="progress"><i id="bar"></i></div>
+<noscript>
+  <p style="max-width:780px;margin:0 auto;padding:0 20px 30px;color:#6a4a3b;font-size:14px">
+    The site is under scheduled maintenance and should be back within about thirty minutes.
+    If it stays down, write to <a href="mailto:admin@edusphere.demo">admin@edusphere.demo</a>.
+  </p>
+</noscript>
 
-<script src="assets/js/config.js" defer></script>
-<script src="assets/js/api.js" defer></script>
-<script src="assets/js/search.js" defer></script>
-<script src="assets/js/resources.js" defer></script>
-<script src="assets/js/console.js" defer></script>
-<script src="assets/js/portal.js" defer></script>
-<script src="assets/js/app.js" defer></script>
+<script>
+  (function () {
+    "use strict";
+
+    /* ---------------------------------------------------------------
+       The one value to change for the next window: when the site is
+       expected back, as an ISO string with the IST offset.
+       --------------------------------------------------------------- */
+    var BACK_AT = new Date("2026-10-31T22:00:00+05:30");
+
+    var el = {
+      d: document.getElementById("d"),
+      h: document.getElementById("h"),
+      m: document.getElementById("m"),
+      s: document.getElementById("s"),
+      eta: document.getElementById("eta"),
+      checked: document.getElementById("checked"),
+      check: document.getElementById("check")
+    };
+
+    function pad(n) { return n < 10 ? "0" + n : String(n); }
+
+    function tick() {
+      var ms = BACK_AT.getTime() - Date.now();
+
+      if (ms <= 0) {
+        el.d.textContent = "00";
+        el.h.textContent = "00";
+        el.m.textContent = "00";
+        el.s.textContent = "00";
+        el.eta.innerHTML = "We are in the final checks — <strong>any moment now</strong>.";
+        return;
+      }
+
+      var total = Math.floor(ms / 1000);
+      el.d.textContent = pad(Math.floor(total / 86400));
+      el.h.textContent = pad(Math.floor((total % 86400) / 3600));
+      el.m.textContent = pad(Math.floor((total % 3600) / 60));
+      el.s.textContent = pad(total % 60);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+
+    /* "Check again" re-requests the page; the timestamp keeps it honest. */
+    el.check.addEventListener("click", function () {
+      el.checked.textContent = "Checking…";
+      window.location.reload();
+    });
+
+    try {
+      var last = sessionStorage.getItem("edusphere-maint-check");
+      if (last) {
+        var when = new Date(Number(last));
+        el.checked.textContent = "Last checked " +
+          when.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+      }
+      sessionStorage.setItem("edusphere-maint-check", String(Date.now()));
+    } catch (e) {
+      /* private mode: the timestamp is a nicety, not a requirement */
+    }
+  })();
+</script>
 </body>
 </html>
