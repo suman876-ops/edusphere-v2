@@ -1,417 +1,528 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>EduSphere — Maintenance in progress</title>
-<meta name="description" content="This website is under maintenance. Please check back shortly." />
-<meta name="robots" content="noindex" />
-<meta name="theme-color" content="#f8f2e7" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23a5142c'/><path d='M12 3.6 5.6 5.9v4.8c0 3.7 2.6 6.9 6.4 8.3 3.8-1.4 6.4-4.6 6.4-8.3V5.9L12 3.6Z' fill='%23fff6e6'/><path d='M8.6 8.2h6.8M8.6 10.9h6.8M8.6 13.6h4.2' stroke='%23a5142c' stroke-width='1.1' stroke-linecap='round'/></svg>" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --paper: #f8f2e7;
-    --paper-2: #f2e8d6;
-    --paper-3: #fffdf8;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduSphere | Multi-campus College ERP</title>
+    <meta
+      name="description"
+      content="EduSphere brings colleges, students, and admissions into one connected campus platform."
+    />
+    <meta name="theme-color" content="#a5142c" />
+    <style>
+      :root {
+        --paper: #f8f2e7;
+        --paper-strong: #fffaf3;
+        --ink: #1d1a1a;
+        --muted: #5f4c46;
+        --line: rgba(68, 39, 30, 0.12);
+        --maroon: #a5142c;
+        --maroon-deep: #7d0f22;
+        --gold: #b8892f;
+        --gold-soft: #f1d79d;
+        --card: rgba(255, 255, 255, 0.75);
+        --shadow: 0 24px 60px rgba(77, 34, 15, 0.12);
+      }
 
-    --ink: #33201a;
-    --ink-soft: #6a4a3b;
-    --ink-faint: #7d6353;
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(184, 137, 47, 0.18), transparent 30%),
+          radial-gradient(circle at top right, rgba(165, 20, 44, 0.08), transparent 35%),
+          linear-gradient(180deg, var(--paper) 0%, #f4ebdf 100%);
+        color: var(--ink);
+      }
 
-    --maroon: #a5142c;
-    --maroon-deep: #7d0f22;
-    --maroon-soft: #c2404f;
+      a { color: inherit; text-decoration: none; }
+      img { max-width: 100%; display: block; }
 
-    --gold: #b8892f;
-    --gold-soft: #d9b978;
-    --gold-line: rgba(184, 137, 47, 0.35);
+      .container {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
 
-    --line: rgba(120, 74, 42, 0.16);
-    --line-soft: rgba(120, 74, 42, 0.09);
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        background: rgba(248, 242, 231, 0.7);
+        border-bottom: 1px solid var(--line);
+      }
 
-    --glass-strong: rgba(255, 253, 249, 0.9);
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 76px;
+        gap: 18px;
+      }
 
-    --shadow-lift: 0 34px 70px -34px rgba(86, 45, 16, 0.55);
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
 
-    --r-sm: 12px;
-    --r: 18px;
-    --r-lg: 26px;
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: var(--maroon);
+        color: white;
+        font-family: Georgia, serif;
+        font-size: 1.3rem;
+      }
 
-    --display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
-    --sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
 
-  * { box-sizing: border-box; }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-  html, body { height: 100%; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        padding: 0.8rem 1.2rem;
+        font-weight: 600;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
 
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-    display: flex;
-    min-height: 100vh;
-    min-height: 100dvh;
-    padding: clamp(16px, 4vw, 40px);
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
 
-  /* ================================================= the blurred site behind */
-  .backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-    user-select: none;
-  }
+      .btn.primary {
+        background: var(--maroon);
+        color: white;
+        box-shadow: 0 14px 24px rgba(165, 20, 44, 0.18);
+      }
 
-  .backdrop-inner {
-    position: absolute;
-    inset: -40px;
-    filter: blur(10px) saturate(0.95);
-    opacity: 1;
-    transform: scale(1.02);
-  }
+      .btn.secondary {
+        background: rgba(255, 255, 255, 0.56);
+        border-color: var(--line);
+        color: var(--ink);
+      }
 
-  /* warm paper wash, same as the live site */
-  .wash {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(900px 620px at 50% -8%, #fffaf0 0%, transparent 62%),
-      radial-gradient(720px 520px at 6% 24%, rgba(217, 185, 120, 0.3), transparent 64%),
-      radial-gradient(760px 560px at 96% 62%, rgba(165, 20, 44, 0.1), transparent 62%),
-      linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
-  }
+      .hero {
+        padding: 72px 0 32px;
+      }
 
-  .weave {
-    position: absolute;
-    inset: 0;
-    opacity: 0.5;
-    background-image:
-      repeating-linear-gradient(0deg, rgba(120, 74, 42, 0.05) 0 1px, transparent 1px 3px),
-      repeating-linear-gradient(90deg, rgba(120, 74, 42, 0.05) 0 1px, transparent 1px 3px);
-    mix-blend-mode: multiply;
-  }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 28px;
+        align-items: center;
+      }
 
-  .mock {
-    position: relative;
-    max-width: 1160px;
-    margin: 0 auto;
-    padding: 26px clamp(18px, 3.4vw, 32px);
-  }
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 18px;
+        background: rgba(184, 137, 47, 0.14);
+        border: 1px solid rgba(184, 137, 47, 0.4);
+        color: var(--maroon-deep);
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        font-size: 0.83rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
 
-  .mock-nav {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    padding-bottom: 26px;
-    border-bottom: 1px solid var(--line-soft);
-  }
+      h1 {
+        margin: 0 0 18px;
+        font-family: Georgia, serif;
+        font-size: clamp(2.7rem, 6vw, 5rem);
+        line-height: 0.96;
+        letter-spacing: -0.06em;
+      }
 
-  .mock-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-right: auto;
-  }
+      .hero p {
+        margin: 0;
+        max-width: 58ch;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.7;
+      }
 
-  .mock-mark {
-    width: 38px;
-    height: 38px;
-    border-radius: 11px;
-    background: var(--maroon);
-    color: #fff6e6;
-    font-family: var(--display);
-    font-size: 20px;
-    font-weight: 600;
-    display: grid;
-    place-items: center;
-  }
+      .hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+      }
 
-  .mock-brand b {
-    font-family: var(--display);
-    font-size: 19px;
-    letter-spacing: -0.01em;
-  }
+      .hero-panel {
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
 
-  .mock-link {
-    height: 9px;
-    width: 62px;
-    border-radius: 99px;
-    background: rgba(120, 74, 42, 0.22);
-  }
+      .mini-card {
+        background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(250,244,234,0.9));
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px;
+      }
 
-  .mock-cta {
-    height: 34px;
-    width: 86px;
-    border-radius: 99px;
-    background: var(--maroon);
-    opacity: 0.75;
-  }
+      .mini-card + .mini-card { margin-top: 14px; }
 
-  .mock-hero { padding: 54px 0 34px; max-width: 760px; }
+      .metric {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
 
-  .mock-eyebrow {
-    display: inline-block;
-    height: 26px;
-    width: 220px;
-    border-radius: 99px;
-    background: rgba(184, 137, 47, 0.28);
-    border: 1px solid var(--gold-line);
-    margin-bottom: 22px;
-  }
+      .metric strong {
+        color: var(--ink);
+        font-size: 1.65rem;
+        letter-spacing: -0.04em;
+      }
 
-  .mock-h1 {
-    font-family: var(--display);
-    font-size: clamp(34px, 5.4vw, 62px);
-    line-height: 1.06;
-    letter-spacing: -0.02em;
-    margin: 0 0 20px;
-    color: var(--ink);
-  }
+      .section {
+        padding: 26px 0 28px;
+      }
 
-  .mock-line {
-    height: 11px;
-    border-radius: 99px;
-    background: rgba(120, 74, 42, 0.16);
-    margin-bottom: 12px;
-  }
+      .section-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
 
-  .mock-line.w90 { width: 92%; }
-  .mock-line.w75 { width: 78%; }
-  .mock-line.w60 { width: 61%; }
+      .section-header h2 {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: clamp(2rem, 3vw, 3rem);
+        letter-spacing: -0.05em;
+      }
 
-  .mock-actions { display: flex; gap: 12px; margin-top: 26px; }
+      .section-header p {
+        margin: 0;
+        color: var(--muted);
+      }
 
-  .mock-btn {
-    height: 46px;
-    width: 190px;
-    border-radius: 99px;
-    background: var(--maroon);
-    opacity: 0.7;
-  }
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
 
-  .mock-btn.ghost {
-    background: transparent;
-    border: 1px solid var(--line);
-    width: 160px;
-  }
+      .card {
+        background: rgba(255, 255, 255, 0.64);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 18px 38px rgba(79, 49, 31, 0.04);
+      }
 
-  .mock-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-    margin-top: 44px;
-  }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(165, 20, 44, 0.08);
+        color: var(--maroon);
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+      }
 
-  .mock-card {
-    height: 92px;
-    border-radius: var(--r);
-    background: rgba(255, 252, 246, 0.72);
-    border: 1px solid var(--line);
-  }
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+      }
 
-  .mock-rows { margin-top: 34px; }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
 
-  .mock-row {
-    height: 42px;
-    border-radius: 10px;
-    background: rgba(255, 252, 246, 0.6);
-    border: 1px solid var(--line-soft);
-    margin-bottom: 9px;
-  }
+      .students-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 16px;
+      }
 
-  /* ============================================================= the veil */
-  .veil {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    background:
-      radial-gradient(640px 460px at 50% 44%, rgba(255, 251, 242, 0.46), rgba(248, 242, 231, 0.24) 62%, rgba(242, 232, 214, 0.3) 100%),
-      linear-gradient(180deg, rgba(248, 242, 231, 0.12), rgba(242, 232, 214, 0.28));
-    pointer-events: none;
-  }
+      .student-tile {
+        background: rgba(255,255,255,0.66);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px;
+      }
 
-  /* ============================================================= the card */
-  .panel {
-    position: relative;
-    z-index: 2;
-    margin: auto;
-    width: min(720px, 100%);
-    background: var(--glass-strong);
-    border: 1px solid var(--line);
-    border-radius: var(--r-lg);
-    box-shadow: var(--shadow-lift);
-    padding: clamp(30px, 5vw, 58px) clamp(24px, 4.6vw, 56px);
-    text-align: center;
-    overflow: hidden;
-    animation: rise 0.62s cubic-bezier(0.22, 0.9, 0.28, 1) both;
-  }
+      .student-tile strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+      }
 
-  .panel::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto;
-    height: 4px;
-    background: linear-gradient(90deg, var(--maroon) 0%, var(--maroon-soft) 45%, var(--gold-soft) 100%);
-  }
+      .student-tile span {
+        display: block;
+        color: var(--muted);
+        line-height: 1.6;
+      }
 
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(16px) scale(0.985); }
-    to { opacity: 1; transform: none; }
-  }
+      footer {
+        padding: 28px 0 48px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        margin-top: 26px;
+      }
 
-  .brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: clamp(22px, 3.4vw, 32px);
-  }
+      @media (max-width: 900px) {
+        .hero-grid, .feature-grid, .students-list { grid-template-columns: 1fr 1fr; }
+        .nav-links { display: none; }
+      }
 
-  .brand-mark {
-    width: 44px;
-    height: 44px;
-    border-radius: 13px;
-    background: var(--maroon);
-    color: #fff6e6;
-    font-family: var(--display);
-    font-size: 23px;
-    font-weight: 600;
-    display: grid;
-    place-items: center;
-    box-shadow: 0 10px 22px -14px rgba(125, 15, 34, 0.9);
-  }
-
-  .brand-text b {
-    display: block;
-    font-family: var(--display);
-    font-size: 20px;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-  }
-
-  .brand-text small {
-    display: block;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-
-
-
-  h1 {
-    font-family: var(--display);
-    font-weight: 600;
-    font-size: clamp(34px, 6.2vw, 62px);
-    line-height: 1.04;
-    letter-spacing: -0.028em;
-    margin: 0 0 clamp(16px, 2.4vw, 22px);
-  }
-
-  h1 em {
-    font-style: italic;
-    color: var(--maroon);
-  }
-
-  .lede {
-    margin: 0 auto;
-    color: var(--ink-soft);
-    font-size: clamp(15.5px, 1.5vw, 18px);
-    max-width: 34ch;
-    text-wrap: balance;
-  }
-
-
-
-
-
-
-
-
-
-
-  @media (prefers-reduced-motion: reduce) {
-    .panel { animation: none; }
-  }
-</style>
-</head>
-<body>
-
-<!-- the live site, blurred behind the notice -->
-<div class="backdrop" aria-hidden="true">
-  <div class="backdrop-inner">
-    <div class="wash"></div>
-    <div class="weave"></div>
-    <div class="mock">
-      <div class="mock-nav">
-        <div class="mock-brand">
-          <span class="mock-mark">E</span>
-          <b>EduSphere</b>
+      @media (max-width: 640px) {
+        .hero-grid, .feature-grid, .students-list { grid-template-columns: 1fr; }
+        .section-header { display: block; }
+        .nav { min-height: 68px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <div class="brand" aria-label="EduSphere home">
+          <span class="brand-mark">E</span>
+          <span>EduSphere</span>
         </div>
-        <span class="mock-link"></span>
-        <span class="mock-link"></span>
-        <span class="mock-link"></span>
-        <span class="mock-link"></span>
-        <span class="mock-cta"></span>
-      </div>
-
-      <div class="mock-hero">
-        <span class="mock-eyebrow"></span>
-        <p class="mock-h1">Every college. One place to join them.</p>
-        <div class="mock-line w90"></div>
-        <div class="mock-line w75"></div>
-        <div class="mock-line w60"></div>
-        <div class="mock-actions">
-          <span class="mock-btn"></span>
-          <span class="mock-btn ghost"></span>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#about">About</a>
+          <a href="#campuses">Campuses</a>
+          <a href="#programmes">Programmes</a>
+          <a href="#admissions">Admissions</a>
+          <a href="#support">Support</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="btn secondary" href="#admissions">Apply</a>
+          <a class="btn primary" href="#support">Sign in</a>
         </div>
       </div>
+    </header>
 
-      <div class="mock-grid">
-        <span class="mock-card"></span><span class="mock-card"></span><span class="mock-card"></span>
-        <span class="mock-card"></span><span class="mock-card"></span><span class="mock-card"></span>
-        <span class="mock-card"></span><span class="mock-card"></span><span class="mock-card"></span>
-        <span class="mock-card"></span><span class="mock-card"></span><span class="mock-card"></span>
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow">Multi-campus college ERP</div>
+            <h1>Every campus. One seamless student journey.</h1>
+            <p>
+              EduSphere unifies admissions, academic operations, student services, and campus-wide
+              communication across multiple colleges in a single digital platform.
+            </p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#admissions">Start an application</a>
+              <a class="btn secondary" href="#campuses">Explore campuses</a>
+            </div>
+          </div>
+
+          <div class="hero-panel" aria-label="Overview summary">
+            <div class="mini-card">
+              <div class="metric">
+                <span>Colleges on platform</span>
+                <strong>4</strong>
+              </div>
+            </div>
+            <div class="mini-card">
+              <div class="metric">
+                <span>Programmes listed</span>
+                <strong>107</strong>
+              </div>
+            </div>
+            <div class="mini-card">
+              <div class="metric">
+                <span>Active workflows</span>
+                <strong>24/7</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Built for modern higher education</h2>
+            <p>One portal for students, parents, faculty, and administrators.</p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="card">
+              <div class="badge">📚</div>
+              <h3>Admissions</h3>
+              <p>Search programmes, compare colleges, and apply once through a streamlined digital intake process.</p>
+            </article>
+            <article class="card">
+              <div class="badge">🏫</div>
+              <h3>Campus control</h3>
+              <p>Manage institutions, programmes, departments, and operational data across every campus from one dashboard.</p>
+            </article>
+            <article class="card">
+              <div class="badge">🧾</div>
+              <h3>Academic records</h3>
+              <p>Track attendance, marks, fees, timetable updates, and circular notices in a single system.</p>
+            </article>
+            <article class="card">
+              <div class="badge">🔐</div>
+              <h3>Role-based access</h3>
+              <p>Each role sees only the data and actions relevant to their responsibilities with secure access boundaries.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="campuses" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Partner campuses</h2>
+            <p>Supporting autonomous institutions across the region.</p>
+          </div>
+
+          <div class="students-list">
+            <div class="student-tile">
+              <strong>Midnapore College</strong>
+              <span>Established 1873</span>
+              <span>NAAC A+</span>
+            </div>
+            <div class="student-tile">
+              <strong>RNLK Women's College</strong>
+              <span>Established 1957</span>
+              <span>NAAC A+</span>
+            </div>
+            <div class="student-tile">
+              <strong>Midnapore City College</strong>
+              <span>Established 2017</span>
+              <span>Professional and general programmes</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="programmes" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Academic pathways</h2>
+            <p>From undergraduate to postgraduate offerings across all campuses.</p>
+          </div>
+          <div class="feature-grid">
+            <article class="card">
+              <div class="badge">🎓</div>
+              <h3>UG programmes</h3>
+              <p>Comprehensive arts, science, commerce, and professional degree pathways.</p>
+            </article>
+            <article class="card">
+              <div class="badge">📘</div>
+              <h3>PG programmes</h3>
+              <p>Advanced study tracks designed for research, discipline depth, and career readiness.</p>
+            </article>
+            <article class="card">
+              <div class="badge">🧠</div>
+              <h3>Skill-linked learning</h3>
+              <p>Curriculum strategies that connect academic learning with practical outcomes.</p>
+            </article>
+            <article class="card">
+              <div class="badge">🚀</div>
+              <h3>Future-ready</h3>
+              <p>Built to support a growing multi-campus ecosystem without added complexity.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="admissions" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Admissions made simple</h2>
+            <p>Students and parents can apply in a few clear steps.</p>
+          </div>
+          <div class="feature-grid">
+            <article class="card">
+              <div class="badge">1</div>
+              <h3>Choose a college</h3>
+              <p>Browse verified campus profiles, programmes, and intake information.</p>
+            </article>
+            <article class="card">
+              <div class="badge">2</div>
+              <h3>Compare pathways</h3>
+              <p>Review eligibility, duration, and course information before applying.</p>
+            </article>
+            <article class="card">
+              <div class="badge">3</div>
+              <h3>Submit application</h3>
+              <p>Share your details and stay informed through the admissions office workflow.</p>
+            </article>
+            <article class="card">
+              <div class="badge">4</div>
+              <h3>Track updates</h3>
+              <p>Receive status notifications and follow the next action without delay.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="support" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Support for every role</h2>
+            <p>Students, parents, faculty, and administrators all work from the same connected platform.</p>
+          </div>
+          <div class="students-list">
+            <div class="student-tile">
+              <strong>Students</strong>
+              <span>Attendance, marks, notices, fee information, and academic updates.</span>
+            </div>
+            <div class="student-tile">
+              <strong>Parents</strong>
+              <span>Progress tracking and communication with minimal friction.</span>
+            </div>
+            <div class="student-tile">
+              <strong>Staff</strong>
+              <span>Academic, admissions, finance, and operational workflows in one place.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        © <span id="year"></span> EduSphere. Built for connected campuses.
       </div>
+    </footer>
 
-      <div class="mock-rows">
-        <div class="mock-row"></div>
-        <div class="mock-row"></div>
-        <div class="mock-row"></div>
-        <div class="mock-row"></div>
-        <div class="mock-row"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="veil" aria-hidden="true"></div>
-
-<main class="panel" role="main">
-  <div class="brand">
-    <span class="brand-mark" aria-hidden="true">E</span>
-    <span class="brand-text">
-      <b>EduSphere</b>
-      <small>College ERP</small>
-    </span>
-  </div>
-
-  <h1>This website is<br /><em>under maintenance</em>.</h1>
-
-  <p class="lede">We are making a few updates. Please check back shortly.</p>
-</main>
-
-</body>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>
